@@ -6,7 +6,43 @@
 
 ---
 
+> **系列导读**
+>
+> 本文是三篇系列文章的**第一篇**，建议按以下顺序阅读：
+> 1. 📖 **本文**：reg model 基础原理与工程实践（从这里开始）
+> 2. 📖 Callback 机制：如何在读写流程中插入自定义逻辑
+> 3. 📖 predict(DIRECT)：Lock bit 场景下的 scoreboard 误报修复
+>
+> **适合读者**：了解基本数字电路和 SystemVerilog 语法，但对 UVM 验证框架接触不多的工程师。
+
+---
+
+**读完本文，你将理解**：
+
+- reg model 解决了什么问题、为什么需要它
+- desired 和 mirrored 为什么要分成两个值
+- set/write/read/predict 各自的边界在哪里
+- auto-predict 什么时候会出错
+- Adapter 如何连接 reg model 与总线 UVC
+
+---
+
 **摘要**：UVM 寄存器模型（reg model）是现代芯片验证中不可或缺的基础设施。本文不只介绍它提供了什么，更着重解释每一个设计决策背后的动机——为什么需要 desired/mirrored 双值，为什么要区分 set/write，为什么 auto-predict 会失效，为什么需要 predict(DIRECT)。理解这些"为什么"，才能在面对复杂验证场景时做出正确的技术选择。
+
+> **本文代码均为 SystemVerilog（SV），运行在 UVM 仿真环境中。**
+> 代码片段省略了部分细节（如 `status` 参数、`env` 路径），聚焦于核心概念。
+
+---
+
+## 零、一分钟背景：芯片验证在做什么
+
+**芯片验证**：在芯片流片前，用仿真手段证明 RTL 设计的行为与规格一致。简单说就是：用 SW 写测试，驱动 RTL，检查输出是否符合预期。
+
+**UVM**（Universal Verification Methodology）：一套验证框架，提供了 driver、monitor、scoreboard、sequence 等标准组件，避免每个项目从零搭建验证环境。
+
+**Scoreboard**：验证中的"裁判"。它接收两路数据——monitor 捕获的"硬件实际行为"和 predictor 计算的"期望行为"——比较两者，不一致则报错。Scoreboard 的预测值准确与否，决定了验证的可信度。
+
+**UVC**（UVM Verification Component）：针对某种总线协议（如 PCIe、SMN、APB）封装的验证组件，包含 driver（发激励）和 monitor（捕获响应）。
 
 ---
 
@@ -209,6 +245,8 @@ uvm_reg_bus_op {
 但 DUT 的总线 UVC 说的是协议特定的语言——PCIe 的 CFG_WR/CFG_RD、SMN 的 MEM_WR/MEM_RD、APB 的 PSEL+PENABLE 握手……这些协议在帧格式、地址编码、控制信号上各不相同，reg model 无法直接与它们对话。
 
 **Adapter 存在的根本理由**：在 reg model 的通用操作语言和总线 UVC 的协议特定语言之间充当翻译官，使同一套 reg model 定义可以被不同的总线协议驱动，只需更换 Adapter 而不需要修改寄存器定义。
+
+> **类比**：就像 USB 转接头——两端的物理接口不同（USB-A vs USB-C），但传输的数据是同一份。Adapter 不改变"要做什么"，只改变"用什么格式表达"。
 
 ### reg2bus()：从意图到行动
 
@@ -472,6 +510,40 @@ UVM reg model 的每一个设计决策都有其解决的具体问题：
 - **双模式查询**：因为同一个接口在不同阶段需要来自不同数据源的答案
 
 理解这些"为什么"，在遇到具体问题时，答案往往自然浮现——而不是在记忆了一堆 API 用法之后，仍然不知道在这个场景下该用哪个。
+
+---
+
+---
+
+## 附录：术语速查
+
+| 术语 | 一句话定义 |
+|---|---|
+| `desired` | reg model 中"软件期望写入"的值，`set()` 修改，不触发总线 |
+| `mirrored` | reg model 中"软件认为 HW 当前持有"的值，scoreboard 预测基于此 |
+| `auto-predict` | `write()`/`read()` 完成后，reg model 自动更新 mirrored 的机制 |
+| `predict(DIRECT)` | 强制设置 mirrored，绕过所有 Callback，不走总线 |
+| `frontdoor` | 通过真实总线路径访问寄存器，scoreboard 可监控 |
+| `backdoor` | 通过 HDL 路径直接读写 RTL 信号，零仿真时间，scoreboard 不感知 |
+| `Adapter` | 实现 `reg2bus()`/`bus2reg()`，在通用操作与协议帧之间转换 |
+| `Callback` | 注册到 reg model 的 hook 函数，在读写流程各阶段插入自定义逻辑 |
+| `UVC` | 针对某总线协议封装的验证组件（driver + monitor） |
+| `Scoreboard` | 比较"期望行为"与"实际行为"的验证裁判组件 |
+| `access type` | 字段的读写语义（RW/RO/W1C 等），决定 auto-predict 的计算规则 |
+
+---
+
+## 思考题
+
+读完本文，尝试回答以下问题来检验理解：
+
+1. `set(value)` 和 `write(value)` 各自会改变 desired 和 mirrored 中的哪一个？两者都改变时，仿真时间有变化吗？
+
+2. 如果对一个 `RO` 字段调用 `write()`，mirrored 会变吗？如果是运行时 Lock 保护的 `RW` 字段，mirrored 又会怎样？两者的区别在哪里？
+
+3. 硬件复位后，你想把某寄存器的 mirrored 归零，但该寄存器上有一个 lock_keep Callback 阻止 mirrored 被清零。你会选择哪种方法，为什么？
+
+4. `bus2reg()` 只在读操作时有意义吗？写操作时它做了什么，为什么写操作也需要它？
 
 ---
 
