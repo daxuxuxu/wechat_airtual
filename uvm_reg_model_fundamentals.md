@@ -72,51 +72,58 @@ assert(read_val == 0xA5);
 
 ---
 
-## 二、为什么需要 desired 与 mirrored 两个值
+## 二、三个值：desired、mirrored 与 HW 实际值
 
-这是 reg model 最核心也最容易被忽视的设计决策。直觉上，一个寄存器应该只有"当前值"，为什么要维护两个？
+这是理解 reg model 的核心，也是最容易被忽视的地方。很多文章只讲 desired 和 mirrored 两个值，但实际上存在**三个独立的值**：
 
-### 软件意图与硬件状态天然分离
+| 值 | 含义 | 存在于 | 访问方式 |
+|---|---|---|---|
+| **desired** | 软件期望写入的值 | reg model（软件侧） | `set()` 写，`get()` 读 |
+| **mirrored** | 软件认为 HW 当前持有的值 | reg model（软件侧） | `get_mirrored_value()` 读 |
+| **HW 实际值** | 寄存器里真实存储的值 | 硬件寄存器 | 只能通过 frontdoor read 或 backdoor peek 观测 |
 
-考虑以下现实情况：
+**mirrored 不是 HW 实际值，它是 reg model 对 HW 实际值的最优近似。** 在大多数正常情况下两者相同，但一旦出现写入被拒绝、外部修改、复位等情况，它们就会发生偏离。
 
-1. 测试代码调用 `write(reg, value)`，但硬件因 Lock 保护拒绝了这次写入。此时"软件写了什么"与"硬件实际是什么"分叉。
+### 三者的独立性
 
-2. 在 `write()` 发出之前，需要先告诉其他模块"我打算把这个寄存器设置为什么"——这个意图在写操作完成之前就需要传递。
+初学者容易把 mirrored 和 HW 实际值混为一谈。一个说明三者独立的场景：
 
-3. 初始化阶段，软件计算出一组配置值，但尚未写入硬件。此时需要同时表达"期望的配置"和"当前的硬件状态"。
+```
+初始状态：desired = A，mirrored = A，HW 实际值 = A（三者对齐）
 
-这三种场景共同说明：软件对寄存器的"意图"和硬件的"实际状态"是两个独立维度的信息，必须分开存储。
+执行 set(~A)：
+  desired  = ~A   （只改了 desired）
+  mirrored = A    （未变）
+  HW 实际值 = A   （未走总线，HW 未变）
+
+执行 write(~A)，LOCK=1 拒绝：
+  desired  = ~A   （write 前 set 的）
+  mirrored = ~A   （auto-predict 错误更新）
+  HW 实际值 = A   （LOCK 保护，实际未写入）
+
+三者完全不同！
+```
 
 ### desired：软件意图
 
-```
-desired = "我想让这个寄存器变成什么值"
-```
+通过 `set()` 修改，通过 `get()` 读取。**修改 desired 不触发任何总线事务**，是纯软件侧操作，不影响 mirrored，更不影响 HW 实际值。
 
-通过 `set()` 修改，通过 `get()` 读取。**修改 desired 不触发任何总线事务**，是纯软件侧操作。这使得"先配置好多个字段的期望值，再一次性写入硬件"这种原子性操作成为可能。
+### mirrored：软件对 HW 的认知
 
-### mirrored：硬件认知镜像
+通过 auto-predict（下一节详述）或 `predict()` 更新。**mirrored 只是 reg model 的猜测，不是 HW 的事实。** Scoreboard 的 predictor 从 mirrored 生成预期值——mirrored 准确，预测就准确；mirrored 失步，预测就失效。
 
-```
-mirrored = "我认为硬件此刻实际持有的值"
-```
+### HW 实际值：唯一的客观事实
 
-它是 reg model 对硬件状态的"镜像"。Scoreboard 的 predictor 从 mirrored 读取预期值，与硬件实际返回值比较。mirrored 的准确性直接决定了 scoreboard 的可信度。
+**HW 实际值无法被 reg model 直接查询**，只能通过以下方式观测：
 
-**关键问题**：mirrored 什么时候更新？每次 `write()` 或 `read()` 完成后，UVM 自动执行 auto-predict（下一节详述）。
+- `read(UVM_FRONTDOOR)`：发起总线读，HW 返回实际值，auto-predict 用返回值更新 mirrored
+- `peek()`（backdoor read）：通过 HDL 路径直接读 RTL 信号，同样更新 mirrored
 
-### 两者的典型分叉场景
+正因如此，mirrored 的正确性依赖两件事：一是 auto-predict 的假设（写入被 HW 接受）成立，二是 read/peek 操作及时同步。
 
-```
-reg.set(~orig);          // desired = ~orig，mirrored 不变
-reg.write(~orig);        // 总线发出写请求
-                         // 硬件 Lock 保护：拒绝写入
-                         // auto-predict：mirrored = ~orig  ← 错误！
-                         // 硬件实际仍持有 orig
-```
+### predict(DIRECT) 的定位
 
-此时 desired = mirrored = ~orig，但硬件实际 = orig。分叉已经发生，后续任何读操作都会触发 scoreboard 误报。这就是 `predict(DIRECT)` 存在的原因（第五节详述）。
+`predict(DIRECT)` 的语义是：**"我已经通过某种方式知道 HW 实际值是什么（如复位后 = 0，如 Lock 拒绝了写入所以仍是原值），直接把这个已知值写入 mirrored，不需要经过总线。"** 它绕过 auto-predict 和所有 Callback，是在"已知 HW 实际值但不想或不能发起总线读"时同步 mirrored 的唯一正确工具。
 
 ---
 

@@ -74,6 +74,8 @@ mirrored = desired = value
 
 关键问题：**auto-predict 假设所有 frontdoor write 都被硬件接受**。它不检查、也无从感知硬件是否因 Lock 而拒绝了写入。
 
+这里有必要区分三个值：**desired**（软件意图）、**mirrored**（软件对 HW 的认知）、**HW 实际值**（寄存器里真实存的）。三者在正常情况下相同，但在 Lock 拒绝写入后：desired = ~A，mirrored = ~A（auto-predict 错误更新），HW 实际值 = A（未变）。三者完全分离，mirrored 与 HW 实际值的偏离正是 scoreboard 误报的根因。
+
 这里需要特别区分：`access = "RO"` 的静态只读字段不会有这个问题——UVM 在定义阶段就知道该字段不可写，auto-predict 会正确跳过 mirrored 更新。Lock bit 保护是**运行时动态条件**，UVM reg model 在定义阶段无从得知，因此 auto-predict 无法正确处理。
 
 ---
