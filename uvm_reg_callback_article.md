@@ -6,7 +6,7 @@
 
 ---
 
-**摘要**：UVM 寄存器模型提供了一套 Callback 机制，允许验证工程师在寄存器读写操作的各个阶段插入自定义逻辑，而无需修改原始寄存器定义。这种机制广泛用于模拟硬件的写保护行为、访问约束、副作用触发等场景。本文系统介绍 Callback 的工作原理、注册方式、常见用法，并重点分析 Callback 与 auto-predict 机制交互时容易产生的陷阱。
+**摘要**：UVM 寄存器模型提供了一套 Callback 机制，允许验证工程师在寄存器读写操作的各个阶段插入自定义逻辑，而无需修改原始寄存器定义。这种机制广泛用于模拟硬件的写保护行为、访问约束、side effect 触发等场景。本文系统介绍 Callback 的工作原理、注册方式、常见用法，并重点分析 Callback 与 auto-predict 机制交互时容易产生的陷阱。
 
 ---
 
@@ -15,24 +15,24 @@
 UVM 寄存器模型（reg model）描述了寄存器的字段布局和访问属性，但无法直接描述硬件在运行时的动态行为，例如：
 
 - **写保护**：某个字段一旦被置为特定值（如 1），后续写操作被硬件拒绝
-- **副作用**：写入一个字段会联动修改另一个字段的值
+- **side effect**：写入一个字段会联动修改另一个字段的值
 - **访问约束**：在特定状态下某寄存器不允许被访问
 - **镜像修正**：硬件对写入值有额外的掩码或约束，实际存储的值与写入值不同
 
-Callback 提供了一种**非侵入式**的扩展手段——不改变寄存器类定义，通过在外部注册钩子函数来插入所需逻辑。
+Callback 提供了一种**非侵入式**的扩展手段——不改变寄存器类定义，通过在外部注册 hook 函数来插入所需逻辑。
 
 ---
 
 ## 二、Callback 的基本结构
 
-UVM 寄存器 Callback 继承自 `uvm_reg_cbs`，该基类提供了六个虚方法（钩子）：
+UVM 寄存器 Callback 继承自 `uvm_reg_cbs`，该基类提供了六个虚方法（hook）：
 
-| 钩子方法 | 触发时机 | 典型用途 |
+| Hook 方法 | 触发时机 | 典型用途 |
 |---|---|---|
 | `pre_write()` | frontdoor write 发送前 | 拦截写操作、修改写入值 |
-| `post_write()` | frontdoor write 完成后 | 触发副作用、记录访问日志 |
+| `post_write()` | frontdoor write 完成后 | 触发side effect、记录访问日志 |
 | `pre_read()` | frontdoor read 发送前 | 访问控制、状态检查 |
-| `post_read()` | frontdoor read 完成后 | 修正读回值、触发副作用 |
+| `post_read()` | frontdoor read 完成后 | 修正读回值、触发side effect |
 | `post_predict()` | 任何 predict 操作完成后 | 修正 mirrored 值、约束镜像更新 |
 | `encode() / decode()` | 值编解码时 | 非线性字段映射 |
 
@@ -78,7 +78,7 @@ Callback 实例通常在测试的 `build_phase` 或 `connect_phase` 中注册，
 
 ### 实现方式
 
-在 `post_predict()` 钩子中检查 mirrored 值：如果字段当前 mirrored 为 1，则阻止任何将其更新为 0 的 predict 操作。
+在 `post_predict()` hook 中检查 mirrored 值：如果字段当前 mirrored 为 1，则阻止任何将其更新为 0 的 predict 操作。
 
 ```systemverilog
 class lock_keep_callback extends uvm_reg_cbs;
@@ -147,7 +147,7 @@ write(reg_handle, new_value, UVM_FRONTDOOR);
 
 ## 六、post_predict 的精确语义
 
-`post_predict()` 是最常用的钩子，理解其参数至关重要：
+`post_predict()` 是最常用的 hook，理解其参数至关重要：
 
 ```systemverilog
 virtual function void post_predict(
@@ -170,7 +170,7 @@ virtual function void post_predict(
 
 ## 七、其他常见应用场景
 
-### 7.1 副作用模拟
+### 7.1 side effect模拟
 
 写某个控制字段触发另一个状态字段的自动更新，在 `post_write()` 中实现。
 
@@ -213,15 +213,15 @@ endfunction
 ## 八、注册 Callback 的最佳实践
 
 1. **在 connect_phase 注册**：确保寄存器模型已完成构建，避免在 build_phase 中因顺序问题导致字段 handle 为空
-2. **保持 Callback 轻量**：不在 Callback 中执行阻塞任务（不要在 function 类型的钩子里调用 task），避免影响仿真性能
-3. **注意 DIRECT 的副作用**：使用 `predict(DIRECT)` 绕过 Callback 是有意为之，确保调用点确实需要强制同步，而非正常的访问流程
+2. **保持 Callback 轻量**：不在 Callback 中执行阻塞任务（不要在 function 类型的 hook 里调用 task），避免影响仿真性能
+3. **注意 DIRECT 的side effect**：使用 `predict(DIRECT)` 绕过 Callback 是有意为之，确保调用点确实需要强制同步，而非正常的访问流程
 4. **文档化意图**：Callback 的行为不体现在寄存器定义里，建议在注册处添加注释说明为什么需要这个 Callback 及其预期效果
 
 ---
 
 ## 九、结语
 
-UVM 寄存器 Callback 是连接"静态寄存器定义"与"动态硬件行为"的桥梁。它的核心价值在于：在不修改原始寄存器类的前提下，将硬件的运行时约束（写保护、副作用、访问控制）准确地反映到验证模型中，使 mirrored 值始终忠实于硬件的实际状态。
+UVM 寄存器 Callback 是连接"静态寄存器定义"与"动态硬件行为"的桥梁。它的核心价值在于：在不修改原始寄存器类的前提下，将硬件的运行时约束（写保护、side effect、访问控制）准确地反映到验证模型中，使 mirrored 值始终忠实于硬件的实际状态。
 
 理解 Callback 与 auto-predict 的协作关系，以及 `predict(DIRECT)` 在"绕过 Callback 强制同步"场景中的精确作用，是掌握 UVM 寄存器验证框架的关键一步。两者不是对立关系，而是同一个正确性保障体系中的两种互补工具。
 
