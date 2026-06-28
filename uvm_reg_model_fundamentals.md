@@ -547,6 +547,18 @@ UVM reg model 的每一个设计决策都有其解决的具体问题：
 
 ---
 
+## 参考答案
+
+**1.** `set(value)` 只改变 desired，不改变 mirrored，不产生总线事务，仿真时间不推进。`write(value)` 同时改变 desired 和 mirrored（通过 auto-predict），会产生真实总线事务，仿真时间向前推进。
+
+**2.** 对 `RO` 字段调用 `write()`：auto-predict 检查到 access 类型为 RO，**不更新 mirrored**，mirrored 保持原值——这是 UVM 内置的正确处理，不需要额外干预。对运行时 Lock 保护的 `RW` 字段调用 `write()`：UVM 不知道字段被动态锁定，auto-predict 仍然**错误地更新 mirrored** 为写入值，与硬件实际值产生失步。区别在于：RO 是编译期静态属性，UVM 认识它；Lock 保护是运行时条件，UVM 无感知。
+
+**3.** 应选择 `predict(UVM_PREDICT_DIRECT, 0)`。普通的 `predict(WRITE)` 或 `predict(READ)` 会触发 Callback 调用链，lock_keep Callback 会阻止清零。只有 `UVM_PREDICT_DIRECT` 完全绕过所有 Callback，无条件将 mirrored 强制设为指定值。
+
+**4.** 写操作同样需要 `bus2reg()`。其作用是将总线的写响应（完成帧）翻译回 reg model 可理解的格式，填充 `rw.status`。若总线返回错误（如 Unsupported Request），`bus2reg()` 将 status 设为非 OK，reg model 收到后可以跳过 auto-predict 或报告错误，而不是盲目将 mirrored 更新为一个被硬件拒绝的值。
+
+---
+
 > **配套阅读**
 >
 > - **Callback 机制**：如何通过 hook 在读写流程中拦截并修正 auto-predict 的结果
