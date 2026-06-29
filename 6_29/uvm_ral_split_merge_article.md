@@ -126,11 +126,11 @@ Monitor 用两个队列分开积累：
 ### 1.4 日志示例
 
 ```
-# 读请求（header 即完整，无 data beat）
-req_q[0] unit <A> tag <B> _cmd 4 _vc 0, read req merge done
+# 读请求
+req_q[0] unit <unit> tag <tag> _cmd <read_cmd> _vc <vc>, read req merge done
 
-# 写请求（等到最后一个 data beat 到达后）
-req_q[0] data_q[0] unit <A> tag <B> _cmd 30 _vc 0, write req merge done, data is xxxxxxxx
+# 写请求
+req_q[0] data_q[0] unit <unit> tag <tag> _cmd <write_cmd> _vc <vc>, write req merge done, data is <payload>
 ```
 
 读请求日志只有 `req_q[0]`，写请求日志中能看到 `data_q[0]`（以及更多 data_q 项）——这是两者在日志中最直观的区别。
