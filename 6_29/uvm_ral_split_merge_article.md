@@ -125,15 +125,9 @@ Monitor 用两个队列分开积累：
 
 ### 1.4 日志示例
 
-```
-# 读请求
-req_q[0] unit <unit> tag <tag> _cmd <read_cmd> _vc <vc>, read req merge done
+日志会打印本次合并涉及的队列项和事务元信息，以 `read/write req merge done` 结尾作为合并完成的标志。
 
-# 写请求
-req_q[0] data_q[0] unit <unit> tag <tag> _cmd <write_cmd> _vc <vc>, write req merge done, data is <payload>
-```
-
-读请求日志只有 `req_q[0]`，写请求日志中能看到 `data_q[0]`（以及更多 data_q 项）——这是两者在日志中最直观的区别。
+读请求只有 `req_q[0]`，无 `data_q` 项；写请求会同时列出 `req_q[0]` 和所有 `data_q` 项，并附上数据内容——这是两者在日志中最直观的区别。
 
 ---
 
