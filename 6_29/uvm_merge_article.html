@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UVM 验证环境中的两种 Merge 模式</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #f0f4f8;
+    font-family: -apple-system, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+    color: #2c3e50;
+    line-height: 1.8;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding-bottom: 60px;
+  }
+
+  /* ── 封面 ── */
+  .cover {
+    background: linear-gradient(145deg, #0d47a1 0%, #1565c0 40%, #1976d2 70%, #1e88e5 100%);
+    padding: 56px 40px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: "";
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .cover::after {
+    content: "";
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .cover-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: #e3f2fd;
+    font-size: 12px;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+  }
+  .cover h1 {
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .cover h2 {
+    color: #bbdefb;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+  .cover-divider {
+    width: 40px;
+    height: 2px;
+    background: rgba(255,255,255,0.4);
+    margin: 20px auto;
+  }
+
+  /* ── 内容区 ── */
+  .content {
+    padding: 0 36px;
+  }
+
+  /* ── 前置卡片 ── */
+  .prereq-card {
+    background: #e8f0fe;
+    border-left: 4px solid #1976d2;
+    border-radius: 0 8px 8px 0;
+    padding: 18px 20px;
+    margin: 32px 0 24px;
+  }
+  .prereq-card .card-title {
+    color: #1565c0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .prereq-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .prereq-card ul li {
+    font-size: 13.5px;
+    color: #37474f;
+    padding: 4px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .prereq-card ul li::before {
+    content: "›";
+    color: #1976d2;
+    font-weight: bold;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── 读完本文 ── */
+  .goal-box {
+    background: #fafafa;
+    border: 1px solid #e3e8ef;
+    border-radius: 8px;
+    padding: 20px 22px;
+    margin-bottom: 24px;
+  }
+  .goal-box .box-title {
+    color: #1565c0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .goal-box .box-title::before {
+    content: "";
+    width: 3px; height: 14px;
+    background: #1976d2;
+    border-radius: 2px;
+    display: inline-block;
+  }
+  .goal-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  .goal-box ul li {
+    font-size: 14px;
+    color: #455a64;
+    padding: 5px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+  .goal-box ul li::before {
+    content: "✦";
+    color: #1976d2;
+    font-size: 9px;
+    position: absolute;
+    left: 0;
+    top: 7px;
+  }
+
+  /* ── 摘要 ── */
+  .abstract {
+    font-size: 14px;
+    color: #546e7a;
+    line-height: 1.9;
+    padding: 20px 22px;
+    background: #f5f9ff;
+    border-radius: 8px;
+    margin-bottom: 36px;
+    font-style: italic;
+  }
+
+  /* ── 章节标题 ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 20px;
+  }
+  .section-num {
+    background: #1565c0;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a237e;
+    border-bottom: 2px solid #e8eaf6;
+    padding-bottom: 6px;
+    flex: 1;
+  }
+
+  /* ── 小节标题 ── */
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1565c0;
+    margin: 24px 0 12px;
+    padding-left: 10px;
+    border-left: 3px solid #64b5f6;
+  }
+
+  /* ── 正文段落 ── */
+  p {
+    font-size: 14.5px;
+    color: #37474f;
+    line-height: 1.9;
+    margin-bottom: 14px;
+  }
+
+  /* ── 列表 ── */
+  ul.body-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 16px;
+  }
+  ul.body-list li {
+    font-size: 14.5px;
+    color: #37474f;
+    padding: 5px 0 5px 20px;
+    position: relative;
+    line-height: 1.8;
+  }
+  ul.body-list li::before {
+    content: "·";
+    color: #1976d2;
+    font-size: 20px;
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    line-height: 1.4;
+  }
+
+  /* ── 强调 ── */
+  strong {
+    color: #0d47a1;
+    font-weight: 700;
+  }
+  em { color: #546e7a; }
+  code {
+    background: #e8eaf6;
+    color: #283593;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 12.5px;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* ── 对比表格 ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  }
+  .compare-table th {
+    background: #1565c0;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 11px 14px;
+    text-align: left;
+  }
+  .compare-table td {
+    font-size: 13.5px;
+    color: #37474f;
+    padding: 10px 14px;
+    border-bottom: 1px solid #e8edf3;
+    vertical-align: top;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:nth-child(even) td { background: #f5f8ff; }
+  .compare-table td:first-child { color: #1565c0; font-weight: 600; }
+
+  /* ── 日志速查表 ── */
+  .log-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  }
+  .log-table th {
+    background: #1976d2;
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 10px 14px;
+    text-align: left;
+  }
+  .log-table td {
+    font-size: 13px;
+    color: #37474f;
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8edf3;
+    vertical-align: top;
+  }
+  .log-table tr:last-child td { border-bottom: none; }
+  .log-table tr:nth-child(even) td { background: #f5f8ff; }
+  .log-table td:first-child {
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 12px;
+    color: #283593;
+    background: #eff2ff;
+    white-space: nowrap;
+  }
+
+  /* ── 代码/ASCII 图块 ── */
+  .code-block {
+    background: #1a1f36;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 14px 0 20px;
+    overflow-x: auto;
+  }
+  .code-block pre {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 12px;
+    color: #a8b4d8;
+    line-height: 1.7;
+    white-space: pre;
+  }
+  .code-block .kw { color: #82aaff; }
+  .code-block .cm { color: #546e7a; font-style: italic; }
+  .code-block .str { color: #c3e88d; }
+  .code-block .hl { color: #ffcb6b; }
+
+  /* ── 流程图卡片 ── */
+  .flow-card {
+    background: #0d1b3e;
+    border-radius: 10px;
+    padding: 24px 20px;
+    margin: 16px 0 24px;
+    overflow-x: auto;
+  }
+  .flow-card pre {
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 11.5px;
+    color: #8fa8d8;
+    line-height: 1.75;
+    white-space: pre;
+  }
+
+  /* ── 标签徽章 ── */
+  .badge {
+    display: inline-block;
+    background: #e3f2fd;
+    color: #1565c0;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+  .badge-type1 { background: #e8f5e9; color: #2e7d32; }
+  .badge-type2 { background: #fff3e0; color: #e65100; }
+
+  /* ── 亮点卡片 ── */
+  .highlight-card {
+    background: linear-gradient(135deg, #e3f2fd 0%, #e8eaf6 100%);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin: 16px 0;
+  }
+  .highlight-card .hc-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1565c0;
+    margin-bottom: 8px;
+  }
+  .highlight-card p {
+    font-size: 13.5px;
+    color: #37474f;
+    margin: 0;
+  }
+
+  /* ── 特殊提示块 ── */
+  .tip-block {
+    background: #fff8e1;
+    border-left: 4px solid #ffc107;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 13.5px;
+    color: #37474f;
+  }
+  .tip-block strong { color: #e65100; }
+
+  /* ── 分隔线 ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #c5cae9, transparent);
+    margin: 36px 0;
+  }
+
+  /* ── 状态机可视化 ── */
+  .state-machine {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    margin: 18px 0;
+    flex-wrap: wrap;
+  }
+  .state-box {
+    background: #1565c0;
+    color: white;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12px;
+    text-align: center;
+    flex: 1;
+    min-width: 80px;
+  }
+  .state-box .state-label { font-size: 10px; opacity: 0.8; margin-bottom: 4px; }
+  .state-box .state-val { font-weight: 700; font-size: 15px; }
+  .state-arrow {
+    color: #1976d2;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .state-final {
+    background: #1b5e20;
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+
+  /* ── BE 填充可视化 ── */
+  .be-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin: 12px 0;
+  }
+  .be-cell {
+    border-radius: 6px;
+    padding: 10px 6px;
+    text-align: center;
+    font-size: 12px;
+  }
+  .be-cell .be-label { font-size: 10px; margin-bottom: 4px; opacity: 0.7; }
+  .be-cell .be-val { font-weight: 700; font-family: monospace; font-size: 13px; }
+  .be-new { background: #e8f5e9; color: #2e7d32; }
+  .be-mirror { background: #fff3e0; color: #e65100; }
+  .be-arrow-row {
+    text-align: center;
+    color: #1976d2;
+    font-size: 20px;
+    margin: 4px 0;
+  }
+
+  /* ── 总结卡片 ── */
+  .summary-section {
+    background: linear-gradient(145deg, #0d47a1, #1976d2);
+    border-radius: 10px;
+    padding: 28px 24px;
+    margin-top: 40px;
+    color: white;
+  }
+  .summary-section h2 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #e3f2fd;
+  }
+  .summary-item {
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+  .summary-item .si-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #bbdefb;
+    margin-bottom: 6px;
+  }
+  .summary-item p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  /* ── 日志关键词框 ── */
+  .log-keyword-box {
+    background: #0d1b3e;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+  .log-keyword-box .lk-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .log-keyword-box .lk-row:last-child { border-bottom: none; }
+  .log-keyword-box .lk-code {
+    font-family: monospace;
+    font-size: 12px;
+    color: #82aaff;
+    flex-shrink: 0;
+  }
+  .log-keyword-box .lk-desc {
+    font-size: 12px;
+    color: #8fa8d8;
+  }
+
+  /* ── 页脚 ── */
+  .footer {
+    text-align: center;
+    padding: 40px 36px 20px;
+    font-size: 12px;
+    color: #90a4ae;
+    line-height: 2;
+  }
+  .footer .footer-tag {
+    display: inline-block;
+    background: #e8eaf6;
+    color: #5c6bc0;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin: 2px;
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 封面 -->
+  <div class="cover">
+    <div class="cover-tag">芯片验证 · UVM</div>
+    <h1>UVM 验证环境中的<br>两种 Merge 模式</h1>
+    <div class="cover-divider"></div>
+    <h2>从总线 Beat 合并到跨寄存器响应合并</h2>
+  </div>
+
+  <div class="content">
+
+    <!-- 前置概念 -->
+    <div class="prereq-card">
+      <div class="card-title">▎ 前置概念速查</div>
+      <ul>
+        <li><code>mirrored</code>：reg model 对硬件当前状态的认知镜像，scoreboard 预测基于此</li>
+        <li><code>uvm_reg_predictor</code>：UVM 内置预测器，监听总线事务并调用 <code>rg.predict()</code> 更新镜像</li>
+        <li><code>analysis port / imp</code>：UVM 组件间单向传播数据的机制</li>
+      </ul>
+    </div>
+
+    <!-- 读完本文 -->
+    <div class="goal-box">
+      <div class="box-title">读完本文，你将理解</div>
+      <ul>
+        <li>验证日志里"merge done"出现在两个完全不同的地方，各自解决什么问题</li>
+        <li>Type 1：monitor 如何把物理接口上的多个 beat 拼装成一笔逻辑事务</li>
+        <li>Type 2：RAL predictor 如何把拆分的寄存器子事务重新合并成完整响应</li>
+        <li>两种 Merge 在整个仿真流水中的位置和协作关系</li>
+      </ul>
+    </div>
+
+    <!-- 摘要 -->
+    <div class="abstract">
+      在复杂验证环境的仿真日志中，"merge done"出现在两个截然不同的上下文里。第一种出现在 Monitor 组件，指的是把物理总线上多个时钟周期的 beat 拼成一笔完整的逻辑请求；第二种出现在 RAL Predictor 组件，指的是把 UVM RAL 针对多个寄存器的分批预测结果合并成一个完整的寄存器响应。两种 Merge 在流水线的不同层次各司其职，缺一不可。
+    </div>
+
+    <!-- 零 全局视角 -->
+    <div class="section-header">
+      <div class="section-num">零</div>
+      <div class="section-title">全局视角：两种 Merge 在哪里</div>
+    </div>
+
+    <div class="flow-card"><pre>
+  总线物理接口
+       |
+       |  多个 beat（HDR + DATA[0..N]）
+       v
+  ┌──────────────────────────────────┐
+  │         Module Monitor           │
+  │                                  │
+  │   req_q[] + data_q[]             │──→ "read/write req merge done"
+  │   beat by beat 累积              │         (Type 1)
+  │   最后一个 DATA beat 到达后合并  │
+  └──────────────┬───────────────────┘
+                 |
+                 v
+  ┌──────────────────────────────────────────┐
+  │           Module Predictor               │
+  │   ┌──────────────────────────────────┐   │
+  │   │       RAL Reg Predictor          │   │
+  │   │  split → UVM RAL → merge         │──→ "pending trans cleared"
+  │   │  pending_q 追踪 / reg_array 累积 │         (Type 2)
+  │   └──────────────────────────────────┘   │
+  └──────────────┬───────────────────────────┘
+                 |
+                 v
+        Scoreboard（期望值 vs 实际值比对）</pre></div>
+
+    <table class="compare-table">
+      <tr>
+        <th></th>
+        <th><span class="badge badge-type1">Type 1</span></th>
+        <th><span class="badge badge-type2">Type 2</span></th>
+      </tr>
+      <tr><td>所在组件</td><td>Module Monitor</td><td>RAL Reg Predictor</td></tr>
+      <tr><td>合并对象</td><td>物理接口上的多个 beat</td><td>多个寄存器的预测子事务</td></tr>
+      <tr><td>触发条件</td><td>最后一个 DATA beat 到达</td><td>pending_q 清空</td></tr>
+      <tr><td>日志关键词</td><td><code>read/write req merge done</code></td><td><code>pending trans cleared</code></td></tr>
+    </table>
+
+    <div class="divider"></div>
+
+    <!-- 一 Type 1 -->
+    <div class="section-header">
+      <div class="section-num">一</div>
+      <div class="section-title">Type 1 — Request Merge（Module Monitor）</div>
+    </div>
+
+    <h3>1.1 为什么需要 Beat 合并</h3>
+    <p>物理总线上，一笔逻辑请求可能分多个时钟周期传输：</p>
+    <ul class="body-list">
+      <li><strong>第 1 拍</strong>：Header beat，携带地址、命令码、tag、VC 等控制信息</li>
+      <li><strong>第 2–N 拍</strong>：Data beat，每拍固定位宽，携带写数据（读请求没有 data beat）</li>
+    </ul>
+    <p>Monitor 采样到的是原始物理信号，每拍看到的都是不完整的碎片。只有把所有 beat 拼在一起，才能得到一笔有意义的逻辑事务，才能送给 predictor 做预测和 scoreboard 做比对。</p>
+
+    <h3>1.2 Beat 合并流程</h3>
+    <div class="flow-card"><pre>
+  时钟周期：    1          2          3          4
+               |          |          |          |
+  Beat：   [HDR beat] [DATA[0]]  [DATA[1]]  [DATA[2]]
+               |          |          |          |
+               v          v          v          v
+           req_q[0]   data_q[0]  data_q[1]  data_q[2]
+           (地址/命令                                 |
+            /tag/vc)                                  v
+                             ┌──────────────────────────────────────┐
+                             │        write req merge done          │
+                             │    req_q[0]  +  data_q[0..N]         │
+                             │    完整逻辑事务：地址、命令、数据     │
+                             └──────────────────┬───────────────────┘
+                                                |
+                                                v
+                                         Module Predictor</pre></div>
+
+    <p>Monitor 用两个队列分开积累：</p>
+    <ul class="body-list">
+      <li><code>req_q[]</code>：存 header beat（地址、命令、tag、VC）</li>
+      <li><code>data_q[]</code>：存 data beat（固定位宽，按拍顺序排列）</li>
+    </ul>
+    <p>当最后一个 data beat 到达时，monitor 打印 merge done 日志，将 <code>req_q[0]</code> 和全部 <code>data_q</code> 拼成一笔逻辑事务上报。</p>
+
+    <h3>1.3 命令码（_cmd）</h3>
+    <p><code>_cmd</code> 字段编码了事务的操作类型。读命令和写命令各占一段不连续的编码空间，monitor 通过判断 <code>_cmd</code> 是否落在读范围或写范围来决定是否等待 data beat：</p>
+    <ul class="body-list">
+      <li><strong>读命令</strong>：无 data beat，header 到达后立即合并完成</li>
+      <li><strong>写命令</strong>：有 data beat，需等到所有 data beat 到齐才触发合并</li>
+    </ul>
+    <p>具体编码值由协议规范定义，日志中可直接读取 <code>_cmd</code> 字段识别类型。</p>
+
+    <h3>1.4 日志示例</h3>
+    <p>日志会打印本次合并涉及的队列项和事务元信息，以 <code>read/write req merge done</code> 结尾作为合并完成的标志。</p>
+    <div class="tip-block">
+      读请求只有 <code>req_q[0]</code>，无 <code>data_q</code> 项；<br>
+      写请求会同时列出 <code>req_q[0]</code> 和所有 <code>data_q</code> 项，并附上数据内容。<br>
+      <strong>这是两者在日志中最直观的区别。</strong>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 二 Type 2 -->
+    <div class="section-header">
+      <div class="section-num">二</div>
+      <div class="section-title">Type 2 — Register Read Merge（RAL Reg Predictor）</div>
+    </div>
+
+    <h3>2.1 为什么需要寄存器响应合并</h3>
+    <p>Type 1 Merge 完成后，一笔完整的逻辑事务被送到 predictor。如果这笔事务是一次覆盖多个物理寄存器的宽位读，UVM 内置的 <code>uvm_reg_predictor</code> 每次只能处理<strong>一个寄存器</strong>，必须把原始事务拆开分别预测，再把结果合并回来。</p>
+    <p>这就是 Type 2 Merge 的职责：<strong>拆（Split）→ 预测（Predict）→ 合（Merge）</strong>。</p>
+
+    <h3>2.2 整体三段流水</h3>
+    <div class="flow-card"><pre>
+  Type 1 Merge 输出的逻辑事务
+       |
+       v
+  +-----------------------------------------------+
+  |              write_bus_in()                   |
+  |  (1) 克隆原始事务                             |
+  |  (2) 按覆盖范围拆成 N 笔单寄存器子事务        |
+  |  (3) N 份克隆体压入 pending_q                 |
+  |  (4) 逐笔送入 UVM 内置 predictor              |
+  +--------------------+--------------------------+
+                       |  N 笔子事务
+                       v
+  +-----------------------------------------------+
+  |       uvm_reg_predictor（UVM 内置）           |
+  |    按地址查找寄存器                           |
+  |    rg.predict()  ->  更新镜像                 |
+  |    回调 handle_rsp()  ->  通知结果            |
+  +--------------------+--------------------------+
+                       |  N 次回调，每次一个寄存器
+                       v
+  +-----------------------------------------------+
+  |              handle_rsp()                     |
+  |  (1) pop pending_q（计数减一）                |
+  |  (2) 取该寄存器 mirrored 值                   |
+  |  (3) 字节移位后写入 reg_array[idx]            |
+  |  (4) pending_q 已空  ->  合并完成             |
+  |      reg_ap.write(reg_item)  ->  Scoreboard   |
+  +-----------------------------------------------+</pre></div>
+
+    <h3>2.3 关键数据结构</h3>
+    <table class="log-table">
+      <tr><th>变量</th><th>用途</th></tr>
+      <tr><td>pending_q</td><td>追踪"已发出但还没回调"的子事务，队列长度 = 剩余待合并数</td></tr>
+      <tr><td>reg_value</td><td>当前 DWORD 槽的累积合并值</td></tr>
+      <tr><td>reg_array[]</td><td>所有 DWORD 槽的最终合并结果，按槽发给 scoreboard</td></tr>
+      <tr><td>start_reg_offset</td><td>原始事务的基地址，用于计算数组下标：<code>(reg_offset - start) >> 2</code></td></tr>
+    </table>
+
+    <h3>2.4 拆分阶段</h3>
+    <p>按字节遍历原始事务覆盖范围，找到每个寄存器后克隆一份子事务，跳过该寄存器已覆盖的字节，继续向后查找：</p>
+    <div class="code-block"><pre><span class="cm">// 伪代码</span>
+<span class="kw">for</span> 每个字节 i in 事务覆盖范围:
+    rg = 按地址查找寄存器(base + i)
+    <span class="kw">if</span> rg 存在:
+        克隆子事务，地址设为 rg 的地址
+        push 到 split_trans_q
+        i 跳过 rg 的宽度  <span class="cm">// 避免重复处理</span></pre></div>
+    <p><code>get_real_reg()</code> 会透明穿透 replica 和 indirect 类型的寄存器，保证后续操作拿到的是真实寄存器对象。</p>
+
+    <h3>2.5 合并阶段：字节对齐逻辑</h3>
+    <div class="highlight-card">
+      <div class="hc-title">DWORD 对齐寄存器（最常见）</div>
+      <p>寄存器地址低 2 位为 0，镜像值无需移位，直接存入对应槽：<code>reg_array[槽号] = mirrored_value</code></p>
+    </div>
+    <div class="highlight-card" style="background: linear-gradient(135deg, #fff3e0, #fce4ec);">
+      <div class="hc-title" style="color: #bf360c;">非 DWORD 对齐寄存器</div>
+      <p>寄存器起始字节不在 DWORD 边界上，其值需要左移 <code>(偏移字节数 × 8)</code> 位。若跨越两个 DWORD 槽，还需从上一槽进位：</p>
+    </div>
+    <div class="code-block"><pre>shift     = (reg_offset & 0x3) * 8
+reg_value = 上一槽进位值 + (mirrored_value << shift)
+reg_array[槽号] = reg_value</pre></div>
+    <p><code>reg_array</code> 里每个槽代表总线响应中一个完整 DWORD 的字节视图，非对齐寄存器的字节需要"移到它应该在的位置"才能拼成正确的响应。</p>
+
+    <h3>2.6 待定队列状态机</h3>
+    <div class="state-machine">
+      <div class="state-box">
+        <div class="state-label">初始</div>
+        <div class="state-val">size = 0</div>
+      </div>
+      <div class="state-arrow">→</div>
+      <div class="state-box">
+        <div class="state-label">push A, B</div>
+        <div class="state-val">size = 2</div>
+      </div>
+      <div class="state-arrow">→</div>
+      <div class="state-box">
+        <div class="state-label">pop A</div>
+        <div class="state-val">size = 1</div>
+      </div>
+      <div class="state-arrow">→</div>
+      <div class="state-box state-final">
+        <div class="state-label">pop B → 合并完成</div>
+        <div class="state-val">size = 0 ✓</div>
+      </div>
+    </div>
+    <p>队列里保存的是子事务克隆体，每次 pop 时会做地址断言——顺序或地址不对会立即报错，不会静默合并出错误值。</p>
+
+    <h3>2.7 写路径：Byte Enable 为 0 时的填充</h3>
+    <p>写事务允许只写部分字节（BE=0 的字节硬件保持原值）。UVM RAL 的 <code>predict()</code> 需要完整写数据，做法是用当前镜像值填充 BE=0 的字节，并强制 BE 置 1：</p>
+    <div class="be-grid">
+      <div class="be-cell be-new"><div class="be-label">Byte 0 / BE=1</div><div class="be-val">新值</div></div>
+      <div class="be-cell be-mirror"><div class="be-label">Byte 1 / BE=0</div><div class="be-val">屏蔽</div></div>
+      <div class="be-cell be-new"><div class="be-label">Byte 2 / BE=1</div><div class="be-val">新值</div></div>
+      <div class="be-cell be-mirror"><div class="be-label">Byte 3 / BE=0</div><div class="be-val">屏蔽</div></div>
+    </div>
+    <div class="be-arrow-row">↓ 用镜像值填充屏蔽字节，BE 全置 1 ↓</div>
+    <div class="be-grid">
+      <div class="be-cell be-new"><div class="be-label">Byte 0</div><div class="be-val">新值</div></div>
+      <div class="be-cell" style="background:#fff3e0;color:#e65100;border-radius:6px;padding:10px 6px;text-align:center;font-size:12px;"><div class="be-label">Byte 1</div><div class="be-val" style="font-weight:700;font-family:monospace;font-size:13px;">镜像值</div></div>
+      <div class="be-cell be-new"><div class="be-label">Byte 2</div><div class="be-val">新值</div></div>
+      <div class="be-cell" style="background:#fff3e0;color:#e65100;border-radius:6px;padding:10px 6px;text-align:center;font-size:12px;"><div class="be-label">Byte 3</div><div class="be-val" style="font-weight:700;font-family:monospace;font-size:13px;">镜像值</div></div>
+    </div>
+
+    <h3>2.8 日志字段速查</h3>
+    <table class="log-table">
+      <tr><th>日志字段</th><th>含义</th></tr>
+      <tr><td>事务基地址</td><td>原始事务的起始地址，即 start_reg_offset</td></tr>
+      <tr><td>寄存器命中提示</td><td>在某字节偏移找到了寄存器，split 计数 +1</td></tr>
+      <tr><td>read back value</td><td>当前子事务对应寄存器的原始镜像值（未移位）</td></tr>
+      <tr><td>merged read back value</td><td>移位累积后的合并值</td></tr>
+      <tr><td>字节偏移量</td><td>reg_offset - start_reg_offset，用于定位槽号</td></tr>
+      <tr><td>pending trans cleared</td><td>pending_q 清空，Type 2 合并完成，结果发往 scoreboard</td></tr>
+    </table>
+
+    <h3>2.9 两个特殊情况</h3>
+    <div class="tip-block">
+      <strong>无语义寄存器</strong>：某些寄存器在特定访问路径下硬件无明确语义，predictor 强制将其值置 0，避免无意义的镜像值污染 scoreboard 比对结果。
+    </div>
+    <div class="tip-block">
+      <strong>未映射地址</strong>：地址查找返回空时，直接构造全零假响应发给 scoreboard，跳过整个 Split-Merge 流程，防止 scoreboard 挂起。
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 三 总结 -->
+    <div class="summary-section">
+      <h2>三、总结</h2>
+      <div class="summary-item">
+        <div class="si-title">Type 1 — Monitor 层</div>
+        <p>把物理接口上碎片化的 beat 还原成人类可理解的逻辑事务。没有它，predictor 和 scoreboard 看到的只是没有意义的半截信号。</p>
+      </div>
+      <div class="summary-item">
+        <div class="si-title">Type 2 — RAL Predictor 层</div>
+        <p>把 UVM RAL 对单个寄存器的分批预测结果重新组装成与原始总线事务等宽的响应。没有它，scoreboard 拿到的是残缺的寄存器粒度碎片，无法做正确比对。</p>
+      </div>
+      <div class="summary-item">
+        <div class="si-title">两者串联</div>
+        <p>Type 1 的输出是 Type 2 的输入。一笔多 beat 写请求，经 monitor 合并为逻辑事务，再经 predictor 的 split-merge 完成寄存器级预测，最终完整结果送达 scoreboard。</p>
+      </div>
+      <div class="log-keyword-box">
+        <div class="lk-row">
+          <span class="lk-code">write req merge done</span>
+          <span class="lk-desc">Type 1 · Monitor 层 · beat 拼装完成</span>
+        </div>
+        <div class="lk-row">
+          <span class="lk-code">pending trans cleared</span>
+          <span class="lk-desc">Type 2 · RAL Predictor 层 · 寄存器响应合并完成</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 页脚 -->
+  <div class="footer">
+    <div>
+      <span class="footer-tag">芯片验证</span>
+      <span class="footer-tag">UVM</span>
+      <span class="footer-tag">Register Model</span>
+      <span class="footer-tag">Monitor</span>
+      <span class="footer-tag">Predictor</span>
+      <span class="footer-tag">Merge</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
