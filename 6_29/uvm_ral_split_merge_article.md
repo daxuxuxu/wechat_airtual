@@ -6,8 +6,6 @@
 
 ---
 
-> **适合读者**：了解基本数字电路和 SystemVerilog 语法，接触过 UVM 验证框架，想搞清楚仿真日志里"merge done"究竟是什么意思的工程师。
->
 > **前置概念速查**：
 > - `mirrored`：reg model 对硬件当前状态的认知镜像，scoreboard 预测基于此
 > - `uvm_reg_predictor`：UVM 内置预测器，监听总线事务并调用 `rg.predict()` 更新镜像
