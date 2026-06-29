@@ -6,15 +6,12 @@
 
 ---
 
-> **系列导读**
+> **适合读者**：了解基本数字电路和 SystemVerilog 语法，接触过 UVM 验证框架，想搞清楚仿真日志里"merge done"究竟是什么意思的工程师。
 >
-> 本文是三篇系列文章的**番外篇**，聚焦于验证环境中反复出现的"Merge"概念：
-> 1. reg model 基础原理与工程实践（**建议先读**）
-> 2. Callback 机制：在读写流程中插入自定义逻辑
-> 3. predict(DIRECT)：Lock bit 场景下的 scoreboard 误报修复
-> 4. **本文**：两种 Merge——beat 合并与寄存器响应合并
->
-> **前置知识**：建议先了解 UVM reg model 的 `desired`/`mirrored` 机制和 `uvm_reg_predictor` 的工作原理（见第一篇）。
+> **前置概念速查**：
+> - `mirrored`：reg model 对硬件当前状态的认知镜像，scoreboard 预测基于此
+> - `uvm_reg_predictor`：UVM 内置预测器，监听总线事务并调用 `rg.predict()` 更新镜像
+> - `analysis port / imp`：UVM 组件间单向传播数据的机制
 
 ---
 
