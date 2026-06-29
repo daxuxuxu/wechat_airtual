@@ -77,7 +77,7 @@
 物理总线上，一笔逻辑请求可能分多个时钟周期传输：
 
 - **第 1 拍**：Header beat，携带地址、命令码、tag、VC 等控制信息
-- **第 2–N 拍**：Data beat，每拍 128 bit，携带写数据（读请求没有 data beat）
+- **第 2–N 拍**：Data beat，每拍固定位宽，携带写数据（读请求没有 data beat）
 
 Monitor 采样到的是原始物理信号，每拍看到的都是不完整的碎片。只有把所有 beat 拼在一起，才能得到一笔有意义的逻辑事务，才能送给 predictor 做预测和 scoreboard 做比对。
 
@@ -92,16 +92,15 @@ Monitor 采样到的是原始物理信号，每拍看到的都是不完整的碎
                |          |          |          |
                v          v          v          v
            req_q[0]   data_q[0]  data_q[1]  data_q[2]
-           (addr/cmd   (128-bit)  (128-bit)  (128-bit)
+           (地址/命令  (N-bit)    (N-bit)    (N-bit)
             /tag/vc)
                                               |
                                               v
-                         ┌──────────────────────────────────────┐
-                         │        write req merge done          │
-                         │  req_q[0]  +  data_q[0..2]           │
-                         │  addr=0xXXXX  cmd=WR  tag=YYY  vc=0 │
-                         │  data = <assembled payload>          │
-                         └──────────────────────────────────────┘
+                         ┌────────────────────────────────────┐
+                         │       write req merge done         │
+                         │   req_q[0]  +  data_q[0..N]        │
+                         │   完整逻辑事务：地址、命令、数据    │
+                         └────────────────────────────────────┘
                                     |
                                     v
                              Module Predictor
@@ -110,11 +109,11 @@ Monitor 采样到的是原始物理信号，每拍看到的都是不完整的碎
 
 Monitor 用两个队列分开积累：
 - `req_q[]`：存 header beat（地址、命令、tag、VC）
-- `data_q[]`：存 data beat（128-bit 宽，按拍顺序排列）
+- `data_q[]`：存 data beat（固定位宽，按拍顺序排列）
 
 当最后一个 data beat 到达时，monitor 打印 merge done 日志，将 `req_q[0]` 和全部 `data_q` 拼成一笔逻辑事务上报。
 
-### 1.3 命令码（_cmd）速查
+### 1.3 命令码（_cmd）
 
 `_cmd` 字段编码了事务的操作类型。读命令和写命令各占一段不连续的编码空间，monitor 通过判断 `_cmd` 是否落在读范围或写范围来决定是否等待 data beat：
 
@@ -150,20 +149,19 @@ Type 1 Merge 完成后，一笔完整的逻辑事务被送到 predictor。如果
   |              write_bus_in()                     |
   |                                                 |
   |  (1) 克隆原始事务                               |
-  |  (2) split_into_per_reg_acc()                   |
-  |      将一笔多寄存器事务拆成 N 笔单寄存器事务   |
+  |  (2) 按覆盖范围拆成 N 笔单寄存器子事务          |
   |  (3) N 份克隆体压入 pending_q                   |
-  |  (4) 逐笔写入 bus_in -> UVM 内置 predictor      |
+  |  (4) 逐笔送入 UVM 内置 predictor                |
   +-------------------+-----------------------------+
                       |  N 笔单寄存器事务
                       v
   +-------------------------------------------------+
   |       uvm_reg_predictor（UVM 内置）             |
   |                                                 |
-  |  对每笔 split_trans：                           |
-  |    map.get_reg_by_offset()  -> 找到寄存器      |
-  |    rg.predict()             -> 更新镜像         |
-  |    回调 write_reg_ap_imp()  -> 通知结果         |
+  |  对每笔子事务：                                 |
+  |    按地址查找寄存器                             |
+  |    rg.predict() -> 更新镜像                     |
+  |    回调 handle_rsp() -> 通知结果                |
   +-------------------+-----------------------------+
                       |  N 次回调，每次一个寄存器
                       v
@@ -186,109 +184,89 @@ Type 1 Merge 完成后，一笔完整的逻辑事务被送到 predictor。如果
 
 | 变量 | 用途 |
 |---|---|
-| `pending_q` | 追踪"已发出但还没回调"的 split 事务，队列长度 = 剩余待合并数 |
+| `pending_q` | 追踪"已发出但还没回调"的子事务，队列长度 = 剩余待合并数 |
 | `reg_value` | 当前 DWORD 槽的累积合并值 |
-| `reg_array[256]` | 所有 DWORD 槽的最终合并结果，`value[0]` 发给 scoreboard |
+| `reg_array[]` | 所有 DWORD 槽的最终合并结果，按槽发给 scoreboard |
 | `start_reg_offset` | 原始事务的基地址，用于计算数组下标：`(reg_offset - start_reg_offset) >> 2` |
 
 ### 2.4 拆分阶段
 
-按字节遍历原始事务覆盖范围，找到每个寄存器后克隆一份事务，步进 `reg_width` 字节跳到下一个寄存器：
+按字节遍历原始事务覆盖范围，找到每个寄存器后克隆一份子事务，跳过该寄存器已覆盖的字节，继续向后查找：
 
-```systemverilog
-for (uint64 i = 0; i < trans.get_size(); i++) begin
-    rg = map.get_reg_by_offset(reg_offset + i, is_read);
-    if (rg) begin
-        real_reg  = get_real_reg(rg, kind);   // 透明处理 replica/indirect
-        reg_width = real_reg.get_n_bytes();
-
-        $cast(split_trans, trans.clone());
-        split_trans.set_addr(reg_addr + i);
-
-        split_trans_q.push_back(split_trans);
-        i = i + reg_width - 1;   // 跳过已处理字节
-    end
-end
 ```
+for 每个字节 i in 事务覆盖范围:
+    rg = 按地址查找寄存器(base + i)
+    if rg 存在:
+        克隆子事务，地址设为 rg 的地址
+        push 到 split_trans_q
+        i 跳过 rg 的宽度（避免重复处理）
+```
+
+`get_real_reg()` 会透明穿透 replica 和 indirect 类型的寄存器，保证后续操作拿到的是真实寄存器对象。
 
 ### 2.5 合并阶段：字节对齐逻辑
 
-**DWORD 对齐寄存器**（最常见，`reg_offset & 0x3 == 0`）：
+**DWORD 对齐寄存器**（最常见，寄存器地址低 2 位为 0）：
 
 ```
-直接：reg_value  = mirrored_value
-存入：reg_array[(reg_offset - start_reg_offset) >> 2]
+reg_value  = mirrored_value          // 无需移位
+reg_array[槽号] = reg_value
 ```
 
-**非 DWORD 对齐寄存器**（`reg_offset & 0x3 != 0`）：
+**非 DWORD 对齐寄存器**（寄存器地址低 2 位非零）：
+
+寄存器起始字节不在 DWORD 边界上，其值需要左移 `(偏移字节数 × 8)` 位才能落到正确的位置。若同时跨越两个 DWORD 槽，还需要从上一槽进位：
 
 ```
-需要左移：reg_value = reg_value + (mirrored_value << ((reg_offset & 0x3) * 8))
-跨槽时从上一槽进位：reg_value = reg_array[idx - 1]
+shift    = (reg_offset & 0x3) * 8
+reg_value = 上一槽进位值 + (mirrored_value << shift)
+reg_array[槽号] = reg_value
 ```
 
-**举例**（8 字节读，跨两个寄存器）：
-
-```
-base_addr = 0x100
-
-REG_A @ 0x100 (4 bytes，对齐)：mirror = 0x00000012
-  reg_value  = 0x00000012
-  reg_array[0] = 0x00000012
-
-REG_B @ 0x105 (1 byte，偏移 1 字节，0x105 & 0x3 = 1)：mirror = 0x000000AB
-  从上一槽进位：reg_value = reg_array[0] = 0x00000012
-  左移 8 bit：  reg_value = 0x00000012 + (0xAB << 8) = 0x0000AB12
-  reg_array[1] = 0x0000AB12
-
-  字节布局：
-    Bit [15:8] = 0xAB   <- REG_B 的值
-    Bit [7:0]  = 0x12   <- 从 reg_array[0] 进位的 REG_A 低字节
-```
+直观理解：`reg_array` 里每个槽代表总线响应中一个完整 DWORD 的字节视图，非对齐寄存器的字节需要"移到它应该在的位置"才能拼成正确的响应。
 
 ### 2.6 待定队列状态机
 
 ```
-初始         write_bus_in()           1st handle_rsp()     2nd handle_rsp()
+初始         write_bus_in()           第 1 次回调           第 2 次回调
   size=0  ──→  size=2 (push A, B)  ──→  size=1 (pop A)  ──→  size=0 (pop B)
                                                                     |
                                                            合并完成，发布结果
                                                            reg_ap.write(reg_item)
 ```
 
-队列里保存的是事务克隆体，每次 pop 时会做地址断言——顺序或地址不对会立即报错，不会静默合并出错误值。
+队列里保存的是子事务克隆体，每次 pop 时会做地址断言——顺序或地址不对会立即报错，不会静默合并出错误值。
 
 ### 2.7 写路径：Byte Enable 为 0 时的填充
 
-写事务中 BE=0 的字节用当前镜像值填充，并强制 BE 置 1，保证 UVM RAL 接受完整写：
+写事务允许只写部分字节（BE=0 的字节硬件保持原值）。但 UVM RAL 的 `predict()` 需要接收完整的写数据才能正确更新镜像。
+
+做法：**用当前镜像值填充 BE=0 的字节，并强制将这些字节的 BE 置为 1**，使 UVM RAL 看到的始终是全字节有效的完整写。
 
 ```
-write_data  = [ 0x12, 0x34, 0x56, 0x78 ]
-byte_enable = [  1,    0,    1,    0   ]
-mirror      = 0xAABBCCDD
+原始写数据：  [ 新值,  屏蔽,  新值,  屏蔽 ]
+byte_enable：  [  1,     0,    1,     0  ]
+当前镜像值：  [ --,   镜像B, --,   镜像D ]
 
-填充后送 RAL：[ 0x12, 0xCC, 0x56, 0xAA ]   BE = all-1
-                ^      ^     ^     ^
-              新值   镜像  新值  镜像
+填充后送 RAL：[ 新值, 镜像B, 新值, 镜像D ]   BE = all-1
 ```
 
 ### 2.8 日志字段速查
 
 | 日志字段 | 含义 |
 |---|---|
-| `real addr is N` | `start_reg_offset`，原始事务的基地址 |
-| `register exist at offset=0xXXXX` | 在该字节偏移找到了寄存器，split 计数 +1 |
-| `read back value` | `rg.get_mirrored_value()` 原始镜像值（未移位） |
-| `merged read back value` | 移位累积后的 `reg_value` |
-| `m_reg_index` | `reg_offset - start_reg_offset`（字节数，非槽号） |
-| `rsp merged data[0]` | `reg_array[0]`，最终合并 DWORD[0] |
+| 事务基地址 | 原始事务的起始地址，即 `start_reg_offset` |
+| 寄存器命中提示 | 在某字节偏移找到了寄存器，split 计数 +1 |
+| `read back value` | 当前子事务对应寄存器的原始镜像值（未移位） |
+| `merged read back value` | 移位累积后的合并值 |
+| 字节偏移量 | `reg_offset - start_reg_offset`，用于定位槽号 |
 | `pending trans cleared` | pending_q 清空，Type 2 合并完成，结果发往 scoreboard |
 
 ### 2.9 两个特殊情况
 
-**无语义寄存器**：某些寄存器（如 FLUSH_DATA 类）由上游读取时硬件无明确语义，predictor 强制返回 0，避免无意义的镜像值污染 scoreboard 比对结果。
+**无语义寄存器**：某些寄存器在特定访问路径下硬件无明确语义，predictor 强制将其值置 0，避免无意义的镜像值污染 scoreboard 比对结果。
 
-**未映射地址**：`get_reg_by_offset()` 返回 null 时，直接构造 `value=0` 的假响应发给 scoreboard，跳过整个 Split-Merge 流程，防止 scoreboard 挂起。
+**未映射地址**：地址查找返回空时，直接构造全零假响应发给 scoreboard，跳过整个 Split-Merge 流程，防止 scoreboard 挂起。
 
 ---
 
