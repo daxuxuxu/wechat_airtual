@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCIe Function 层级：PF、VF、SR-IOV 与 MF-IOV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #f0f4f8;
+    font-family: -apple-system, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+    color: #2c3e50;
+    line-height: 1.8;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding-bottom: 60px;
+  }
+
+  /* ── 封面 ── */
+  .cover {
+    background: linear-gradient(150deg, #0a2342 0%, #1565c0 50%, #0d6ebc 100%);
+    padding: 52px 40px 44px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: "";
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .cover::after {
+    content: "";
+    position: absolute;
+    bottom: -100px; left: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .cover-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    color: #e3f2fd;
+    font-size: 11.5px;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+  }
+  .cover h1 {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.45;
+    margin-bottom: 10px;
+  }
+  .cover-sub {
+    color: #90caf9;
+    font-size: 13.5px;
+    letter-spacing: 0.5px;
+  }
+  .cover-divider {
+    width: 36px; height: 2px;
+    background: rgba(255,255,255,0.35);
+    margin: 18px auto;
+  }
+  .cover-tags {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+  .cover-pill {
+    background: rgba(255,255,255,0.12);
+    color: #bbdefb;
+    font-size: 11px;
+    padding: 3px 11px;
+    border-radius: 20px;
+  }
+
+  /* ── 内容区 ── */
+  .content { padding: 0 34px; }
+
+  /* ── 前置卡片 ── */
+  .prereq-card {
+    background: #e8f0fe;
+    border-left: 4px solid #1976d2;
+    border-radius: 0 8px 8px 0;
+    padding: 16px 18px;
+    margin: 30px 0 22px;
+  }
+  .prereq-card .card-title {
+    color: #1565c0;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .prereq-card ul { list-style: none; }
+  .prereq-card ul li {
+    font-size: 13px;
+    color: #37474f;
+    padding: 3px 0;
+    display: flex; align-items: flex-start; gap: 7px;
+  }
+  .prereq-card ul li::before {
+    content: "›";
+    color: #1976d2;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  /* ── 摘要 ── */
+  .abstract {
+    font-size: 14px;
+    color: #546e7a;
+    line-height: 1.9;
+    padding: 18px 20px;
+    background: #f5f9ff;
+    border-radius: 8px;
+    margin-bottom: 32px;
+    font-style: italic;
+  }
+
+  /* ── 章节标题 ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 38px 0 18px;
+  }
+  .section-num {
+    background: #1565c0;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    min-width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    padding: 0 4px;
+  }
+  .section-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a237e;
+    border-bottom: 2px solid #e8eaf6;
+    padding-bottom: 5px;
+    flex: 1;
+  }
+
+  /* ── 小节 ── */
+  h3 {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #1565c0;
+    margin: 22px 0 10px;
+    padding-left: 10px;
+    border-left: 3px solid #64b5f6;
+  }
+
+  /* ── 正文 ── */
+  p {
+    font-size: 14px;
+    color: #37474f;
+    line-height: 1.9;
+    margin-bottom: 13px;
+  }
+  strong { color: #0d47a1; font-weight: 700; }
+  code {
+    background: #e8eaf6;
+    color: #283593;
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* ── 列表 ── */
+  ul.bl { list-style: none; padding: 0; margin-bottom: 14px; }
+  ul.bl li {
+    font-size: 14px;
+    color: #37474f;
+    padding: 4px 0 4px 18px;
+    position: relative;
+    line-height: 1.8;
+  }
+  ul.bl li::before {
+    content: "·";
+    color: #1976d2;
+    font-size: 18px;
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    line-height: 1.3;
+  }
+
+  /* ── 流程/架构图 ── */
+  .flow {
+    background: #0d1b3e;
+    border-radius: 10px;
+    padding: 20px 18px;
+    margin: 14px 0 20px;
+    overflow-x: auto;
+  }
+  .flow pre {
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 11.5px;
+    color: #8fa8d8;
+    line-height: 1.75;
+    white-space: pre;
+  }
+
+  /* ── 普通代码块 ── */
+  .code {
+    background: #1a1f36;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 12px 0 18px;
+    overflow-x: auto;
+  }
+  .code pre {
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 11.5px;
+    color: #a8b4d8;
+    line-height: 1.7;
+    white-space: pre;
+  }
+  .code .cm { color: #546e7a; font-style: italic; }
+  .code .kw { color: #82aaff; }
+  .code .hl { color: #ffcb6b; }
+
+  /* ── 表格 ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 22px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    font-size: 13px;
+  }
+  th {
+    background: #1565c0;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 13px;
+    text-align: left;
+  }
+  td {
+    color: #37474f;
+    padding: 9px 13px;
+    border-bottom: 1px solid #e8edf3;
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #f5f8ff; }
+  td:first-child { color: #1565c0; font-weight: 600; }
+
+  /* ── 亮点卡片 ── */
+  .hcard {
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 12px 0;
+  }
+  .hcard .hc-t {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 7px;
+  }
+  .hcard p { font-size: 13.5px; margin: 0; }
+  .hcard-blue { background: #e8f0fe; }
+  .hcard-blue .hc-t { color: #1565c0; }
+  .hcard-green { background: #e8f5e9; }
+  .hcard-green .hc-t { color: #2e7d32; }
+  .hcard-orange { background: #fff3e0; }
+  .hcard-orange .hc-t { color: #bf360c; }
+  .hcard-purple { background: #ede7f6; }
+  .hcard-purple .hc-t { color: #4527a0; }
+
+  /* ── 提示块 ── */
+  .tip {
+    background: #fff8e1;
+    border-left: 4px solid #ffc107;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13.5px;
+    color: #37474f;
+    line-height: 1.8;
+  }
+  .tip strong { color: #e65100; }
+
+  /* ── 对比卡片双列 ── */
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .compare-col {
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .compare-col .cc-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .cc-blue { background: #e3f2fd; }
+  .cc-blue .cc-title { color: #0d47a1; }
+  .cc-green { background: #e8f5e9; }
+  .cc-green .cc-title { color: #1b5e20; }
+  .compare-col ul { list-style: none; padding: 0; }
+  .compare-col ul li {
+    font-size: 12.5px;
+    color: #37474f;
+    padding: 3px 0 3px 14px;
+    position: relative;
+  }
+  .compare-col ul li::before {
+    content: "✓";
+    color: #1976d2;
+    position: absolute; left: 0;
+    font-size: 11px;
+  }
+  .cc-green ul li::before { color: #2e7d32; }
+
+  /* ── 分隔 ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #c5cae9, transparent);
+    margin: 34px 0;
+  }
+
+  /* ── 总结区 ── */
+  .summary {
+    background: linear-gradient(145deg, #0a2342, #1565c0);
+    border-radius: 10px;
+    padding: 26px 22px;
+    margin-top: 36px;
+    color: white;
+  }
+  .summary h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e3f2fd;
+    margin-bottom: 16px;
+  }
+  .sum-item {
+    background: rgba(255,255,255,0.09);
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 9px;
+  }
+  .sum-item .si-t { font-size: 12.5px; font-weight: 700; color: #bbdefb; margin-bottom: 5px; }
+  .sum-item p { font-size: 13px; color: rgba(255,255,255,0.82); margin: 0; line-height: 1.7; }
+
+  /* ── 页脚 ── */
+  .footer {
+    text-align: center;
+    padding: 36px 34px 16px;
+    font-size: 11.5px;
+    color: #90a4ae;
+    line-height: 2.2;
+  }
+  .footer-tag {
+    display: inline-block;
+    background: #e8eaf6;
+    color: #5c6bc0;
+    padding: 3px 11px;
+    border-radius: 20px;
+    margin: 2px;
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- 封面 -->
+<div class="cover">
+  <div class="cover-tag">PCIe · 芯片验证</div>
+  <h1>PCIe Function 层级详解</h1>
+  <div class="cover-divider"></div>
+  <div class="cover-sub">PF 与 VF 的关系、SR-IOV 与 MF-IOV 的异同</div>
+  <div class="cover-tags">
+    <span class="cover-pill">Physical Function</span>
+    <span class="cover-pill">Virtual Function</span>
+    <span class="cover-pill">SR-IOV</span>
+    <span class="cover-pill">MF-IOV</span>
+    <span class="cover-pill">BDF</span>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- 前置 -->
+<div class="prereq-card">
+  <div class="card-title">▎ 前置概念速查</div>
+  <ul>
+    <li><strong>PCIe EP</strong>（Endpoint）：挂在 PCIe 链路末端的设备，如 GPU、网卡、NVMe 控制器</li>
+    <li><strong>BDF</strong>：Bus:Device:Function，PCIe 的三级寻址，唯一标识总线上的一个 Function</li>
+    <li><strong>Config Space</strong>：每个 Function 独立拥有的 4KB 配置空间，软件通过 BDF 访问</li>
+    <li><strong>Hypervisor / VM</strong>：虚拟化场景下的宿主软件与虚拟机</li>
+  </ul>
+</div>
+
+<!-- 摘要 -->
+<div class="abstract">
+  在 PCIe 设备虚拟化领域，PF 和 VF 是绕不开的两个概念。PF 是真实存在于硬件上的功能单元，而 VF 是由 PF 派生出的轻量级虚拟功能——它有独立的配置空间和 BAR，但共享 PF 的物理资源。实现这一派生关系的机制有两种：业界标准的 SR-IOV，以及更激进的 MF-IOV。理解它们的设计逻辑，是理解现代多功能 PCIe 设备行为的基础。
+</div>
+
+<!-- 零 -->
+<div class="section-header">
+  <div class="section-num">零</div>
+  <div class="section-title">从一个设备说起：Function 是什么</div>
+</div>
+
+<p>PCIe 用 <strong>BDF（Bus:Device:Function）</strong> 三元组唯一标识总线上的一个逻辑单元。其中 Function 是软件实际交互的最小粒度——每个 Function 有独立的配置空间（Config Space）、BAR（Base Address Register）、中断向量，以及独立的读写权限控制。</p>
+
+<p>一个物理 PCIe 设备可以暴露多个 Function，操作系统看到的是这些 Function，而不是"物理卡"本身。这种抽象让一张物理网卡可以同时被多个虚拟机独占使用。</p>
+
+<div class="flow"><pre>
+  PCIe 总线上的视图（OS/Hypervisor 视角）
+  ──────────────────────────────────────────────────────
+  BDF: [Bus 01] [Dev 00] [Func 0]  ← PF0   (物理功能)
+  BDF: [Bus 01] [Dev 00] [Func 1]  ← PF1   (物理功能)
+  BDF: [Bus 01] [Dev 00] [Func 2]  ← VF0   (虚拟功能，PF0 派生)
+  BDF: [Bus 01] [Dev 00] [Func 3]  ← VF1   (虚拟功能，PF0 派生)
+  BDF: [Bus 01] [Dev 00] [Func 4]  ← VF2   (虚拟功能，PF0 派生)
+  ──────────────────────────────────────────────────────
+  每个 Function 有独立的 Config Space 和 BAR 空间
+  软件通过 BDF 寻址，感知不到"它们其实共用一块硅"</pre></div>
+
+<div class="divider"></div>
+
+<!-- 一 -->
+<div class="section-header">
+  <div class="section-num">一</div>
+  <div class="section-title">PF（Physical Function）</div>
+</div>
+
+<p>PF 是设备上真正具备完整硬件资源的功能单元，是一切虚拟化的起点。</p>
+
+<div class="hcard hcard-blue">
+  <div class="hc-t">PF 的核心能力</div>
+  <p>PF 拥有完整的配置空间，包含 SR-IOV Extended Capability，通过写寄存器控制 VF 的创建数量和使能状态。PF 负责设备的初始化、资源分配、驱动加载和复位控制。</p>
+</div>
+
+<ul class="bl">
+  <li>拥有完整的 PCIe 配置空间（4KB），包含 Capabilities 链表</li>
+  <li>拥有自己的 BAR 空间（MMIO 寄存器、framebuffer 等）</li>
+  <li>负责派生和管理 VF：控制 VF 数量、VF 使能、VF 复位</li>
+  <li>对应一个真实的 <code>pf_func_id</code>，在 BDF 中 Function 字段为 PF 序号</li>
+  <li>驱动运行在 Host 或 Hypervisor 层，对整个设备有完整控制权</li>
+</ul>
+
+<h3>PF 的寄存器关键字段</h3>
+<table>
+  <tr><th>寄存器字段</th><th>含义</th></tr>
+  <tr><td>SRIOV_VF_ENABLE</td><td>置 1 后 VF 开始对外可见</td></tr>
+  <tr><td>SRIOV_NUM_VFS</td><td>当前实际创建的 VF 数量（不超过硬件上限）</td></tr>
+  <tr><td>SRIOV_FIRST_VF_OFFSET</td><td>第一个 VF 相对于 PF 的 Routing ID 偏移</td></tr>
+  <tr><td>SRIOV_VF_STRIDE</td><td>相邻 VF 之间的 Routing ID 步长</td></tr>
+  <tr><td>MEMEN（Mem Access Enable）</td><td>控制该 Function 的 BAR 内存访问是否使能</td></tr>
+</table>
+
+<div class="divider"></div>
+
+<!-- 二 -->
+<div class="section-header">
+  <div class="section-num">二</div>
+  <div class="section-title">VF（Virtual Function）</div>
+</div>
+
+<p>VF 是由 PF 派生出的轻量级功能单元。它有独立的配置空间和 BAR，但<strong>不拥有独立的物理资源</strong>——所有 VF 共享同一 PF 的硬件引擎，只是在寻址和权限上被隔离开来。</p>
+
+<div class="hcard hcard-green">
+  <div class="hc-t">VF 的本质：资源隔离，而非资源复制</div>
+  <p>VF 的配置空间极简，只包含必要的 Capabilities。VF 的 BAR 是 PF BAR 空间的一个分片，每个 VF 拿到固定大小的切片，互相不重叠。这种设计让一块物理 GPU 的 framebuffer 可以被切成多份，分别映射给不同的虚拟机。</p>
+</div>
+
+<h3>VF 的 Routing ID（BDF）如何计算</h3>
+<p>VF 没有独立的 Device Number，它的 Routing ID 由 PF 的路由信息加上偏移量计算得来：</p>
+
+<div class="code"><pre><span class="cm">// VF Routing ID 计算（来自验证环境的实现逻辑）</span>
+vf_route_id = pf_route_id
+            + sriov_first_vf_offset   <span class="cm">// 第一个 VF 相对 PF 的偏移</span>
+            + vf_id * sriov_vf_stride <span class="cm">// 后续 VF 按步长递增</span>
+
+<span class="cm">// ARI 模式（Function 字段扩展为 8 bit）：</span>
+route_id = bus_num &lt;&lt; 8 | func_num   <span class="cm">// 不再有 Dev 字段</span>
+
+<span class="cm">// 非 ARI 模式：</span>
+route_id = bus_num &lt;&lt; 8 | dev_num &lt;&lt; 3 | func_num</pre></div>
+
+<h3>VF 的可见性控制</h3>
+<p>VF 在以下条件同时满足时才对系统可见：</p>
+<ul class="bl">
+  <li><code>SRIOV_VF_ENABLE = 1</code>：PF 的 SR-IOV 使能位置起</li>
+  <li><code>vf_id &lt; SRIOV_NUM_VFS</code>：该 VF 的序号在当前配置的 VF 数量范围内</li>
+</ul>
+
+<div class="divider"></div>
+
+<!-- 三 -->
+<div class="section-header">
+  <div class="section-num">三</div>
+  <div class="section-title">SR-IOV：标准的单根虚拟化</div>
+</div>
+
+<p>SR-IOV（Single Root I/O Virtualization）是 PCI-SIG 定义的标准规范，允许一个 PCIe 设备的单个 PF 派生出多个 VF，每个 VF 可以独立分配给一个虚拟机。</p>
+
+<div class="flow"><pre>
+  SR-IOV 功能层级
+  ──────────────────────────────────────────────────────
+                     PCIe Device
+                          │
+           ┌──────────────┼──────────────┐
+           │              │              │
+          PF0            PF1            PF2
+     (func_id=0)    (func_id=1)    (func_id=2)
+           │
+           │  SRIOV_VF_ENABLE=1
+           │  SRIOV_NUM_VFS=N
+           │
+    ┌──────┼──────┬──────┐
+    │      │      │      │
+   VF0    VF1    VF2   VF(N-1)
+  (pf=0) (pf=0) (pf=0)  (pf=0)
+    │      │      │      │
+   VM0    VM1    VM2   VM(N-1)   ← 每个 VM 独占一个 VF
+  ──────────────────────────────────────────────────────
+  VF 有独立 Config Space 和 BAR 切片
+  PF 保留完整管理权，VF 只有数据面访问权</pre></div>
+
+<h3>SR-IOV 的工作流程</h3>
+<ul class="bl">
+  <li><strong>枚举阶段</strong>：OS/Hypervisor 发现 PF，读取 SR-IOV Extended Capability，获知 VF 的数量上限和 BAR 布局</li>
+  <li><strong>资源分配</strong>：Hypervisor 为所有 VF 的 BAR 空间分配物理内存地址，写入 PF 的 VF BAR 寄存器</li>
+  <li><strong>使能</strong>：写 <code>SRIOV_NUM_VFS</code> 设置创建数量，写 <code>SRIOV_VF_ENABLE=1</code> 使 VF 开始对外可见</li>
+  <li><strong>分配</strong>：Hypervisor 将每个 VF 的 Routing ID 分配给指定 VM，VM 通过 VF 直接访问硬件</li>
+</ul>
+
+<div class="tip">
+  <strong>关键约束</strong>：SR-IOV 标准要求 VF 的数量和 BAR 大小在硬件设计时就固定，不能动态改变。这也是 Resize BAR（<code>REGS_STRAP_VF_RESIZE_BAR_EN</code>）等机制存在的原因——在固定框架内提供有限的灵活性。
+</div>
+
+<div class="divider"></div>
+
+<!-- 四 -->
+<div class="section-header">
+  <div class="section-num">四</div>
+  <div class="section-title">MF-IOV：重映射的虚拟功能</div>
+</div>
+
+<p>MF-IOV（Multi-Function I/O Virtualization）是一种不同的虚拟化路径。它的核心思想是：<strong>不把 VF 暴露为 VF，而是把它们重映射（remap）为普通的 PCIe Function</strong>，让 OS 看起来像是有多个独立的 PF。</p>
+
+<div class="hcard hcard-purple">
+  <div class="hc-t">MF-IOV 的本质区别</div>
+  <p>SR-IOV 的 VF 需要操作系统/Hypervisor 有 SR-IOV 感知能力。MF-IOV 把 VF 重新包装成普通 Function，操作系统用标准 PCIe 枚举流程就能发现它们，无需额外的 SR-IOV 驱动支持。</p>
+</div>
+
+<div class="flow"><pre>
+  MF-IOV 功能层级
+  ──────────────────────────────────────────────────────
+                     PCIe Device（硬件内部）
+                          │
+           ┌──────────────┼──────────────┐
+           │              │              │
+          PF0            PF1      [VF bank]
+     (mfiov_spt=1)                (mfiov_vf_support=N)
+           │
+           │ 重映射（remap）
+           │
+   ┌───────┼────────┬──────────┐
+   │       │        │          │
+  F2      F3       F4    ...  F(N+1)    ← 对 OS 看起来是普通 PF
+(mfiov_func=1)                          ← 实际是 PF0 的重映射 VF
+(mfiov_pf_index=0)
+(mfiov_vf_index=0,1,2...)
+
+  OS 视图：看到多个独立的 Function，无 VF 概念
+  硬件内部：F2-F(N+1) 实际是 PF0 的 VF，共享 PF0 的物理引擎
+  ──────────────────────────────────────────────────────</pre></div>
+
+<h3>MF-IOV 的关键属性</h3>
+<table>
+  <tr><th>属性字段</th><th>含义</th></tr>
+  <tr><td><code>mfiov_spt</code></td><td>该 PF 是否支持 MFIOV（能否派生重映射 VF）</td></tr>
+  <tr><td><code>mfiov_func</code></td><td>该 Function 是否是一个被重映射的 VF（=1 表示是）</td></tr>
+  <tr><td><code>mfiov_pf_index</code></td><td>该重映射 VF 逻辑上归属的 PF 序号</td></tr>
+  <tr><td><code>mfiov_vf_index</code></td><td>该重映射 VF 对应的 VF 槽位号</td></tr>
+  <tr><td><code>mfiov_vf_support</code></td><td>该 PF 最多可重映射的 VF 数量</td></tr>
+</table>
+
+<h3>MF-IOV 模式下的特殊行为</h3>
+<ul class="bl">
+  <li>调用 <code>get_sriov_vf_support_num()</code> 返回 0：MFIOV 模式下没有标准 SR-IOV VF</li>
+  <li>重映射 Function 有独立的 BAR 和配置空间，但资源仍来自原 PF 的物理池</li>
+  <li>Resize BAR 的寄存器路径与 SR-IOV VF 相同（<code>RCC_AD_VF_CNTL.REGS_STRAP_VF_RESIZE_BAR_EN</code>）</li>
+  <li>验证环境中通过 <code>is_mfiov_func()</code> 区分普通 PF 和重映射 VF</li>
+</ul>
+
+<div class="divider"></div>
+
+<!-- 五 -->
+<div class="section-header">
+  <div class="section-num">五</div>
+  <div class="section-title">SR-IOV vs MF-IOV：横向对比</div>
+</div>
+
+<div class="compare-row">
+  <div class="compare-col cc-blue">
+    <div class="cc-title">SR-IOV</div>
+    <ul>
+      <li>PCI-SIG 业界标准规范</li>
+      <li>VF 以 VF 身份暴露给系统</li>
+      <li>需要 OS/Hypervisor 支持 SR-IOV</li>
+      <li>VF 可见性由 SRIOV_VF_ENABLE 控制</li>
+      <li>VF Routing ID = PF + offset + stride</li>
+      <li>灵活性较高，生态完善</li>
+    </ul>
+  </div>
+  <div class="compare-col cc-green">
+    <div class="cc-title">MF-IOV</div>
+    <ul>
+      <li>厂商私有扩展实现</li>
+      <li>VF 被重映射为普通 Function</li>
+      <li>OS 无需感知 VF 概念</li>
+      <li>重映射 Function 通过枚举自动可见</li>
+      <li>Routing ID 按普通 Function 分配</li>
+      <li>兼容性更强，驱动栈更简洁</li>
+    </ul>
+  </div>
+</div>
+
+<table>
+  <tr><th>维度</th><th>SR-IOV</th><th>MF-IOV</th></tr>
+  <tr><td>VF 对 OS 的呈现</td><td>VF 类型 Function</td><td>普通 PF 类型 Function</td></tr>
+  <tr><td>OS 感知要求</td><td>需要 SR-IOV 支持</td><td>标准 PCIe 枚举即可</td></tr>
+  <tr><td>VF 数量控制</td><td>SRIOV_NUM_VFS 寄存器</td><td>硬件固定，枚举时已确定</td></tr>
+  <tr><td>共存关系</td><td>MFIOV 模式下 SRIOV VF 数量为 0</td><td>SRIOV 模式下无 MFIOV Function</td></tr>
+  <tr><td>典型使用场景</td><td>网卡、NVMe 的标准虚拟化</td><td>GPU 等需要兼容遗留 OS 的场景</td></tr>
+</table>
+
+<div class="divider"></div>
+
+<!-- 六 -->
+<div class="section-header">
+  <div class="section-num">六</div>
+  <div class="section-title">在 NBIF 验证树中的体现</div>
+</div>
+
+<p>验证环境用一套对象树描述设备的 Function 层级，从全局 <code>hphost_info</code> 到具体 <code>hphost_function_info</code>，完整建模了 PF、VF 和 MFIOV Function 的关系。</p>
+
+<div class="flow"><pre>
+  验证环境对象树
+  ──────────────────────────────────────────────────────
+  hphost_info
+  └── dev_array[device_pair_index]
+        ├── ep_dev  (hphost_device_info, DEVICE_EP)
+        │     ├── pfs[]   ← 所有 PF 的 function_info
+        │     │     ├── pfs[0]  func_index=0, is_vf=0
+        │     │     │     ├── sriov_spt / mfiov_spt
+        │     │     │     ├── vf_support      ← SRIOV 最大 VF 数
+        │     │     │     └── mfiov_vf_support ← MFIOV 最大重映射数
+        │     │     └── pfs[1]  func_index=1, is_vf=0
+        │     │           └── mfiov_func=1    ← 这是重映射 VF
+        │     │               mfiov_pf_index=0 ← 归属 PF0
+        │     │               mfiov_vf_index=0 ← 对应 VF 槽位 0
+        │     └── vfs[]   ← SRIOV 模式下的所有 VF
+        │           ├── vfs[0]  is_vf=1, vf_id=0, pf_func_id=0
+        │           └── vfs[1]  is_vf=1, vf_id=1, pf_func_id=0
+        └── ds_dev  (hphost_device_info, DEVICE_DS)
+              └── pfs[0]   ← Downstream Port function</pre></div>
+
+<h3>关键判断函数</h3>
+<table>
+  <tr><th>函数</th><th>含义</th></tr>
+  <tr><td><code>is_vf()</code></td><td>当前 Function 是否是 SR-IOV VF</td></tr>
+  <tr><td><code>is_mfiov_func()</code></td><td>当前 Function 是否是重映射 VF（MFIOV）</td></tr>
+  <tr><td><code>has_vf()</code></td><td>当前 PF 是否派生了 VF（MFIOV 模式下恒为 false）</td></tr>
+  <tr><td><code>get_sriov_vf_support_num()</code></td><td>MFIOV 模式返回 0，SRIOV 模式返回 <code>vf_support</code></td></tr>
+  <tr><td><code>is_vf_visible()</code></td><td>综合 VF_ENABLE 和 NUM_VFS 判断 VF 当前是否可见</td></tr>
+  <tr><td><code>get_captured_route_id()</code></td><td>根据 ARI 模式动态计算 BDF Routing ID</td></tr>
+</table>
+
+<h3>MFIOV 模式下的全局开关</h3>
+<p>顶层的 <code>hphost_info.is_mfiov_mode()</code> 读取全局特性标志 <code>mfiov_support</code>，决定整个验证环境当前处于 SRIOV 还是 MFIOV 配置。两种模式下的对象树形态不同，验证序列的行为也随之切换。</p>
+
+<!-- 总结 -->
+<div class="summary">
+  <h2>总结</h2>
+  <div class="sum-item">
+    <div class="si-t">PF 是根，VF 是叶</div>
+    <p>PF 持有完整的管理权限和物理资源，VF 是由 PF 派生的隔离视图。没有 PF 就没有 VF——PF 控制 VF 的生命周期、数量和可见性。</p>
+  </div>
+  <div class="sum-item">
+    <div class="si-t">SR-IOV：标准路径</div>
+    <p>VF 以 VF 身份暴露给 OS，需要 SR-IOV 感知的软件栈。VF 的 Routing ID 由 PF + offset + stride 计算，受 SRIOV_NUM_VFS 和 VF_ENABLE 联合控制可见性。</p>
+  </div>
+  <div class="sum-item">
+    <div class="si-t">MF-IOV：重映射路径</div>
+    <p>VF 被重映射为普通 PCIe Function，对 OS 完全透明。两种模式互斥：MFIOV 模式下 SRIOV VF 数量为 0，验证环境通过全局 <code>is_mfiov_mode()</code> 切换整体行为。</p>
+  </div>
+  <div class="sum-item">
+    <div class="si-t">验证关注点</div>
+    <p>验证 PF/VF 层级时，重点关注：VF 可见性边界（NUM_VFS、VF_ENABLE）、Routing ID 计算的正确性（offset + stride）、MFIOV 重映射关系的一致性（mfiov_pf_index / mfiov_vf_index），以及两种模式下 BAR 空间分配的正确性。</p>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<div class="footer">
+  <div>
+    <span class="footer-tag">PCIe</span>
+    <span class="footer-tag">SR-IOV</span>
+    <span class="footer-tag">MF-IOV</span>
+    <span class="footer-tag">Physical Function</span>
+    <span class="footer-tag">Virtual Function</span>
+    <span class="footer-tag">芯片验证</span>
+  </div>
+</div>
+
+</div><!-- /page -->
+</body>
+</html>
