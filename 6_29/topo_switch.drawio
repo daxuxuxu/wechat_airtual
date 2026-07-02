@@ -1,0 +1,13 @@
+<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+<mxCell id="t" value="Topology 3: US + DS + EP  (Switch Mode)" style="text;align=center;fontColor=#1565C0;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="8" width="440" height="26" as="geometry"/></mxCell>
+<mxCell id="host" value="Host CPU (Root Complex)" style="rounded=1;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#1565C0;fontSize=12;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="70" y="46" width="320" height="44" as="geometry"/></mxCell>
+<mxCell id="us" value="US Function  (Switch Upstream)" style="rounded=1;fillColor=#6A1B9A;fontColor=#ffffff;strokeColor=#ffffff;fontSize=12;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="70" y="140" width="320" height="44" as="geometry"/></mxCell>
+<mxCell id="ds" value="DS Function  (Switch Downstream)" style="rounded=1;fillColor=#6A1B9A;fontColor=#ffffff;strokeColor=#ffffff;fontSize=12;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="70" y="234" width="320" height="44" as="geometry"/></mxCell>
+<mxCell id="ep" value="EP Functions  (PF0, PF1, VF...)" style="rounded=1;fillColor=#2E7D32;fontColor=#ffffff;strokeColor=#ffffff;fontSize=12;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="70" y="328" width="320" height="44" as="geometry"/></mxCell>
+<mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;strokeWidth=1.5;" edge="1" source="host" target="us" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#CE93D8;strokeWidth=1.5;" edge="1" source="us" target="ds" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e3" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#A5D6A7;strokeWidth=1.5;" edge="1" source="ds" target="ep" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="l1" value="US 口面向主机，路由 EP -&gt; Host 方向" style="text;align=center;fontColor=#CE93D8;fontSize=9;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="70" y="188" width="320" height="16" as="geometry"/></mxCell>
+<mxCell id="l2" value="DS 口面向 EP，路由 Host -&gt; EP 方向" style="text;align=center;fontColor=#A5D6A7;fontSize=9;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="70" y="282" width="320" height="16" as="geometry"/></mxCell>
+<mxCell id="lbl" value="三层路由结构，主机感知不到 Switch 的存在" style="text;align=center;fontColor=#78909C;fontSize=10;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="20" y="384" width="420" height="18" as="geometry"/></mxCell>
+</root></mxGraphModel>

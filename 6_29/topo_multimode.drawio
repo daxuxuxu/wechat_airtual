@@ -1,0 +1,17 @@
+<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+<mxCell id="t" value="Topology 4: Multi-Mode" style="text;align=center;fontColor=#1565C0;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="8" width="620" height="26" as="geometry"/></mxCell>
+<mxCell id="ta" value="Mode A（RC + EP）" style="text;align=center;fontColor=#1565C0;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="20" y="42" width="270" height="22" as="geometry"/></mxCell>
+<mxCell id="tb" value="Mode B（EP Only）" style="text;align=center;fontColor=#2E7D32;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="340" y="42" width="270" height="22" as="geometry"/></mxCell>
+<mxCell id="ha" value="Host CPU" style="rounded=1;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#1565C0;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="20" y="72" width="270" height="40" as="geometry"/></mxCell>
+<mxCell id="hb" value="Host / Upstream RC" style="rounded=1;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#1565C0;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="340" y="72" width="270" height="40" as="geometry"/></mxCell>
+<mxCell id="rca" value="RC Function" style="rounded=1;fillColor=#1E88E5;fontColor=#ffffff;strokeColor=#ffffff;fontSize=10;" vertex="1" parent="1"><mxGeometry x="20" y="162" width="120" height="40" as="geometry"/></mxCell>
+<mxCell id="epa" value="EP Functions" style="rounded=1;fillColor=#2E7D32;fontColor=#ffffff;strokeColor=#ffffff;fontSize=10;" vertex="1" parent="1"><mxGeometry x="170" y="162" width="120" height="40" as="geometry"/></mxCell>
+<mxCell id="epb" value="EP Functions only" style="rounded=1;fillColor=#2E7D32;fontColor=#ffffff;strokeColor=#ffffff;fontSize=11;" vertex="1" parent="1"><mxGeometry x="340" y="162" width="270" height="40" as="geometry"/></mxCell>
+<mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;strokeWidth=1.5;" edge="1" source="ha" target="rca" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;strokeWidth=1.5;" edge="1" source="ha" target="epa" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e3" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;strokeWidth=1.5;" edge="1" source="hb" target="epb" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="sep" value="" style="line;strokeColor=#CFD8DC;strokeWidth=1.5;dashed=1;" vertex="1" parent="1"><mxGeometry x="318" y="42" width="2" height="180" as="geometry"/></mxCell>
+<mxCell id="vs" value="vs" style="text;align=center;fontColor=#B0BEC5;fontSize=12;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="306" y="100" width="26" height="24" as="geometry"/></mxCell>
+<mxCell id="lbl1" value="同一颗芯片，不同部署场景下的拓扑形态" style="text;align=center;fontColor=#78909C;fontSize=10;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="20" y="218" width="590" height="18" as="geometry"/></mxCell>
+<mxCell id="lbl2" value="能力标志（Capability Flag）!= 当前激活模式（Active Mode）" style="text;align=center;fontColor=#E65100;fontSize=10;fontStyle=3;" vertex="1" parent="1"><mxGeometry x="20" y="240" width="590" height="18" as="geometry"/></mxCell>
+</root></mxGraphModel>

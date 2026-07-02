@@ -1,0 +1,19 @@
+<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+<mxCell id="hw" value="硬件内部视图" style="swimlane;startSize=32;fillColor=#37474F;fontColor=#ffffff;strokeColor=#37474F;fontSize=12;fontStyle=1;rounded=1;arcSize=3;" vertex="1" parent="1"><mxGeometry x="10" y="10" width="380" height="280" as="geometry"/></mxCell>
+<mxCell id="hw1" value="PF 0（管理 VF 资源池）" style="rounded=1;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#ffffff;fontSize=11;fontStyle=1;" vertex="1" parent="hw"><mxGeometry x="20" y="50" width="160" height="44" as="geometry"/></mxCell>
+<mxCell id="hw2" value="PF 1" style="rounded=1;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#ffffff;fontSize=11;fontStyle=1;" vertex="1" parent="hw"><mxGeometry x="200" y="50" width="160" height="44" as="geometry"/></mxCell>
+<mxCell id="hw3" value="VF 资源池&#xa;Slot 0 / Slot 1 / Slot 2 / ... / Slot N" style="rounded=1;fillColor=#BF360C;fontColor=#ffffff;strokeColor=#ffffff;fontSize=11;fontStyle=1;" vertex="1" parent="hw"><mxGeometry x="20" y="150" width="340" height="64" as="geometry"/></mxCell>
+<mxCell id="eha" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;strokeWidth=1.5;" edge="1" source="hw1" target="hw3" parent="hw"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="lhw" value="VF 槽位共享 PF0 物理引擎，对外不直接可见" style="text;align=center;fontColor=#90A4AE;fontSize=9;fontStyle=2;" vertex="1" parent="hw"><mxGeometry x="20" y="226" width="340" height="18" as="geometry"/></mxCell>
+
+<mxCell id="os" value="OS 看到的视图" style="swimlane;startSize=32;fillColor=#37474F;fontColor=#ffffff;strokeColor=#37474F;fontSize=12;fontStyle=1;rounded=1;arcSize=3;" vertex="1" parent="1"><mxGeometry x="410" y="10" width="380" height="280" as="geometry"/></mxCell>
+<mxCell id="os1" value="PF 0" style="rounded=1;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#ffffff;fontSize=11;fontStyle=1;" vertex="1" parent="os"><mxGeometry x="20" y="50" width="160" height="44" as="geometry"/></mxCell>
+<mxCell id="os2" value="PF 1" style="rounded=1;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#ffffff;fontSize=11;fontStyle=1;" vertex="1" parent="os"><mxGeometry x="200" y="50" width="160" height="44" as="geometry"/></mxCell>
+<mxCell id="os3" value="F2&#xa;(Slot 0)" style="rounded=1;fillColor=#BF360C;fontColor=#ffffff;strokeColor=#ffffff;fontSize=11;fontStyle=1;" vertex="1" parent="os"><mxGeometry x="20" y="148" width="100" height="56" as="geometry"/></mxCell>
+<mxCell id="os4" value="F3&#xa;(Slot 1)" style="rounded=1;fillColor=#BF360C;fontColor=#ffffff;strokeColor=#ffffff;fontSize=11;fontStyle=1;" vertex="1" parent="os"><mxGeometry x="140" y="148" width="100" height="56" as="geometry"/></mxCell>
+<mxCell id="os5" value="F4&#xa;(Slot 2)" style="rounded=1;fillColor=#BF360C;fontColor=#ffffff;strokeColor=#ffffff;fontSize=11;fontStyle=1;" vertex="1" parent="os"><mxGeometry x="260" y="148" width="100" height="56" as="geometry"/></mxCell>
+<mxCell id="los" value="OS 枚举到普通 Function，无需感知 VF 概念" style="text;align=center;fontColor=#90A4AE;fontSize=9;fontStyle=2;" vertex="1" parent="os"><mxGeometry x="20" y="218" width="340" height="18" as="geometry"/></mxCell>
+<mxCell id="los2" value="F2/F3/F4 仍共享 PF0 物理引擎，对 OS 完全透明" style="text;align=center;fontColor=#FFAB91;fontSize=9;fontStyle=2;" vertex="1" parent="os"><mxGeometry x="20" y="238" width="340" height="18" as="geometry"/></mxCell>
+
+<mxCell id="title" value="MF-IOV：VF 重映射为普通 Function" style="text;align=center;fontColor=#1565C0;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="300" width="780" height="28" as="geometry"/></mxCell>
+</root></mxGraphModel>

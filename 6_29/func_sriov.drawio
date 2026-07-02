@@ -1,0 +1,21 @@
+<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+<mxCell id="2" value="SR-IOV：PF 派生多个 VF" style="swimlane;startSize=32;fillColor=#1F6FB5;fontColor=#ffffff;strokeColor=#1F6FB5;fontSize=13;fontStyle=1;rounded=1;arcSize=3;" vertex="1" parent="1"><mxGeometry x="10" y="10" width="560" height="330" as="geometry"/></mxCell>
+<mxCell id="3" value="PF — Physical Function（完整管理权，归 Hypervisor 控制）" style="rounded=1;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#ffffff;fontSize=12;fontStyle=1;arcSize=5;" vertex="1" parent="2"><mxGeometry x="20" y="48" width="520" height="48" as="geometry"/></mxCell>
+<mxCell id="4" value="VF 0" style="rounded=1;fillColor=#2D7D32;fontColor=#ffffff;strokeColor=#ffffff;fontSize=12;fontStyle=1;" vertex="1" parent="2"><mxGeometry x="20" y="140" width="110" height="44" as="geometry"/></mxCell>
+<mxCell id="5" value="VF 1" style="rounded=1;fillColor=#2D7D32;fontColor=#ffffff;strokeColor=#ffffff;fontSize=12;fontStyle=1;" vertex="1" parent="2"><mxGeometry x="150" y="140" width="110" height="44" as="geometry"/></mxCell>
+<mxCell id="6" value="VF 2" style="rounded=1;fillColor=#2D7D32;fontColor=#ffffff;strokeColor=#ffffff;fontSize=12;fontStyle=1;" vertex="1" parent="2"><mxGeometry x="280" y="140" width="110" height="44" as="geometry"/></mxCell>
+<mxCell id="7" value="VF N-1" style="rounded=1;fillColor=#2D7D32;fontColor=#ffffff;strokeColor=#ffffff;fontSize=12;fontStyle=1;" vertex="1" parent="2"><mxGeometry x="410" y="140" width="110" height="44" as="geometry"/></mxCell>
+<mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#bbdefb;strokeWidth=1.5;" edge="1" source="3" target="4" parent="2"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#bbdefb;strokeWidth=1.5;" edge="1" source="3" target="5" parent="2"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e3" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#bbdefb;strokeWidth=1.5;" edge="1" source="3" target="6" parent="2"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e4" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#bbdefb;strokeWidth=1.5;" edge="1" source="3" target="7" parent="2"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="lbl1" value="各 VF 有独立配置空间和 BAR 切片，共享 PF 硬件引擎" style="text;align=center;fontColor=#bbdefb;fontSize=10;fontStyle=2;" vertex="1" parent="2"><mxGeometry x="20" y="190" width="520" height="18" as="geometry"/></mxCell>
+<mxCell id="8" value="VM 0" style="rounded=1;fillColor=#6A1B9A;fontColor=#ffffff;strokeColor=#ffffff;fontSize=12;fontStyle=1;" vertex="1" parent="2"><mxGeometry x="20" y="248" width="110" height="44" as="geometry"/></mxCell>
+<mxCell id="9" value="VM 1" style="rounded=1;fillColor=#6A1B9A;fontColor=#ffffff;strokeColor=#ffffff;fontSize=12;fontStyle=1;" vertex="1" parent="2"><mxGeometry x="150" y="248" width="110" height="44" as="geometry"/></mxCell>
+<mxCell id="10" value="VM 2" style="rounded=1;fillColor=#6A1B9A;fontColor=#ffffff;strokeColor=#ffffff;fontSize=12;fontStyle=1;" vertex="1" parent="2"><mxGeometry x="280" y="248" width="110" height="44" as="geometry"/></mxCell>
+<mxCell id="11" value="VM N-1" style="rounded=1;fillColor=#6A1B9A;fontColor=#ffffff;strokeColor=#ffffff;fontSize=12;fontStyle=1;" vertex="1" parent="2"><mxGeometry x="410" y="248" width="110" height="44" as="geometry"/></mxCell>
+<mxCell id="e5" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#ce93d8;strokeWidth=1.5;" edge="1" source="4" target="8" parent="2"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e6" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#ce93d8;strokeWidth=1.5;" edge="1" source="5" target="9" parent="2"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e7" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#ce93d8;strokeWidth=1.5;" edge="1" source="6" target="10" parent="2"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e8" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#ce93d8;strokeWidth=1.5;" edge="1" source="7" target="11" parent="2"><mxGeometry relative="1" as="geometry"/></mxCell>
+</root></mxGraphModel>

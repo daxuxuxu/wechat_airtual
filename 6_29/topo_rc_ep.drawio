@@ -1,0 +1,11 @@
+<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+<mxCell id="t" value="Topology 1: RC + EP" style="text;align=center;fontColor=#1565C0;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="8" width="440" height="26" as="geometry"/></mxCell>
+<mxCell id="host" value="Host CPU (Root Complex)" style="rounded=1;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#1565C0;fontSize=12;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="100" y="46" width="260" height="44" as="geometry"/></mxCell>
+<mxCell id="rc" value="RC Function&#xa;（管理下游设备）" style="rounded=1;fillColor=#1E88E5;fontColor=#ffffff;strokeColor=#ffffff;fontSize=11;" vertex="1" parent="1"><mxGeometry x="20" y="140" width="175" height="52" as="geometry"/></mxCell>
+<mxCell id="ep" value="EP Functions&#xa;(PF0, PF1, VF...)" style="rounded=1;fillColor=#2E7D32;fontColor=#ffffff;strokeColor=#ffffff;fontSize=11;" vertex="1" parent="1"><mxGeometry x="265" y="140" width="175" height="52" as="geometry"/></mxCell>
+<mxCell id="ea" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;strokeWidth=1.5;" edge="1" source="host" target="rc" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="eb" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;strokeWidth=1.5;" edge="1" source="host" target="ep" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="ds" value="Downstream Devices&#xa;（由 RC 管理）" style="rounded=1;fillColor=#2E7D32;fontColor=#ffffff;strokeColor=#ffffff;fontSize=11;" vertex="1" parent="1"><mxGeometry x="95" y="248" width="270" height="52" as="geometry"/></mxCell>
+<mxCell id="ec" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;strokeWidth=1.5;" edge="1" source="rc" target="ds" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="lbl" value="EP 面向主机，RC 管理下游设备，无 Switch 层级" style="text;align=center;fontColor=#78909C;fontSize=10;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="20" y="312" width="420" height="18" as="geometry"/></mxCell>
+</root></mxGraphModel>
