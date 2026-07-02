@@ -1,0 +1,31 @@
+<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+
+<mxCell id="bg" value="" style="rounded=1;arcSize=2;fillColor=#0A2342;strokeColor=none;" vertex="1" parent="1"><mxGeometry x="0" y="0" width="900" height="383" as="geometry"/></mxCell>
+
+<mxCell id="deco1" value="" style="ellipse;fillColor=#1565C0;strokeColor=none;opacity=25;" vertex="1" parent="1"><mxGeometry x="680" y="-60" width="300" height="300" as="geometry"/></mxCell>
+<mxCell id="deco2" value="" style="ellipse;fillColor=#0D47A1;strokeColor=none;opacity=20;" vertex="1" parent="1"><mxGeometry x="-60" y="200" width="240" height="240" as="geometry"/></mxCell>
+
+<mxCell id="tag" value="芯片验证 · PCIe · 设备拓扑" style="rounded=1;arcSize=50;fillColor=#1565C0;strokeColor=none;fontColor=#BBDEFB;fontSize=13;" vertex="1" parent="1"><mxGeometry x="60" y="52" width="230" height="30" as="geometry"/></mxCell>
+
+<mxCell id="title" value="PCIe 设备拓扑结构详解" style="text;fontColor=#FFFFFF;fontSize=34;fontStyle=1;align=left;" vertex="1" parent="1"><mxGeometry x="60" y="96" width="520" height="52" as="geometry"/></mxCell>
+
+<mxCell id="sub" value="四种形态、各自的职责与验证关注点" style="text;fontColor=#90CAF9;fontSize=17;fontStyle=0;align=left;" vertex="1" parent="1"><mxGeometry x="60" y="154" width="500" height="28" as="geometry"/></mxCell>
+
+<mxCell id="div" value="" style="line;strokeColor=#1E88E5;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="60" y="198" width="200" height="10" as="geometry"/></mxCell>
+
+<mxCell id="t1" value="RC + EP" style="rounded=1;arcSize=8;fillColor=#1565C0;strokeColor=#42A5F5;fontColor=#ffffff;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="60" y="228" width="96" height="36" as="geometry"/></mxCell>
+<mxCell id="t2" value="EP Only" style="rounded=1;arcSize=8;fillColor=#2E7D32;strokeColor=#66BB6A;fontColor=#ffffff;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="168" y="228" width="96" height="36" as="geometry"/></mxCell>
+<mxCell id="t3" value="US+DS+EP" style="rounded=1;arcSize=8;fillColor=#6A1B9A;strokeColor=#AB47BC;fontColor=#ffffff;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="276" y="228" width="108" height="36" as="geometry"/></mxCell>
+<mxCell id="t4" value="Multi-Mode" style="rounded=1;arcSize=8;fillColor=#BF360C;strokeColor=#FF7043;fontColor=#ffffff;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="396" y="228" width="110" height="36" as="geometry"/></mxCell>
+
+<mxCell id="host" value="Host" style="rounded=1;arcSize=8;fillColor=#1565C0;strokeColor=#90CAF9;fontColor=#ffffff;fontSize=14;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="680" y="60" width="180" height="44" as="geometry"/></mxCell>
+<mxCell id="us" value="US Func" style="rounded=1;arcSize=8;fillColor=#6A1B9A;strokeColor=#CE93D8;fontColor=#ffffff;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="680" y="148" width="180" height="38" as="geometry"/></mxCell>
+<mxCell id="ds" value="DS Func" style="rounded=1;arcSize=8;fillColor=#6A1B9A;strokeColor=#CE93D8;fontColor=#ffffff;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="680" y="230" width="180" height="38" as="geometry"/></mxCell>
+<mxCell id="ep" value="EP Functions" style="rounded=1;arcSize=8;fillColor=#2E7D32;strokeColor=#A5D6A7;fontColor=#ffffff;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="680" y="312" width="180" height="38" as="geometry"/></mxCell>
+<mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;strokeWidth=1.5;" edge="1" source="host" target="us" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#CE93D8;strokeWidth=1.5;" edge="1" source="us" target="ds" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e3" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#A5D6A7;strokeWidth=1.5;" edge="1" source="ds" target="ep" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+<mxCell id="pts" value="&#x25cf; RC+EP / EP Only / Switch / 多模式&#xa;&#x25cf; 能力声明 vs 运行时状态&#xa;&#x25cf; 验证环境如何建模拓扑层级" style="text;fontColor=#78909C;fontSize=13;align=left;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="60" y="290" width="520" height="72" as="geometry"/></mxCell>
+
+</root></mxGraphModel>
