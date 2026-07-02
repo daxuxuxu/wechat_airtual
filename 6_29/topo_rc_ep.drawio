@@ -7,5 +7,5 @@
 <mxCell id="eb" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;strokeWidth=1.5;" edge="1" source="host" target="ep" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
 <mxCell id="ds" value="Downstream Devices&#xa;（由 RC 管理）" style="rounded=1;fillColor=#2E7D32;fontColor=#ffffff;strokeColor=#ffffff;fontSize=11;" vertex="1" parent="1"><mxGeometry x="95" y="248" width="270" height="52" as="geometry"/></mxCell>
 <mxCell id="ec" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;strokeWidth=1.5;" edge="1" source="rc" target="ds" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
-<mxCell id="lbl" value="EP 面向主机，RC 管理下游设备，无 Switch 层级" style="text;align=center;fontColor=#78909C;fontSize=10;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="20" y="312" width="420" height="18" as="geometry"/></mxCell>
+<mxCell id="lbl" value="EP 面向主机，RC 管理下游设备，无 Switch 层级" style="text;align=center;fontColor=#78909C;fontSize=10;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="20" y="306" width="420" height="18" as="geometry"/></mxCell>
 </root></mxGraphModel>

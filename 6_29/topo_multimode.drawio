@@ -13,5 +13,5 @@
 <mxCell id="sep" value="" style="line;strokeColor=#CFD8DC;strokeWidth=1.5;dashed=1;" vertex="1" parent="1"><mxGeometry x="318" y="42" width="2" height="180" as="geometry"/></mxCell>
 <mxCell id="vs" value="vs" style="text;align=center;fontColor=#B0BEC5;fontSize=12;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="306" y="100" width="26" height="24" as="geometry"/></mxCell>
 <mxCell id="lbl1" value="同一颗芯片，不同部署场景下的拓扑形态" style="text;align=center;fontColor=#78909C;fontSize=10;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="20" y="218" width="590" height="18" as="geometry"/></mxCell>
-<mxCell id="lbl2" value="能力标志（Capability Flag）!= 当前激活模式（Active Mode）" style="text;align=center;fontColor=#E65100;fontSize=10;fontStyle=3;" vertex="1" parent="1"><mxGeometry x="20" y="240" width="590" height="18" as="geometry"/></mxCell>
+<mxCell id="lbl2" value="能力标志（Capability Flag）!= 当前激活模式（Active Mode）" style="text;align=center;fontColor=#E65100;fontSize=10;fontStyle=3;" vertex="1" parent="1"><mxGeometry x="20" y="234" width="590" height="18" as="geometry"/></mxCell>
 </root></mxGraphModel>

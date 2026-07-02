@@ -18,5 +18,5 @@
 <mxCell id="r5a" value="两种模式共存" style="rounded=1;fillColor=#ECEFF1;fontColor=#37474F;strokeColor=#CFD8DC;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="286" width="200" height="38" as="geometry"/></mxCell>
 <mxCell id="r5b" value="互斥，不能同时使用" style="rounded=1;fillColor=#E3F2FD;fontColor=#1565C0;strokeColor=#90CAF9;fontSize=11;" vertex="1" parent="1"><mxGeometry x="220" y="286" width="220" height="38" as="geometry"/></mxCell>
 <mxCell id="r5c" value="互斥，不能同时使用" style="rounded=1;fillColor=#FBE9E7;fontColor=#BF360C;strokeColor=#FFAB91;fontSize=11;" vertex="1" parent="1"><mxGeometry x="450" y="286" width="220" height="38" as="geometry"/></mxCell>
-<mxCell id="note" value="两种机制互斥：芯片设计时选定其一，验证环境在两种模式下行为逻辑完全分开" style="text;align=center;fontColor=#78909C;fontSize=10;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="10" y="334" width="660" height="20" as="geometry"/></mxCell>
+<mxCell id="note" value="两种机制互斥：芯片设计时选定其一，验证环境在两种模式下行为逻辑完全分开" style="text;align=center;fontColor=#78909C;fontSize=10;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="10" y="330" width="660" height="20" as="geometry"/></mxCell>
 </root></mxGraphModel>

@@ -4,5 +4,5 @@
 <mxCell id="ep" value="EP Functions&#xa;(PF0, PF1, VF...)" style="rounded=1;fillColor=#2E7D32;fontColor=#ffffff;strokeColor=#ffffff;fontSize=12;" vertex="1" parent="1"><mxGeometry x="90" y="148" width="280" height="56" as="geometry"/></mxCell>
 <mxCell id="ea" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;strokeWidth=1.5;" edge="1" source="host" target="ep" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
 <mxCell id="lbl1" value="纯终端节点，无 RC，无 Switch" style="text;align=center;fontColor=#78909C;fontSize=10;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="20" y="218" width="420" height="18" as="geometry"/></mxCell>
-<mxCell id="lbl2" value="No RC  |  No Switch" style="rounded=1;fillColor=#F5F5F5;fontColor=#9E9E9E;strokeColor=#9E9E9E;fontSize=11;fontStyle=2;dashed=1;" vertex="1" parent="1"><mxGeometry x="130" y="248" width="200" height="36" as="geometry"/></mxCell>
+<mxCell id="lbl2" value="No RC  |  No Switch" style="rounded=1;fillColor=#F5F5F5;fontColor=#9E9E9E;strokeColor=#9E9E9E;fontSize=11;fontStyle=2;dashed=1;" vertex="1" parent="1"><mxGeometry x="130" y="242" width="200" height="36" as="geometry"/></mxCell>
 </root></mxGraphModel>
