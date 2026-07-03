@@ -1,0 +1,31 @@
+<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+
+<mxCell id="title" value="Large Write 对比：普通模式 vs Large Write 模式" style="text;align=center;fontColor=#1565C0;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="8" width="680" height="26" as="geometry"/></mxCell>
+
+<mxCell id="h_dim" value="维度" style="rounded=1;arcSize=4;fillColor=#37474F;fontColor=#ffffff;strokeColor=#37474F;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="44" width="180" height="38" as="geometry"/></mxCell>
+<mxCell id="h_normal" value="普通写模式" style="rounded=1;arcSize=4;fillColor=#BF360C;fontColor=#ffffff;strokeColor=#BF360C;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="200" y="44" width="230" height="38" as="geometry"/></mxCell>
+<mxCell id="h_large" value="Large Write 模式" style="rounded=1;arcSize=4;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#1565C0;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="440" y="44" width="250" height="38" as="geometry"/></mxCell>
+
+<mxCell id="r1a" value="写边界" style="rounded=1;arcSize=3;fillColor=#ECEFF1;fontColor=#37474F;strokeColor=#CFD8DC;fontSize=10;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="90" width="180" height="36" as="geometry"/></mxCell>
+<mxCell id="r1b" value="64B 边界" style="rounded=1;arcSize=3;fillColor=#FBE9E7;fontColor=#BF360C;strokeColor=#FFAB91;fontSize=10;" vertex="1" parent="1"><mxGeometry x="200" y="90" width="230" height="36" as="geometry"/></mxCell>
+<mxCell id="r1c" value="256B 边界" style="rounded=1;arcSize=3;fillColor=#E3F2FD;fontColor=#1565C0;strokeColor=#90CAF9;fontSize=10;" vertex="1" parent="1"><mxGeometry x="440" y="90" width="250" height="36" as="geometry"/></mxCell>
+
+<mxCell id="r2a" value="Chain 机制" style="rounded=1;arcSize=3;fillColor=#ECEFF1;fontColor=#37474F;strokeColor=#CFD8DC;fontSize=10;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="134" width="180" height="36" as="geometry"/></mxCell>
+<mxCell id="r2b" value="需要（64B 片段串联，chain=1）" style="rounded=1;arcSize=3;fillColor=#FBE9E7;fontColor=#BF360C;strokeColor=#FFAB91;fontSize=10;" vertex="1" parent="1"><mxGeometry x="200" y="134" width="230" height="36" as="geometry"/></mxCell>
+<mxCell id="r2c" value="不需要（每片独立，chain=0）" style="rounded=1;arcSize=3;fillColor=#E3F2FD;fontColor=#1565C0;strokeColor=#90CAF9;fontSize=10;" vertex="1" parent="1"><mxGeometry x="440" y="134" width="250" height="36" as="geometry"/></mxCell>
+
+<mxCell id="r3a" value="读边界" style="rounded=1;arcSize=3;fillColor=#ECEFF1;fontColor=#37474F;strokeColor=#CFD8DC;fontSize=10;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="178" width="180" height="36" as="geometry"/></mxCell>
+<mxCell id="r3b" value="256B 边界（不受影响）" style="rounded=1;arcSize=3;fillColor=#F3E5F5;fontColor=#6A1B9A;strokeColor=#CE93D8;fontSize=10;" vertex="1" parent="1"><mxGeometry x="200" y="178" width="230" height="36" as="geometry"/></mxCell>
+<mxCell id="r3c" value="256B 边界（不受影响）" style="rounded=1;arcSize=3;fillColor=#F3E5F5;fontColor=#6A1B9A;strokeColor=#CE93D8;fontSize=10;" vertex="1" parent="1"><mxGeometry x="440" y="178" width="250" height="36" as="geometry"/></mxCell>
+
+<mxCell id="r4a" value="数据信用粒度" style="rounded=1;arcSize=3;fillColor=#ECEFF1;fontColor=#37474F;strokeColor=#CFD8DC;fontSize=10;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="222" width="180" height="36" as="geometry"/></mxCell>
+<mxCell id="r4b" value="每 64B 一个信用" style="rounded=1;arcSize=3;fillColor=#FBE9E7;fontColor=#BF360C;strokeColor=#FFAB91;fontSize=10;" vertex="1" parent="1"><mxGeometry x="200" y="222" width="230" height="36" as="geometry"/></mxCell>
+<mxCell id="r4c" value="每 256B 一个信用" style="rounded=1;arcSize=3;fillColor=#E3F2FD;fontColor=#1565C0;strokeColor=#90CAF9;fontSize=10;" vertex="1" parent="1"><mxGeometry x="440" y="222" width="250" height="36" as="geometry"/></mxCell>
+
+<mxCell id="r5a" value="地址约束" style="rounded=1;arcSize=3;fillColor=#ECEFF1;fontColor=#37474F;strokeColor=#CFD8DC;fontSize=10;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="266" width="180" height="36" as="geometry"/></mxCell>
+<mxCell id="r5b" value="事务地址不可跨 64B 边界（no_split 模式）" style="rounded=1;arcSize=3;fillColor=#FBE9E7;fontColor=#BF360C;strokeColor=#FFAB91;fontSize=10;" vertex="1" parent="1"><mxGeometry x="200" y="266" width="230" height="36" as="geometry"/></mxCell>
+<mxCell id="r5c" value="事务地址不可跨 256B 边界（no_split 模式）" style="rounded=1;arcSize=3;fillColor=#E3F2FD;fontColor=#1565C0;strokeColor=#90CAF9;fontSize=10;" vertex="1" parent="1"><mxGeometry x="440" y="266" width="250" height="36" as="geometry"/></mxCell>
+
+<mxCell id="note" value="读事务在两种模式下行为一致，始终按 256B 边界拆分，无 Chain 机制" style="text;align=center;fontColor=#78909C;fontSize=10;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="10" y="314" width="680" height="18" as="geometry"/></mxCell>
+
+</root></mxGraphModel>

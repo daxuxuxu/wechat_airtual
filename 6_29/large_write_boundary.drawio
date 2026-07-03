@@ -1,0 +1,35 @@
+<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+
+<mxCell id="title" value="普通写模式：64B 边界拆分 + Chain 串联" style="text;align=center;fontColor=#1565C0;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="8" width="680" height="26" as="geometry"/></mxCell>
+
+<mxCell id="ruler_bg" value="" style="rounded=1;arcSize=2;fillColor=#ECEFF1;strokeColor=none;" vertex="1" parent="1"><mxGeometry x="10" y="42" width="680" height="28" as="geometry"/></mxCell>
+<mxCell id="b0" value="0" style="text;align=left;fontColor=#90A4AE;fontSize=9;" vertex="1" parent="1"><mxGeometry x="12" y="44" width="20" height="18" as="geometry"/></mxCell>
+<mxCell id="b64" value="64B" style="text;align=center;fontColor=#E65100;fontSize=9;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="168" y="44" width="30" height="18" as="geometry"/></mxCell>
+<mxCell id="b128" value="128B" style="text;align=center;fontColor=#E65100;fontSize=9;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="328" y="44" width="36" height="18" as="geometry"/></mxCell>
+<mxCell id="b192" value="192B" style="text;align=center;fontColor=#E65100;fontSize=9;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="488" y="44" width="36" height="18" as="geometry"/></mxCell>
+<mxCell id="b256" value="256B" style="text;align=center;fontColor=#1565C0;fontSize=9;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="648" y="44" width="36" height="18" as="geometry"/></mxCell>
+
+<mxCell id="div64a" value="" style="line;strokeColor=#E65100;strokeWidth=1.5;dashed=1;" vertex="1" parent="1"><mxGeometry x="183" y="42" width="1" height="28" as="geometry"/></mxCell>
+<mxCell id="div64b" value="" style="line;strokeColor=#E65100;strokeWidth=1.5;dashed=1;" vertex="1" parent="1"><mxGeometry x="346" y="42" width="1" height="28" as="geometry"/></mxCell>
+<mxCell id="div64c" value="" style="line;strokeColor=#E65100;strokeWidth=1.5;dashed=1;" vertex="1" parent="1"><mxGeometry x="509" y="42" width="1" height="28" as="geometry"/></mxCell>
+<mxCell id="div256" value="" style="line;strokeColor=#1565C0;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="672" y="42" width="1" height="28" as="geometry"/></mxCell>
+
+<mxCell id="orig" value="原始写事务（跨越多个 64B 边界，总长 160B）" style="rounded=1;arcSize=4;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#90CAF9;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="86" width="420" height="40" as="geometry"/></mxCell>
+
+<mxCell id="arrow_down" value="拆分" style="text;align=center;fontColor=#78909C;fontSize=10;" vertex="1" parent="1"><mxGeometry x="320" y="134" width="50" height="18" as="geometry"/></mxCell>
+<mxCell id="ad" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#78909C;strokeWidth=1.2;" edge="1" source="orig" target="p1" parent="1"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="220" y="162"/></Array></mxGeometry></mxCell>
+
+<mxCell id="p1" value="片段 1（48B）&#xa;chain=1" style="rounded=1;arcSize=6;fillColor=#2E7D32;fontColor=#ffffff;strokeColor=#A5D6A7;fontSize=10;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="158" width="160" height="52" as="geometry"/></mxCell>
+<mxCell id="p2" value="片段 2（64B）&#xa;chain=1" style="rounded=1;arcSize=6;fillColor=#2E7D32;fontColor=#ffffff;strokeColor=#A5D6A7;fontSize=10;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="186" y="158" width="160" height="52" as="geometry"/></mxCell>
+<mxCell id="p3" value="片段 3（48B）&#xa;chain=0（末尾）" style="rounded=1;arcSize=6;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#90CAF9;fontSize=10;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="362" y="158" width="160" height="52" as="geometry"/></mxCell>
+
+<mxCell id="ch1" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#A5D6A7;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="p1" target="p2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="ch2" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#A5D6A7;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="p2" target="p3" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+<mxCell id="chainlbl" value="chain=1 串联（接收方等到 chain=0 才算完整）" style="text;align=center;fontColor=#2E7D32;fontSize=9;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="10" y="218" width="512" height="18" as="geometry"/></mxCell>
+
+<mxCell id="win256" value="全部片段必须在同一个 256B 窗口内" style="rounded=1;arcSize=4;fillColor=#FFF8E1;fontColor=#E65100;strokeColor=#FFB300;fontSize=10;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="540" y="170" width="148" height="40" as="geometry"/></mxCell>
+
+<mxCell id="lbl_credit" value="信用粒度：每 64B 消耗一个数据信用" style="text;align=center;fontColor=#78909C;fontSize=10;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="10" y="248" width="500" height="18" as="geometry"/></mxCell>
+
+</root></mxGraphModel>

@@ -1,0 +1,30 @@
+<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+
+<mxCell id="title" value="写事务拆分决策流程" style="text;align=center;fontColor=#1565C0;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="10" y="8" width="500" height="26" as="geometry"/></mxCell>
+
+<mxCell id="start" value="收到写事务请求" style="rounded=1;arcSize=30;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#1565C0;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="155" y="46" width="200" height="40" as="geometry"/></mxCell>
+
+<mxCell id="q1" value="是否为 Atomic？" style="rhombus;fillColor=#37474F;fontColor=#ffffff;strokeColor=#37474F;fontSize=10;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="145" y="106" width="220" height="56" as="geometry"/></mxCell>
+<mxCell id="a1_yes" value="不拆分，整体发送&#xa;chain=0" style="rounded=1;arcSize=6;fillColor=#2E7D32;fontColor=#ffffff;strokeColor=#A5D6A7;fontSize=10;" vertex="1" parent="1"><mxGeometry x="420" y="114" width="150" height="40" as="geometry"/></mxCell>
+
+<mxCell id="q2" value="是否在写边界内？&#xa;（无 LW：64B；有 LW：256B）" style="rhombus;fillColor=#37474F;fontColor=#ffffff;strokeColor=#37474F;fontSize=10;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="115" y="182" width="280" height="66" as="geometry"/></mxCell>
+<mxCell id="a2_yes" value="不拆分，整体发送&#xa;chain=0" style="rounded=1;arcSize=6;fillColor=#2E7D32;fontColor=#ffffff;strokeColor=#A5D6A7;fontSize=10;" vertex="1" parent="1"><mxGeometry x="420" y="198" width="150" height="40" as="geometry"/></mxCell>
+
+<mxCell id="split_box" value="按边界拆分为多个片段" style="rounded=1;arcSize=6;fillColor=#BF360C;fontColor=#ffffff;strokeColor=#FF7043;fontSize=10;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="155" y="272" width="200" height="40" as="geometry"/></mxCell>
+
+<mxCell id="q3" value="Large Write 开启？" style="rhombus;fillColor=#37474F;fontColor=#ffffff;strokeColor=#37474F;fontSize=10;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="125" y="332" width="260" height="56" as="geometry"/></mxCell>
+
+<mxCell id="a3_yes" value="所有片段 chain=0&#xa;（各自独立）" style="rounded=1;arcSize=6;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#90CAF9;fontSize=10;" vertex="1" parent="1"><mxGeometry x="420" y="344" width="150" height="44" as="geometry"/></mxCell>
+
+<mxCell id="chain_logic" value="判断是否到达 256B 边界&#xa;未到达：chain=1（串联）&#xa;到达或末尾：chain=0" style="rounded=1;arcSize=6;fillColor=#6A1B9A;fontColor=#ffffff;strokeColor=#CE93D8;fontSize=10;" vertex="1" parent="1"><mxGeometry x="110" y="408" width="290" height="56" as="geometry"/></mxCell>
+
+<mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;" edge="1" source="start" target="q1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e2" value="是" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#A5D6A7;fontColor=#2E7D32;fontSize=9;" edge="1" source="q1" target="a1_yes" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e3" value="否" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#CFD8DC;fontColor=#78909C;fontSize=9;" edge="1" source="q1" target="q2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e4" value="是" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#A5D6A7;fontColor=#2E7D32;fontSize=9;" edge="1" source="q2" target="a2_yes" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e5" value="否" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#CFD8DC;fontColor=#78909C;fontSize=9;" edge="1" source="q2" target="split_box" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e6" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#FF7043;" edge="1" source="split_box" target="q3" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e7" value="是" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#90CAF9;fontColor=#1565C0;fontSize=9;" edge="1" source="q3" target="a3_yes" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e8" value="否" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#CE93D8;fontColor=#6A1B9A;fontSize=9;" edge="1" source="q3" target="chain_logic" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+</root></mxGraphModel>
