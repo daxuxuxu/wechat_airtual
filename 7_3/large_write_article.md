@@ -20,6 +20,8 @@
 
 **MPS（Max Payload Size）** 是 PCIe 规范定义的关键参数，限制单个 TLP 数据载荷的最大字节数。MPS 在链路枚举阶段协商，取链路两端 MPS 能力的最小值，写入设备控制寄存器（Device Control Register[7:5]），可选值从 128B 到 4096B。单笔 Memory Write TLP 的数据量不得超过 MPS。
 
+128B 是规范强制要求的最小值，所有符合 PCIe 规范的设备都必须支持。这个数字不是随意选的：Memory Write TLP 的头部本身占 12～16 字节，如果数据载荷只有 32B 或 64B，头部开销占比就会超过 30%，总线效率极低；而 128B 把头部占比压到约 10%，在传输效率和接收端缓冲成本之间找到了合理的平衡点。128B 也恰好是两条 x86 缓存行，对 DMA 场景有天然的对齐优势。更高的 MPS（256B、512B……）需要设备主动声明支持，链路两端取能力的最小值，这就是为什么大量嵌入式或低功耗设备只支持 128B，也是 Large Write 依赖 MPS≥256B 才能完整发挥效果的根本原因。
+
 **4KB 边界规则**：PCIe 规范明确要求，任何单笔 Memory Write TLP 不得跨越自然对齐的 4KB 地址边界。一笔跨越 4KB 边界的写请求必须拆成两笔。
 
 ![PCIe Memory Write TLP 格式与 MPS](large_write_pcie_spec.png)
