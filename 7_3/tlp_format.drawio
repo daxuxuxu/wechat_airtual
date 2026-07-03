@@ -1,0 +1,103 @@
+<mxGraphModel>
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <mxCell id="title" value="PCIe Memory Write TLP 格式（4DW Header，64-bit 地址）" style="text;html=1;align=center;fontStyle=1;fontSize=14;fontColor=#1565C0;" vertex="1" parent="1">
+      <mxGeometry x="10" y="10" width="780" height="30" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="bits_label" value="Bit 31" style="text;html=1;align=left;fontSize=10;fontColor=#78909C;" vertex="1" parent="1">
+      <mxGeometry x="10" y="46" width="60" height="16" as="geometry"/>
+    </mxCell>
+    <mxCell id="bits_label2" value="Bit 0" style="text;html=1;align=right;fontSize=10;fontColor=#78909C;" vertex="1" parent="1">
+      <mxGeometry x="730" y="46" width="60" height="16" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="dw0_lbl" value="DW 0" style="text;html=1;align=right;fontStyle=1;fontSize=10;fontColor=#37474F;" vertex="1" parent="1">
+      <mxGeometry x="0" y="66" width="46" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw0_fmt" value="Fmt&#xa;[2:0]" style="rounded=0;fillColor=#6A1B9A;fontColor=#ffffff;strokeColor=#6A1B9A;fontSize=9;fontStyle=1;align=center;" vertex="1" parent="1">
+      <mxGeometry x="50" y="66" width="60" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw0_type" value="Type&#xa;[4:0]" style="rounded=0;fillColor=#6A1B9A;fontColor=#ffffff;strokeColor=#6A1B9A;fontSize=9;fontStyle=1;align=center;" vertex="1" parent="1">
+      <mxGeometry x="110" y="66" width="90" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw0_tc" value="TC&#xa;[2:0]" style="rounded=0;fillColor=#37474F;fontColor=#ffffff;strokeColor=#37474F;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="200" y="66" width="60" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw0_attr" value="Attr&#xa;[2:0]" style="rounded=0;fillColor=#37474F;fontColor=#ffffff;strokeColor=#37474F;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="260" y="66" width="60" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw0_misc" value="TD|EP" style="rounded=0;fillColor=#455A64;fontColor=#ffffff;strokeColor=#455A64;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="320" y="66" width="50" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw0_at" value="AT&#xa;[1:0]" style="rounded=0;fillColor=#455A64;fontColor=#ffffff;strokeColor=#455A64;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="370" y="66" width="50" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw0_len" value="Length [9:0]&#xa;（DWORD 数）" style="rounded=0;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#1565C0;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="420" y="66" width="370" height="36" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="dw1_lbl" value="DW 1" style="text;html=1;align=right;fontStyle=1;fontSize=10;fontColor=#37474F;" vertex="1" parent="1">
+      <mxGeometry x="0" y="106" width="46" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw1_reqid" value="Requester ID [15:0]" style="rounded=0;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#1565C0;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="50" y="106" width="305" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw1_tag" value="Tag [7:0]" style="rounded=0;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#1565C0;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="355" y="106" width="155" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw1_lbe" value="Last BE&#xa;[3:0]" style="rounded=0;fillColor=#C0392B;fontColor=#ffffff;strokeColor=#C0392B;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="510" y="106" width="80" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw1_fbe" value="First BE&#xa;[3:0]" style="rounded=0;fillColor=#C0392B;fontColor=#ffffff;strokeColor=#C0392B;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="590" y="106" width="80" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw1_rsv" value="Rsv" style="rounded=0;fillColor=#90A4AE;fontColor=#ffffff;strokeColor=#90A4AE;fontSize=8;" vertex="1" parent="1">
+      <mxGeometry x="670" y="106" width="120" height="36" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="dw2_lbl" value="DW 2" style="text;html=1;align=right;fontStyle=1;fontSize=10;fontColor=#37474F;" vertex="1" parent="1">
+      <mxGeometry x="0" y="146" width="46" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw2_addr" value="Address [63:32]  （高 32 位地址）" style="rounded=0;fillColor=#2E7D32;fontColor=#ffffff;strokeColor=#2E7D32;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="50" y="146" width="740" height="36" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="dw3_lbl" value="DW 3" style="text;html=1;align=right;fontStyle=1;fontSize=10;fontColor=#37474F;" vertex="1" parent="1">
+      <mxGeometry x="0" y="186" width="46" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw3_addr" value="Address [31:2]  （低 30 位地址，4 字节对齐）" style="rounded=0;fillColor=#2E7D32;fontColor=#ffffff;strokeColor=#2E7D32;fontSize=9;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="50" y="186" width="700" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="dw3_ph" value="PH&#xa;[1:0]" style="rounded=0;fillColor=#455A64;fontColor=#ffffff;strokeColor=#455A64;fontSize=8;" vertex="1" parent="1">
+      <mxGeometry x="750" y="186" width="40" height="36" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="data_lbl" value="DW 4~N" style="text;html=1;align=right;fontStyle=1;fontSize=10;fontColor=#37474F;" vertex="1" parent="1">
+      <mxGeometry x="0" y="226" width="46" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="data_payload" value="Data Payload（写数据，Length 个 DWORD，最大 = MPS）" style="rounded=0;fillColor=#E6A020;fontColor=#ffffff;strokeColor=#E6A020;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="50" y="226" width="740" height="50" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="note_fmt" value="Fmt=011b&#xa;（4DW+Data）" style="text;html=1;align=center;fontSize=9;fontColor=#6A1B9A;fontStyle=2;" vertex="1" parent="1">
+      <mxGeometry x="10" y="310" width="130" height="32" as="geometry"/>
+    </mxCell>
+    <mxCell id="note_type" value="Type=00000b&#xa;（Memory Write）" style="text;html=1;align=center;fontSize=9;fontColor=#6A1B9A;fontStyle=2;" vertex="1" parent="1">
+      <mxGeometry x="150" y="310" width="150" height="32" as="geometry"/>
+    </mxCell>
+    <mxCell id="note_len" value="Length：DW 数（1~1024）&#xa;受 MPS 约束，不超过 MPS/4" style="text;html=1;align=center;fontSize=9;fontColor=#1565C0;fontStyle=2;" vertex="1" parent="1">
+      <mxGeometry x="360" y="310" width="230" height="32" as="geometry"/>
+    </mxCell>
+    <mxCell id="note_be" value="BE：字节使能，控制&#xa;首/末 DWORD 有效字节" style="text;html=1;align=center;fontSize=9;fontColor=#C0392B;fontStyle=2;" vertex="1" parent="1">
+      <mxGeometry x="600" y="310" width="190" height="32" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="rule" value="PCIe 规范约束：单笔 Memory Write TLP 数据 ≤ MPS，且不得跨越 4KB 自然对齐边界" style="rounded=1;arcSize=4;fillColor=#FFF8E1;strokeColor=#FFB300;fontColor=#E65100;fontSize=10;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+      <mxGeometry x="10" y="352" width="780" height="36" as="geometry"/>
+    </mxCell>
+
+  </root>
+</mxGraphModel>

@@ -16,6 +16,8 @@
 
 **TLP（Transaction Layer Packet）** 是 PCIe 的最小传输单元。一笔内存写操作对应一个 Memory Write TLP，由头部和数据载荷两部分组成。头部携带地址、长度、请求者 ID 等控制信息；数据载荷就是实际写入的字节。
 
+![PCIe Memory Write TLP 格式](tlp_format.png)
+
 **MPS（Max Payload Size）** 是 PCIe 规范定义的关键参数，限制单个 TLP 数据载荷的最大字节数。MPS 在链路枚举阶段协商，取链路两端 MPS 能力的最小值，写入设备控制寄存器（Device Control Register[7:5]），可选值从 128B 到 4096B。单笔 Memory Write TLP 的数据量不得超过 MPS。
 
 **4KB 边界规则**：PCIe 规范明确要求，任何单笔 Memory Write TLP 不得跨越自然对齐的 4KB 地址边界。一笔跨越 4KB 边界的写请求必须拆成两笔。
