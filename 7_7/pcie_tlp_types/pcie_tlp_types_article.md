@@ -1,4 +1,4 @@
-## PCIe 三类请求 TLP：配置读写、内存读写、IO 读写
+## PCIe 四类请求 TLP：配置读写、内存读写、IO 读写、消息
 
 ![封面](cover_pcie_tlp_types.png)
 
@@ -6,15 +6,15 @@
 
 ### 导读
 
-PCIe 设备上线之后，软件和硬件之间的所有通信都依赖 TLP（Transaction Layer Packet）。TLP 有很多种，但从"读写什么"的角度来看，最核心的就三类：配置读写、内存读写、IO 读写。搞清楚这三类的区别，就抓住了 PCIe 访问模型的主干。
+PCIe 设备上线之后，软件和硬件之间的所有通信都依赖 TLP（Transaction Layer Packet）。TLP 有很多种，但从"读写什么"的角度来看，最核心的是四类：配置读写、内存读写、IO 读写，以及消息（Message）。搞清楚这四类的区别，就抓住了 PCIe 访问模型的主干。
 
 ---
 
-### 一、三类 TLP 一览
+### 一、四类 TLP 一览
 
 ![PCIe 三类请求 TLP 一览](tlp_overview.png)
 
-三类请求 TLP 的关键区别可以从两个维度来记忆：**访问的是哪个地址空间**，以及**是否需要等待 Completion 回复**。
+四类请求 TLP 的关键区别可以从两个维度来记忆：**访问的是哪个地址空间**，以及**是否需要等待 Completion 回复**。
 
 **配置读写（CfgRd / CfgWr）** 访问的是设备的 Config Space，由软件（操作系统或固件）在枚举阶段发起，目标用 BDF 三元组精确定位。配置读写全部是 Non-Posted——无论读还是写，都必须等 Completion 回来。写的 Completion 不带数据，只是确认"收到了"；读的 Completion 带回请求的寄存器值。
 
@@ -22,7 +22,7 @@ PCIe 设备上线之后，软件和硬件之间的所有通信都依赖 TLP（Tr
 
 **IO 读写（IORd / IOWr）** 是从 PCI 时代继承来的遗留机制，访问 x86 的 I/O 端口地址空间（最多 64KB）。现代 PCIe 设备几乎不再使用这种方式。它的特殊之处在于：**IO 写也是 Non-Posted**，和内存写正好相反——即便是写操作，也要等 Completion 确认。
 
-最容易记混的点在这里：**MWr（内存写）是 PCIe 中唯一的 Posted 写**，其余所有写（IOWr、CfgWr）以及所有读，都是 Non-Posted。
+最容易记混的点在这里：**MWr 和消息（Msg/MsgD）是仅有的两类 Posted TLP**，其余所有写（IOWr、CfgWr）以及所有读，都是 Non-Posted。
 
 ---
 
@@ -40,7 +40,27 @@ PCIe 设备上线之后，软件和硬件之间的所有通信都依赖 TLP（Tr
 
 ---
 
-### 三、内存读写 vs IO 读写
+### 三、消息 TLP（Msg / MsgD）
+
+消息是四类 TLP 里最"杂"的一类——它不对应任何固定的地址空间，而是用来在 RC 和设备之间传递各种控制和通知信号。
+
+**消息全部是 Posted**，不需要 Completion。这合乎逻辑：大多数消息是单向通知，发出去就完事了。Msg 不携带数据负载，MsgD 携带一个数据负载，用于需要附加信息的消息类型。
+
+消息的路由方式比其他三类灵活得多。普通 TLP 靠地址或 BDF 找目标，消息则有多种路由模式：路由到 Root Complex（最常见）、按地址路由、按 Routing ID 路由、广播到所有设备，或只沿链路单向传递。具体路由方式写在 TLP 头部的路由字段里。
+
+消息的用途覆盖了几个关键场景：
+
+**中断通知**：在没有独立中断线的 PCIe 链路上，设备通过发送特定消息来模拟 INTx 中断的断言和取消（Assert_INTx / Deassert_INTx）。现代设备更多用 MSI/MSI-X，但 INTx 消息仍然是兼容路径。
+
+**电源管理**：设备通过发送 PME（Power Management Event）消息通知 RC 自己需要唤醒；整个 PCIe 电源状态机的切换协议有相当一部分依赖消息 TLP 完成。
+
+**错误上报**：当设备检测到可校正或不可校正错误，通过 ERR_COR / ERR_NONFATAL / ERR_FATAL 消息上报给 RC，配合 AER Capability 实现精细的错误处理。
+
+**其他**：热插拔事件通知、Attention Button 按下、厂商自定义消息（Vendor_Defined）等。
+
+消息机制让 PCIe 不需要额外的边带信号线就能处理各种控制事件，**所有"通知"都走同一条串行链路，用 TLP 承载**——这是 PCIe 相比旧总线协议的一个重要设计改进。
+
+### 四、内存读写 vs IO 读写
 
 ![内存读写 vs IO 读写：关键属性对比](mem_io_compare.png)
 
@@ -54,15 +74,17 @@ IO 写是 Non-Posted 这一点值得单独强调。历史上，x86 的 `out` 指
 
 ---
 
-### 四、总结
+### 五、总结
 
-三类 TLP 的核心区别，用一组对比来收尾：
+四类 TLP 的核心区别，用一组对比来收尾：
 
 配置读写（CfgRd/CfgWr）以 BDF 寻址 Config Space，由软件在枚举时使用，读写都是 Non-Posted。**Type 0 直接送达，Type 1 经 Switch 路由**——这两个变体是枚举机制的基础。
 
 内存读写（MRd/MWr）访问内存地址空间，是高性能数据传输的主路径。**MWr 是 Posted（唯一的 Posted 写），MRd 是 Non-Posted**——这个不对称是初学者最需要记牢的点。
 
 IO 读写（IORd/IOWr）是兼容遗留设备的历史机制，**读写都是 Non-Posted**，地址空间只有 64KB，现代设备不再推荐使用。
+
+消息（Msg/MsgD）是无地址目标的通知通道，**全部 Posted**，承载中断、电源、错误等控制事件，路由方式灵活，让 PCIe 不需要额外边带信号就能处理所有控制流。
 
 ---
 
