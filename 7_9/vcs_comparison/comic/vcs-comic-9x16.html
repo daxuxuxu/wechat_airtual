@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>版本管理大乱斗 漫画</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #e8e8e8;
+  font-family: 'Comic Sans MS', 'Segoe Script', 'Microsoft YaHei', cursive;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  gap: 4px;
+}
+
+/* ===== 整体漫画边框（竖屏单列） ===== */
+.comic {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  background: #111;
+  border: 4px solid #111;
+  max-width: 620px;
+  width: 100%;
+}
+
+/* ===== 基础格子 ===== */
+.panel {
+  background: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 12px 12px 0;
+  min-height: 200px;
+}
+.panel.col2 { grid-column: span 1; }
+.panel.col3 { grid-column: span 1; }
+.panel.row-auto { min-height: auto; }
+
+/* 人物图片 */
+.char {
+  height: 210px;
+  width: auto;
+  flex-shrink: 0;
+  margin-bottom: -6px;
+}
+.char.sm { height: 185px; }
+.char.flip { transform: scaleX(-1); }
+
+/* ===== 气泡 ===== */
+.bubble {
+  position: absolute;
+  background: white;
+  border: 2.5px solid #111;
+  border-radius: 16px;
+  padding: 10px 14px;
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 58%;
+  z-index: 10;
+}
+.bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -13px;
+  border: 8px solid transparent;
+  border-top-color: #111;
+}
+.bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  border: 6px solid transparent;
+  border-top-color: white;
+  z-index: 1;
+}
+.bubble.L { left: 10px; top: 10px; }
+.bubble.L::after  { left: 18px; }
+.bubble.L::before { left: 20px; }
+.bubble.R { right: 10px; top: 10px; }
+.bubble.R::after  { right: 18px; }
+.bubble.R::before { right: 20px; }
+.bubble.C {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.bubble.C::after  { left: 50%; margin-left: -8px; }
+.bubble.C::before { left: 50%; margin-left: -6px; }
+
+/* 思考气泡 */
+.think {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  border: 2.5px solid #111;
+  border-radius: 50%;
+  width: 120px; height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 11px;
+  padding: 8px;
+  z-index: 10;
+}
+.think::after {
+  content: '• • •';
+  position: absolute;
+  bottom: -18px;
+  right: 20px;
+  font-size: 12px;
+  color: #111;
+  letter-spacing: 2px;
+}
+
+/* 旁白框 */
+.narr {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #fff9c4;
+  border: 2px solid #888;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-style: italic;
+  color: #444;
+  z-index: 10;
+  max-width: 80%;
+}
+
+/* ===== 对话格：气泡在上、人物在下，避免遮挡 ===== */
+.panel.talk {
+  justify-content: flex-start;
+  align-items: center;
+  min-height: auto;
+  padding: 14px 12px 0;
+  gap: 4px;
+}
+.panel.talk .bubble {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  transform: none;
+  max-width: 94%;
+  margin: 0 auto 2px;
+}
+.panel.talk .bubble::after  { left: 50%; margin-left: -8px; right: auto; }
+.panel.talk .bubble::before { left: 50%; margin-left: -6px; right: auto; }
+.panel.talk .think {
+  position: relative;
+  top: auto;
+  right: auto;
+  left: auto;
+  margin: 0 auto 10px;
+}
+.panel.talk .char { margin-top: auto; }
+
+/* ===== 横向对话格：人物靠左边线、气泡在右侧，横向不重叠 ===== */
+.panel.talk-lr {
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 14px 14px 0 0;      /* 左侧无内边距，让人物贴边线 */
+  min-height: auto;
+}
+.panel.talk-lr .char {
+  margin-top: 0;
+  margin-left: 0;
+  align-self: flex-end;
+  flex-shrink: 0;
+  order: 0;                    /* 人物排最左 */
+}
+.panel.talk-lr .bubble {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  transform: none;
+  margin: 0 0 34px 26px;       /* 抬高到人物上半身高度；左移一点缩小右格线间隔 */
+  max-width: 66%;
+  align-self: center;
+  order: 1;                    /* 气泡排人物右侧 */
+}
+/* 气泡尾巴改为朝左，指向左边的人物 */
+.panel.talk-lr .bubble::after {
+  left: -14px; bottom: auto; top: 22px;
+  border: 7px solid transparent;
+  border-right-color: #111;
+  border-top-color: transparent;
+}
+.panel.talk-lr .bubble::before {
+  left: -9px; bottom: auto; top: 23px;
+  border: 6px solid transparent;
+  border-right-color: white;
+  border-top-color: transparent;
+}
+/* 思想气泡在 talk-lr 里同样人物靠左、气泡在右 */
+.panel.talk-lr .think {
+  position: relative;
+  top: auto; right: auto; left: auto;
+  order: 1;
+  margin: 0 0 40px 30px;
+  align-self: center;
+}
+.panel.talk-lr .think::after {
+  right: auto; left: -22px; bottom: 6px;
+}
+
+.panel.title {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height: 100px;
+  justify-content: center;
+  padding: 16px;
+}
+.panel.title h1 {
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  text-shadow: 3px 3px 0 #e94560, -1px -1px 0 #f5a623;
+  line-height: 1.4;
+}
+.panel.title p {
+  color: #aaa;
+  font-size: 11px;
+  text-align: center;
+  margin-top: 6px;
+}
+.panel.title .credit {
+  margin-top: 10px;
+  font-size: 13px;
+  color: rgba(255,255,255,.72);
+  letter-spacing: .5px;
+  text-align: center;
+}
+
+/* ===== VCS 色彩主题格 ===== */
+.panel.svn-bg   { background: #eef4ff; border-left: 5px solid #4a90e2; min-height: 300px; }
+.panel.p4-bg    { background: #fff6ee; border-left: 5px solid #e8832a; min-height: 300px; }
+.panel.git-bg   { background: #efffef; border-left: 5px solid #27ae60; min-height: 300px; }
+
+/* ===== 对比格（三列并排） ===== */
+.panel.compare {
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 12px;
+  min-height: 200px;
+}
+.compare-label {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.compare-label.svn { background: #4a90e2; color: white; }
+.compare-label.p4  { background: #e8832a; color: white; }
+.compare-label.git { background: #27ae60; color: white; }
+
+.compare-item {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #333;
+}
+.compare-item .good { color: #27ae60; }
+.compare-item .bad  { color: #e74c3c; }
+.compare-item .img-row {
+  display: flex;
+  justify-content: center;
+  margin: 6px 0;
+}
+
+/* ===== 双人对话格：两人分列左右，两个气泡并列在中间 ===== */
+.panel.duo {
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 12px 16px 0;
+  min-height: auto;
+  gap: 6px;
+}
+.panel.duo .char { flex-shrink: 0; }
+.panel.duo > .char:first-of-type { margin-right: -26px; }
+.panel.duo > .char:last-of-type  { margin-left: -26px; }
+.duo-bubbles {
+  flex: 0 1 auto;
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+.duo-bubbles .bubble {
+  position: relative;
+  top: auto; left: auto; right: auto; transform: none;
+  margin: 0;
+  max-width: 47%;
+}
+.duo-bubbles .bubble::after,
+.duo-bubbles .bubble::before { content: ''; display: none; }
+/* 左边气泡尾巴朝左，指向左侧人物 */
+.duo-bubbles .bubble.to-left::after  { display: block; left: -14px; top: 22px; bottom: auto; border: 7px solid transparent; border-right-color: #111; }
+.duo-bubbles .bubble.to-left::before { display: block; left: -9px;  top: 23px; bottom: auto; border: 6px solid transparent; border-right-color: #fff; }
+/* 右边气泡尾巴朝右，指向右侧人物 */
+.duo-bubbles .bubble.to-right::after  { display: block; right: -14px; top: 22px; bottom: auto; border: 7px solid transparent; border-left-color: #111; }
+.duo-bubbles .bubble.to-right::before { display: block; right: -9px;  top: 23px; bottom: auto; border: 6px solid transparent; border-left-color: #fff; }
+
+/* ===== 结尾格 ===== */
+.panel.end {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  justify-content: center;
+  min-height: 90px;
+  padding: 16px;
+}
+.panel.end p {
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+  line-height: 1.6;
+}
+
+/* ===== 架构示意 ===== */
+.arch-box {
+  border: 2px solid #333;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 10px;
+  text-align: center;
+  background: white;
+  margin: 2px;
+  line-height: 1.4;
+}
+.arch-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 4px 0;
+}
+.arch-arrow { font-size: 16px; color: #555; }
+.server-box {
+  background: #4a90e2;
+  color: white;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+}
+.client-box {
+  background: #f0f0f0;
+  border: 1.5px solid #aaa;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+}
+
+/* 决策树格 */
+.decision-panel {
+  padding: 14px;
+  font-size: 11px;
+  justify-content: flex-start;
+  min-height: 180px;
+}
+.dec-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+}
+.dec-icon { font-size: 18px; }
+.dec-text { font-size: 11px; line-height: 1.5; }
+.dec-tag {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
+  white-space: nowrap;
+}
+.tag-git { background: #27ae60; }
+.tag-p4  { background: #e8832a; }
+.tag-svn { background: #4a90e2; }
+
+footer {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #999;
+  text-align: center;
+}
+footer a { color: #6c5ce7; }
+</style>
+</head>
+<body>
+
+<div class="comic">
+
+  <!-- ======== 第1格：封面标题 ======== -->
+  <div class="panel title col3">
+    <h1>📦 版本管理大乱斗<br>SVN · Perforce · Git 怎么选？</h1>
+    <p>改编自《版本管理这条路》 · comicgen 漫画版</p>
+    <div class="credit">公众号：芯片验证碎碎念</div>
+  </div>
+
+  <!-- ======== 第2格：新人提问 + 工程师解答（一行双人对话 → duo） ======== -->
+  <div class="panel duo col3">
+    <img class="char sm" src="https://gramener.com/comicgen/v1/comic?name=trump&emotion=confused&pose=shrug" alt="">
+    <div class="duo-bubbles">
+      <div class="bubble to-left">
+        我们组用 Perforce，隔壁用 Git，<br>
+        学校教的是 SVN…<br>
+        这三个<strong>到底有啥区别</strong>？<br>
+        为什么不统一用一个？🤔
+      </div>
+      <div class="bubble to-right">
+        好问题！这三个都是<strong>版本控制工具</strong>，<br>
+        先想清楚版本管理要解决什么：<br>
+        ① 谁·在什么时候·改了哪一行<br>
+        ② 多人同时改，怎么合并不打架<br>
+        ③ 改错了，怎么一键回退到从前<br>
+        三者就是针对这三点的<strong>三种答案</strong>！
+      </div>
+    </div>
+    <img class="char sm flip" src="https://gramener.com/comicgen/v1/comic?name=ringonuovo&angle=straight&emotion=smile&pose=holdingbook" alt="">
+  </div>
+
+  <!-- ======== 第4格：SVN 介绍 ======== -->
+  <div class="panel svn-bg">
+    <div class="narr">① SVN — 集中式</div>
+    <div class="bubble C" style="max-width:90%;top:36px">
+      只有一个中心服务器 📡<br>
+      版本号统一递增，结构简单！<br>
+      <span style="color:#e74c3c">但断网就啥都干不了 😅</span>
+    </div>
+    <!-- SVN 架构图 -->
+    <div style="display:flex;flex-direction:column;align-items:center;width:100%;margin-bottom:10px;margin-top:90px">
+      <div class="server-box" style="background:#4a90e2">🗄️ SVN 服务器<br><small>唯一版本历史</small></div>
+      <div class="arch-arrow">↕</div>
+      <div class="arch-row">
+        <div class="client-box">👩‍💻 小A</div>
+        <div class="client-box">👨‍💻 小B</div>
+        <div class="client-box">👩‍💻 小C</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== 第5格：Perforce 介绍 ======== -->
+  <div class="panel p4-bg">
+    <div class="narr">② Perforce — 大文件专家</div>
+    <div class="bubble C" style="max-width:90%;top:36px">
+      同样中心化，但专为<br>
+      <strong>海量二进制文件</strong>而生 🎮🔬<br>
+      签出锁定防冲突，<br>
+      按需同步，不怕百万个文件！
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;width:100%;margin-bottom:10px;margin-top:90px">
+      <div class="server-box" style="background:#e8832a">🗄️ P4 服务器<br><small>100万个文件 OK</small></div>
+      <div class="arch-arrow">↕ 按需同步</div>
+      <div class="arch-row">
+        <div class="arch-box">🎨 美术<br>锁定中</div>
+        <div class="arch-box">🔧 工程<br>已签出</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== 第6格：Git 介绍 ======== -->
+  <div class="panel git-bg">
+    <div class="narr">③ Git — 分布式</div>
+    <div class="bubble C" style="max-width:90%;top:36px">
+      <strong>完整历史在每个人电脑里！</strong><br>
+      离线也能工作 ✈️<br>
+      分支几乎零成本，<br>
+      PR 内置代码审查 🚀
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;width:100%;margin-bottom:10px;margin-top:90px">
+      <div class="arch-row">
+        <div class="arch-box" style="background:#c8f0d4;border-color:#27ae60">👩‍💻 完整历史<br>小A 本地</div>
+        <div class="arch-arrow">⟷</div>
+        <div class="arch-box" style="background:#c8f0d4;border-color:#27ae60">👨‍💻 完整历史<br>小B 本地</div>
+      </div>
+      <div class="arch-arrow">↕ push/pull</div>
+      <div class="server-box" style="background:#27ae60">☁️ GitHub / GitLab</div>
+    </div>
+  </div>
+
+  <!-- ======== 第7格：Sophie 恍然大悟 ======== -->
+  <div class="panel talk-lr">
+    <div class="think">原来设计目标<br>根本不一样！</div>
+    <img class="char" src="https://gramener.com/comicgen/v1/comic?name=trump&emotion=shocked&pose=handsfolded" alt="">
+  </div>
+
+  <!-- ======== 第8格：三栏对比 ======== -->
+  <div class="panel compare col2" style="min-height:auto;padding:14px;flex-direction:row;align-items:center;gap:8px">
+    <div style="flex:1">
+      <div class="compare-label svn">SVN</div>
+      <div class="compare-item">
+        <span class="good">✔</span> 结构简单，心智负担低<br>
+        <span class="good">✔</span> 目录、权限管理好<br>
+        <span class="bad">✘</span> 断网啥都干不了<br>
+        <span class="bad">✘</span> 分支合并体验差
+      </div>
+    </div>
+    <div style="flex:1">
+      <div class="compare-label p4">Perforce</div>
+      <div class="compare-item">
+        <span class="good">✔</span> 百万文件也流畅<br>
+        <span class="good">✔</span> 签出锁定防冲突<br>
+        <span class="bad">✘</span> 商业授权贵<br>
+        <span class="bad">✘</span> 分支操作重
+      </div>
+    </div>
+    <div style="flex:1">
+      <div class="compare-label git">Git</div>
+      <div class="compare-item">
+        <span class="good">✔</span> 离线可用<br>
+        <span class="good">✔</span> 分支几乎零成本<br>
+        <span class="bad">✘</span> 仓库随历史变大<br>
+        <span class="bad">✘</span> 二进制文件弱
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== 第9格：如何选？老工程师说 ======== -->
+  <div class="panel duo col3">
+    <img class="char sm" src="https://gramener.com/comicgen/v1/comic?name=trump&emotion=worried&pose=handsonhip" alt="">
+    <div class="duo-bubbles">
+      <div class="bubble to-left">
+        那我该怎么选呀？<br>
+        好难决定… 😩
+      </div>
+      <div class="bubble to-right">
+        关键看<strong>文件类型</strong><br>
+        和<strong>团队协作模式</strong>！<br>
+        不是哪个更先进，<br>
+        是哪个更适合你 😎
+      </div>
+    </div>
+    <img class="char sm flip" src="https://gramener.com/comicgen/v1/comic?name=ringonuovo&angle=straight&emotion=smile&pose=pointingright" alt="">
+  </div>
+
+  <!-- ======== 第10格：决策树 ======== -->
+  <div class="panel decision-panel col3 row-auto" style="min-height:auto;padding:16px">
+    <div style="font-weight:bold;font-size:13px;margin-bottom:10px;text-align:center">🗺️ 选型决策速查</div>
+    <div class="dec-row">
+      <span class="dec-icon">📝</span>
+      <div class="dec-text"><strong>以文本代码为主</strong>，需要频繁分支 & 开源协作</div>
+      <span class="dec-tag tag-git">→ Git + GitHub</span>
+    </div>
+    <div class="dec-row">
+      <span class="dec-icon">🎮</span>
+      <div class="dec-text"><strong>海量二进制大文件</strong>（游戏美术/芯片设计），需签出锁定</div>
+      <span class="dec-tag tag-p4">→ Perforce</span>
+    </div>
+    <div class="dec-row">
+      <span class="dec-icon">🏢</span>
+      <div class="dec-text"><strong>小团队、文本代码</strong>，不需要复杂分支，心智负担低优先</div>
+      <span class="dec-tag tag-svn">→ SVN</span>
+    </div>
+    <div class="dec-row" style="background:#f5f5f5;border-color:#bbb">
+      <span class="dec-icon">🔀</span>
+      <div class="dec-text"><strong>代码 + 大二进制都有</strong>？可以代码用 Git、资产用 Perforce，分开管理各取所长</div>
+      <span class="dec-tag" style="background:#9b59b6">→ 混用</span>
+    </div>
+  </div>
+
+  <!-- ======== 第11格：总结 + 实用 Tips（一行双人对话 → duo） ======== -->
+  <div class="panel duo col3">
+    <img class="char sm" src="https://gramener.com/comicgen/v1/comic?name=trump&emotion=happy&pose=yuhoo" alt="">
+    <div class="duo-bubbles">
+      <div class="bubble to-left" style="font-size:11px">
+        搞清楚<strong>设计逻辑</strong>，<br>
+        遇到新项目该选什么、<br>
+        老项目要不要迁移，<br>
+        心里就有数了！💪
+      </div>
+      <div class="bubble to-right" style="font-size:11px">
+        💡 <strong>三条实用建议：</strong><br>
+        ① 大二进制别直接 git add，用 LFS<br>
+        ② 提交信息认真写，任何工具都一样<br>
+        ③ Perforce 改文件前记得 <code>p4 edit</code>！
+      </div>
+    </div>
+    <img class="char sm flip" src="https://gramener.com/comicgen/v1/comic?name=ringonuovo&angle=straight&emotion=wink&pose=thumbsup" alt="">
+  </div>
+
+  <!-- ======== 结尾格 ======== -->
+  <div class="panel end col3 row-auto" style="min-height:auto;padding:16px">
+    <p>
+      版本历史放在哪里 → 决定了整套协作方式<br>
+      SVN 留在中心 · Perforce 中心+锁定优化 · Git 分发到每个人<br>
+      <strong>选型不问"哪个先进"，问"哪个适合你的场景"</strong>
+    </p>
+  </div>
+
+</div>
+
+<footer>
+  漫画内容基于 <a href="https://github.com/daxuxuxu/wechat_airtual/blob/main/7_9/vcs_comparison/vcs_comparison_article.md" target="_blank">vcs_comparison_article.md</a>
+  · 人物由 <a href="https://github.com/gramener/comicgen" target="_blank">gramener/comicgen</a> 生成
+</footer>
+
+</body>
+</html>
+
+
