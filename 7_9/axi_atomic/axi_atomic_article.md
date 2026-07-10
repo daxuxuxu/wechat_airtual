@@ -1,4 +1,4 @@
-## [AXI] AXI 里也有 Atomic 操作吗？和 PCIe 的 Atomic 有什么不同
+## [AXI] AXI 中的 Atomic，和 PCIe 的 Atomic 有什么不同
 
 ![封面](cover_axi_atomic.png)
 
