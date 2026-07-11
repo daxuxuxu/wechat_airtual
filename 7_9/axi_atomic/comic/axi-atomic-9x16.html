@@ -255,6 +255,7 @@
     <div class="narr">和 PCIe 第一个差异：AXI 把「<strong>要不要返回旧值</strong>」做成<span class="em-b">显式可选项</span>，可走更轻量路径。运算原语也更丰富 👇</div>
     <div class="chips">
       <span class="chip op">加法</span>
+      <span class="chip op">交换</span>
       <span class="chip op">按位清零</span>
       <span class="chip op">按位异或</span>
       <span class="chip op">按位置位</span>
@@ -314,9 +315,9 @@
   <div class="panel sec col3">
     <table class="cmp">
       <tr><th>维度</th><th class="h-pcie">PCIe</th><th class="h-axi">AXI</th></tr>
-      <tr><td>传输方式</td><td>专用 TLP 报文</td><td>复用写/读通道 + ATOP 字段</td></tr>
+      <tr><td>传输方式</td><td>专用 TLP 报文<br>(Non-Posted 信用通道)</td><td>复用写/读通道 + ATOP 字段</td></tr>
       <tr><td>返回旧值</td><td>固定返回</td><td>显式可选</td></tr>
-      <tr><td>运算种类</td><td>加/交换/CAS</td><td>+按位/取最值，更广</td></tr>
+      <tr><td>运算种类</td><td>加/交换/CAS</td><td>+比较/按位/取最值，更广</td></tr>
       <tr><td>能力发现</td><td>配置空间提前查</td><td>错误响应即时反馈</td></tr>
     </table>
     <div class="narr" style="margin-top:8px;">共同点：原子性主体都是<strong>目标端硬件</strong>，序列不可分割，把软件加锁的语义下沉到硬件。</div>
