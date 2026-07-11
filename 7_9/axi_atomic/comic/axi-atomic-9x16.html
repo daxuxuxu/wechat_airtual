@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AXI Atomic vs PCIe Atomic · 漫画</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #e9edf2;
+    font-family: "PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+    padding: 24px 12px 40px;
+    color: #1c2430;
+  }
+  .comic {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .panel {
+    position: relative;
+    background: #fff;
+    border: 3px solid #111;
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 200px;
+    box-shadow: 4px 4px 0 rgba(0,0,0,.18);
+  }
+  .col2, .col3 { grid-column: span 1; }
+
+  .char { height: 210px; display: block; }
+  .char.sm { height: 185px; }
+  .char.flip { transform: scaleX(-1); }
+
+  /* 气泡 */
+  .bubble {
+    position: relative;
+    background: #fff;
+    border: 3px solid #111;
+    border-radius: 14px;
+    padding: 10px 14px;
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 94%;
+  }
+  .bubble::after {
+    content: ''; position: absolute; left: 50%; bottom: -14px; margin-left: -8px;
+    border: 7px solid transparent; border-top-color: #111;
+  }
+  .bubble::before {
+    content: ''; position: absolute; left: 50%; bottom: -9px; margin-left: -6px;
+    border: 6px solid transparent; border-top-color: #fff; z-index: 1;
+  }
+  .think {
+    position: relative;
+    background: #fff; border: 3px solid #111; border-radius: 20px;
+    padding: 10px 14px; font-size: 15px; line-height: 1.5; max-width: 90%;
+  }
+
+  /* 横向对话格：人物靠左、气泡在右 */
+  .panel.talk-lr {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 14px 14px 0 0;
+    min-height: auto;
+  }
+  .panel.talk-lr .char { margin-top: 0; margin-left: 0; align-self: flex-end; flex-shrink: 0; order: 0; }
+  .panel.talk-lr .bubble {
+    top: auto; left: auto; right: auto; transform: none;
+    margin: 0 0 40px 26px; max-width: 66%; align-self: center; order: 1;
+  }
+  .panel.talk-lr .bubble::after {
+    left: -14px; bottom: auto; top: 22px; margin-left: 0;
+    border: 7px solid transparent; border-right-color: #111; border-top-color: transparent;
+  }
+  .panel.talk-lr .bubble::before {
+    left: -9px; bottom: auto; top: 23px; margin-left: 0;
+    border: 6px solid transparent; border-right-color: #fff; border-top-color: transparent;
+  }
+
+  /* 双人对话格 */
+  .panel.duo {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 12px 12px 0;
+    min-height: auto;
+    gap: 6px;
+  }
+  .panel.duo .char { flex-shrink: 0; }
+  .panel.duo > .char:first-of-type { margin-right: -22px; }
+  .panel.duo > .char:last-of-type  { margin-left: -22px; }
+  .duo-bubbles {
+    flex: 0 1 auto; align-self: center;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px;
+  }
+  .duo-bubbles .bubble { top: auto; left: auto; right: auto; transform: none; margin: 0; max-width: 100%; }
+  .duo-bubbles .bubble::after, .duo-bubbles .bubble::before { display: none; }
+  .duo-bubbles .bubble.to-left::after  { display: block; left: -14px; top: 20px; bottom: auto; margin-left: 0; border: 7px solid transparent; border-right-color: #111; }
+  .duo-bubbles .bubble.to-left::before { display: block; left: -9px;  top: 21px; bottom: auto; margin-left: 0; border: 6px solid transparent; border-right-color: #fff; }
+  .duo-bubbles .bubble.to-right::after  { display: block; right: -14px; top: 20px; bottom: auto; margin-left: 0; border: 7px solid transparent; border-left-color: #111; }
+  .duo-bubbles .bubble.to-right::before { display: block; right: -9px;  top: 21px; bottom: auto; margin-left: 0; border: 6px solid transparent; border-left-color: #fff; }
+
+  /* 封面 */
+  .panel.title {
+    background: linear-gradient(135deg,#1e3a5f 0%,#2d6a9f 55%,#3f8fc4 100%);
+    color: #fff; align-items: center; justify-content: center; text-align: center;
+    min-height: 300px; gap: 8px;
+  }
+  .panel.title .tag {
+    font-size: 15px; font-weight: bold; letter-spacing: 2px;
+    background: #ffd24a; color: #1e3a5f; padding: 4px 14px; border-radius: 20px; border: 2px solid #111;
+  }
+  .panel.title h1 { font-size: 34px; line-height: 1.25; margin-top: 8px; text-shadow: 2px 2px 0 rgba(0,0,0,.25); }
+  .panel.title p { font-size: 17px; opacity: .95; margin-top: 4px; }
+  .panel.title .credit {
+    margin-top: 16px; font-size: 24px; font-weight: bold;
+    color: rgba(255,255,255,.95); letter-spacing: .5px;
+  }
+
+  /* 主题色格 */
+  .panel .narr {
+    font-size: 15px; line-height: 1.6; background: rgba(0,0,0,.05);
+    border-left: 5px solid #2d6a9f; padding: 8px 12px; border-radius: 8px; margin-bottom: 10px;
+  }
+  .panel.sec { min-height: auto; }
+  .panel.sec .htitle {
+    font-size: 19px; font-weight: bold; color: #1e3a5f; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .panel.sec .htitle .num {
+    background: #2d6a9f; color: #fff; width: 30px; height: 30px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; border: 2px solid #111;
+  }
+  .panel.axi-bg  { background: linear-gradient(135deg,#eaf4fb,#d4e9f7); }
+  .panel.pcie-bg { background: linear-gradient(135deg,#fdeee6,#fbdcc9); }
+  .panel.warn-bg { background: linear-gradient(135deg,#fdf0f0,#f9d9d9); }
+
+  /* 示意图/编码框 */
+  .diagram {
+    background: #fff; border: 2px dashed #2d6a9f; border-radius: 10px;
+    padding: 10px; font-size: 13px; line-height: 1.5; margin-top: 4px;
+  }
+  .encbox { display: flex; gap: 6px; justify-content: center; margin: 6px 0; flex-wrap: wrap; }
+  .encbit {
+    border: 2px solid #111; border-radius: 6px; padding: 6px 10px; font-size: 12px; font-weight: bold; text-align: center;
+    background: #fff; min-width: 70px;
+  }
+  .encbit small { display: block; font-weight: normal; color: #555; font-size: 11px; }
+  .encbit.hi { background: #ffe08a; }
+  .encbit.lo { background: #bfe3c6; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .chip { background: #fff; border: 2px solid #2d6a9f; color: #1e3a5f; border-radius: 16px; padding: 3px 10px; font-size: 13px; font-weight: bold; }
+  .chip.op { border-color: #c0632a; color: #a24a17; }
+
+  /* 通道对比 */
+  .lanes { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  .lane { display: flex; align-items: center; gap: 8px; background: #fff; border: 2px solid #111; border-radius: 10px; padding: 8px 10px; font-size: 13px; }
+  .lane .badge { font-size: 12px; font-weight: bold; color:#fff; padding: 3px 8px; border-radius: 6px; flex-shrink: 0; }
+  .lane .badge.w { background: #2d6a9f; }
+  .lane .badge.r { background: #c0632a; }
+  .lane .flow { flex: 1; }
+  .arrow { color: #2d6a9f; font-weight: bold; }
+
+  /* 对比表 */
+  .cmp { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 12.5px; }
+  .cmp th, .cmp td { border: 2px solid #111; padding: 6px 7px; text-align: left; vertical-align: top; }
+  .cmp th { background: #1e3a5f; color: #fff; text-align: center; }
+  .cmp td:first-child { background: #f2f6fa; font-weight: bold; white-space: nowrap; }
+  .cmp .h-axi { background: #d4e9f7; }
+  .cmp .h-pcie { background: #fbdcc9; }
+
+  /* 结尾 */
+  .panel.end {
+    background: linear-gradient(135deg,#12233a,#1e3a5f); color: #fff;
+    align-items: center; justify-content: center; text-align: center; min-height: 220px; gap: 10px;
+  }
+  .panel.end .big { font-size: 22px; font-weight: bold; line-height: 1.4; }
+  .panel.end .sub { font-size: 15px; opacity: .9; line-height: 1.6; }
+  .panel.end .credit { margin-top: 8px; font-size: 20px; font-weight: bold; color: #ffd24a; }
+
+  strong { color: #a24a17; }
+  .em-b { color: #1e3a5f; }
+  footer { text-align: center; color: #6a7686; font-size: 12px; margin-top: 20px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="comic">
+
+  <!-- 1. 封面 -->
+  <div class="panel title col3">
+    <div class="tag">AXI · 原子操作</div>
+    <h1>AXI 里的 Atomic<br>和 PCIe 有啥不同</h1>
+    <p>同名不同命 · 设备侧无锁读改写的两种活法</p>
+    <div class="credit">公众号：芯片验证碎碎念</div>
+  </div>
+
+  <!-- 2. 导读提问 -->
+  <div class="panel talk-lr">
+    <div class="bubble">写完 PCIe 那篇 Atomic，<br>同事问：<strong>AXI 总线上</strong><br>是不是也有类似机制？🤔</div>
+    <img class="char" src="https://gramener.com/comicgen/v1/comic?name=trump&emotion=confused&pose=makingapoint" alt="">
+  </div>
+
+  <!-- 3. 讲解回应 -->
+  <div class="panel talk-lr">
+    <img class="char" src="https://gramener.com/comicgen/v1/comic?name=ringonuovo&angle=straight&emotion=smile&pose=holdingbook" alt="">
+    <div class="bubble">确实都有「原子操作」！<br>核心问题一样，但<strong>落地方式差不少</strong>。<br>本文说的是 <span class="em-b">AXI5 的 ATOP</span>，<br>不是 ACE/CHI 那套缓存一致性哦。</div>
+  </div>
+
+  <!-- 4. 为什么需要 -->
+  <div class="panel sec axi-bg col3">
+    <div class="htitle"><span class="num">1</span>AXI 为什么也要原子操作</div>
+    <div class="narr">CPU 核心、加速器、DMA 引擎常要对<strong>共享内存</strong>做读改写：维护跨设备的<span class="em-b">计数器 / 信号量</span>、更新无锁数据结构。</div>
+    <div class="diagram">
+      没有硬件原子支持时，只能拆成三步：<br>
+      <b>读一次 → 改一次 → 写一次</b><br>
+      ⚠️ 中间任一步都可能被别的主设备<strong>插队</strong>，<br>读改写序列的完整性就保不住了。
+    </div>
+  </div>
+
+  <!-- 5. 一次事务打包 -->
+  <div class="panel talk-lr">
+    <div class="bubble">AXI5 让发起方用<strong>一次总线事务</strong>，<br>把「读·改·写」三步打包，<br>交给目标端（内存控制器/从设备）<br>一口气原子完成 ✅</div>
+    <img class="char" src="https://gramener.com/comicgen/v1/comic?name=ringonuovo&angle=straight&emotion=happy&pose=pointingup" alt="">
+  </div>
+
+  <!-- 6. 编码方式 -->
+  <div class="panel sec col3">
+    <div class="htitle"><span class="num">2</span>编码方式：一个字段定乾坤</div>
+    <div class="narr">原子类型信息编进写地址通道的 <strong>ATOP</strong> 字段，拆成两半：</div>
+    <div class="encbox">
+      <div class="encbit hi">高位<small>事务大类</small></div>
+      <div class="encbit lo">低位<small>具体运算</small></div>
+    </div>
+    <div style="font-size:13.5px;line-height:1.6;margin-top:4px;">
+      <b>三大类：</b>
+      <div class="chips">
+        <span class="chip">AtomicStore 只写</span>
+        <span class="chip">AtomicLoad 写+返回旧值</span>
+        <span class="chip">AtomicCompare 比较交换</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 运算丰富 -->
+  <div class="panel sec col3">
+    <div class="narr">和 PCIe 第一个差异：AXI 把「<strong>要不要返回旧值</strong>」做成<span class="em-b">显式可选项</span>，可走更轻量路径。运算原语也更丰富 👇</div>
+    <div class="chips">
+      <span class="chip op">加法</span>
+      <span class="chip op">按位清零</span>
+      <span class="chip op">按位异或</span>
+      <span class="chip op">按位置位</span>
+      <span class="chip op">有/无符号 最大值</span>
+      <span class="chip op">有/无符号 最小值</span>
+    </div>
+    <div class="diagram" style="margin-top:8px;">图形、网络包处理常要「取最大值 / 按位置位」维护状态标志，避免退化成读-算-写浪费总线周期。</div>
+  </div>
+
+  <!-- 8. 返回值通道 -->
+  <div class="panel sec pcie-bg col3">
+    <div class="htitle"><span class="num">3</span>返回值走哪条通道</div>
+    <div class="narr">请求永远走<strong>写通道</strong>发出；区别在「要不要拿回旧值」。</div>
+    <div class="lanes">
+      <div class="lane">
+        <span class="badge w">Store</span>
+        <span class="flow">写地址 <span class="arrow">→</span> 写数据 <span class="arrow">→</span> 写响应完成。<b>不碰读通道</b>，和普通写几乎一样。</span>
+      </div>
+      <div class="lane">
+        <span class="badge r">Load/Compare</span>
+        <span class="flow">写响应之余，旧值<strong>从读数据通道</strong>回传，复用<span class="em-b">同一事务 ID</span>。</span>
+      </div>
+    </div>
+    <div class="diagram" style="margin-top:8px;">🎯「发的是写请求、却在读通道收到数据」——初次接触最容易看漏的一点。</div>
+  </div>
+
+  <!-- 9. 目标端能力 -->
+  <div class="panel sec warn-bg col3">
+    <div class="htitle"><span class="num">4</span>目标端怎么知道要不要执行</div>
+    <div class="narr">原子性责任始终在<strong>目标端</strong>：读改写序列由它完整执行、中途不可打断。</div>
+    <div class="diagram">
+      不支持原子的从设备，<b>必须识别并给出错误响应</b>。<br>
+      ❌ 若错当普通写处理 → 「改」这一步丢失 → <strong>静默错误</strong>，看着像数据被覆盖。
+    </div>
+  </div>
+
+  <!-- 10. 验证提醒对话 -->
+  <div class="panel talk-lr">
+    <img class="char" src="https://gramener.com/comicgen/v1/comic?name=ringonuovo&angle=straight&emotion=hmm&pose=thinking" alt="">
+    <div class="bubble">所以验证时，<br>「支持时的正确路径」和<br>「<strong>不支持时的错误路径</strong>」<br>要同等重视！⚠️</div>
+  </div>
+
+  <!-- 11. 双人对比 duo -->
+  <div class="panel sec col3">
+    <div class="htitle"><span class="num">5</span>和 PCIe 放一起看</div>
+  </div>
+  <div class="panel duo col3">
+    <img class="char sm" src="https://gramener.com/comicgen/v1/comic?name=trump&emotion=smile&pose=makingapointwithconfidence" alt="">
+    <div class="duo-bubbles">
+      <div class="bubble to-left">PCIe：<strong>TLP 报文</strong>承载，<br>固定返回旧值，运算少，<br>能力靠<span class="em-b">配置空间提前发现</span>。</div>
+      <div class="bubble to-right">AXI：<strong>复用写/读通道</strong>，<br>返旧值可选，运算更全，<br>能力靠<span class="em-b">事务级错误响应即时反馈</span>。</div>
+    </div>
+    <img class="char sm flip" src="https://gramener.com/comicgen/v1/comic?name=ringonuovo&angle=straight&emotion=smirk&pose=pointingright" alt="">
+  </div>
+
+  <!-- 12. 对比表 -->
+  <div class="panel sec col3">
+    <table class="cmp">
+      <tr><th>维度</th><th class="h-pcie">PCIe</th><th class="h-axi">AXI</th></tr>
+      <tr><td>传输方式</td><td>专用 TLP 报文</td><td>复用写/读通道 + ATOP 字段</td></tr>
+      <tr><td>返回旧值</td><td>固定返回</td><td>显式可选</td></tr>
+      <tr><td>运算种类</td><td>加/交换/CAS</td><td>+按位/取最值，更广</td></tr>
+      <tr><td>能力发现</td><td>配置空间提前查</td><td>错误响应即时反馈</td></tr>
+    </table>
+    <div class="narr" style="margin-top:8px;">共同点：原子性主体都是<strong>目标端硬件</strong>，序列不可分割，把软件加锁的语义下沉到硬件。</div>
+  </div>
+
+  <!-- 13. 验证要点 -->
+  <div class="panel sec col3">
+    <div class="htitle"><span class="num">6</span>验证中容易被忽略的点</div>
+    <div style="font-size:13.5px;line-height:1.7;">
+      ① <strong>Store 与 Load/Compare</strong> 通道占用分别验，并发在途时事务 ID 匹配不能错。<br>
+      ② 每种<strong>运算类型逐一覆盖</strong>：全 0 / 全 1 / 符号位翻转等边界。<br>
+      ③ 旧值必须是<strong>运算前</strong>的值，发请求前记录再比对。<br>
+      ④ 目标端不支持时的<strong>错误路径</strong>（最难发现的静默写）。<br>
+      ⑤ <strong>跨对齐/突发边界</strong>的原子请求按规范处理。
+    </div>
+  </div>
+
+  <!-- 14. 结尾 -->
+  <div class="panel end col3">
+    <div class="big">同一个初衷，两种延伸</div>
+    <div class="sub">把设备侧读改写变成硬件保证的<br>不可分割单元，软件无需自旋锁。<br>差异都是各自协议基础设施上的自然延伸。</div>
+    <div class="credit">公众号：芯片验证碎碎念</div>
+  </div>
+
+</div>
+<footer>素材来源：AMBA AXI 协议规范 · PCIe Base Specification<br>人物由 gramener/comicgen 生成 · 仅供学习交流</footer>
+</body>
+</html>
