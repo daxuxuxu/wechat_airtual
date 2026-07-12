@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AXI 握手与反压 · 漫画</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #e9edf2;
+    font-family: "PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+    padding: 24px 12px 40px;
+    color: #1c2430;
+  }
+  .comic { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 620px; margin: 0 auto; }
+  .panel {
+    position: relative; background: #fff; border: 3px solid #111; border-radius: 14px;
+    padding: 16px; display: flex; flex-direction: column; overflow: hidden;
+    min-height: 200px; box-shadow: 4px 4px 0 rgba(0,0,0,.18);
+  }
+  .col2, .col3 { grid-column: span 1; }
+
+  .char { height: 210px; display: block; }
+  .char.sm { height: 185px; }
+  .char.flip { transform: scaleX(-1); }
+
+  .bubble {
+    position: relative; background: #fff; border: 3px solid #111; border-radius: 14px;
+    padding: 10px 14px; font-size: 16px; line-height: 1.5; max-width: 94%;
+  }
+  .bubble::after { content: ''; position: absolute; left: 50%; bottom: -14px; margin-left: -8px; border: 7px solid transparent; border-top-color: #111; }
+  .bubble::before { content: ''; position: absolute; left: 50%; bottom: -9px; margin-left: -6px; border: 6px solid transparent; border-top-color: #fff; z-index: 1; }
+
+  /* 横向对话格 */
+  .panel.talk-lr { flex-direction: row; align-items: flex-end; justify-content: flex-start; gap: 12px; padding: 14px 14px 0 0; min-height: auto; }
+  .panel.talk-lr .char { margin-top: 0; margin-left: 0; align-self: flex-end; flex-shrink: 0; order: 0; }
+  .panel.talk-lr .bubble { top: auto; left: auto; right: auto; transform: none; margin: 0 0 40px 26px; max-width: 66%; align-self: center; order: 1; }
+  .panel.talk-lr .bubble::after { left: -14px; bottom: auto; top: 22px; margin-left: 0; border: 7px solid transparent; border-right-color: #111; border-top-color: transparent; }
+  .panel.talk-lr .bubble::before { left: -9px; bottom: auto; top: 23px; margin-left: 0; border: 6px solid transparent; border-right-color: #fff; border-top-color: transparent; }
+
+  /* 双人对话格 */
+  .panel.duo { flex-direction: row; align-items: flex-end; justify-content: center; padding: 12px 12px 0; min-height: auto; gap: 6px; }
+  .panel.duo .char { flex-shrink: 0; }
+  .panel.duo > .char:first-of-type { margin-right: -22px; }
+  .panel.duo > .char:last-of-type { margin-left: -22px; }
+  .duo-bubbles { flex: 0 1 auto; align-self: center; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px; }
+  .duo-bubbles .bubble { top: auto; left: auto; right: auto; transform: none; margin: 0; max-width: 100%; }
+  .duo-bubbles .bubble::after, .duo-bubbles .bubble::before { display: none; }
+  .duo-bubbles .bubble.to-left::after  { display: block; left: -14px; top: 20px; bottom: auto; margin-left: 0; border: 7px solid transparent; border-right-color: #111; }
+  .duo-bubbles .bubble.to-left::before { display: block; left: -9px;  top: 21px; bottom: auto; margin-left: 0; border: 6px solid transparent; border-right-color: #fff; }
+  .duo-bubbles .bubble.to-right::after  { display: block; right: -14px; top: 20px; bottom: auto; margin-left: 0; border: 7px solid transparent; border-left-color: #111; }
+  .duo-bubbles .bubble.to-right::before { display: block; right: -9px;  top: 21px; bottom: auto; margin-left: 0; border: 6px solid transparent; border-left-color: #fff; }
+
+  /* 封面 */
+  .panel.title { background: linear-gradient(135deg,#0f2a4a 0%,#1c4e80 55%,#2f7d5b 100%); color: #fff; align-items: center; justify-content: center; text-align: center; min-height: 300px; gap: 8px; }
+  .panel.title .tag { font-size: 15px; font-weight: bold; letter-spacing: 2px; background: #ffd24a; color: #123; padding: 4px 14px; border-radius: 20px; border: 2px solid #111; }
+  .panel.title h1 { font-size: 30px; line-height: 1.3; margin-top: 8px; text-shadow: 2px 2px 0 rgba(0,0,0,.25); }
+  .panel.title p { font-size: 17px; opacity: .95; margin-top: 4px; }
+  .panel.title .credit { margin-top: 16px; font-size: 24px; font-weight: bold; color: rgba(255,255,255,.95); letter-spacing: .5px; }
+
+  /* 主题格 */
+  .panel .narr { font-size: 15px; line-height: 1.6; background: rgba(0,0,0,.05); border-left: 5px solid #1c4e80; padding: 8px 12px; border-radius: 8px; margin-bottom: 10px; }
+  .panel.sec { min-height: auto; }
+  .panel.sec .htitle { font-size: 19px; font-weight: bold; color: #123a5e; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .panel.sec .htitle .num { background: #1c4e80; color: #fff; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; border: 2px solid #111; }
+  .panel.valid-bg { background: linear-gradient(135deg,#eaf2fb,#d5e6f7); }
+  .panel.ready-bg { background: linear-gradient(135deg,#e9f6ee,#d2ecdb); }
+  .panel.warn-bg  { background: linear-gradient(135deg,#fdf0f0,#f9d9d9); }
+
+  .diagram { background: #fff; border: 2px dashed #1c4e80; border-radius: 10px; padding: 10px; font-size: 13px; line-height: 1.5; margin-top: 4px; }
+
+  /* 波形 */
+  .wave { background:#fff; border:2px solid #111; border-radius:10px; padding:10px 8px 6px; margin-top:4px; }
+  .wave svg { width:100%; height:auto; display:block; }
+  .wave .cap { text-align:center; font-size:12.5px; color:#a24a17; font-weight:bold; margin-top:4px; }
+
+  /* 代码 */
+  .code { background:#0f1b2d; color:#d6e4f0; border-radius:10px; padding:10px 12px; font-family:Consolas,"Courier New",monospace; font-size:12.5px; line-height:1.6; margin-top:6px; overflow-x:auto; white-space:pre; }
+  .code .ok { color:#7ee0a0; }
+  .code .bad { color:#ff8f8f; }
+  .code .cm { color:#7f93a8; }
+  .code .kw { color:#ffd24a; }
+
+  /* 死锁两栏 */
+  .twin { display:flex; gap:8px; margin-top:4px; }
+  .twin .col { flex:1; border:2px solid #111; border-radius:10px; padding:8px; background:#fff; }
+  .twin .col.legal { border-color:#2f7d5b; }
+  .twin .col.illegal { border-color:#c0392b; }
+  .twin .col .ct { font-weight:bold; font-size:13px; text-align:center; margin-bottom:6px; }
+  .twin .col.legal .ct { color:#2f7d5b; }
+  .twin .col.illegal .ct { color:#c0392b; }
+  .mods { display:flex; align-items:center; justify-content:center; gap:4px; margin:6px 0; }
+  .mod { background:#0f2a4a; color:#fff; border-radius:6px; padding:6px 8px; font-size:11px; font-weight:bold; text-align:center; line-height:1.3; }
+  .rel { font-size:12px; line-height:1.5; text-align:center; }
+  .rel .g { color:#2f7d5b; font-weight:bold; }
+  .rel .r { color:#c0392b; font-weight:bold; }
+
+  /* 反压流水线 */
+  .pipe { display:flex; align-items:center; gap:3px; margin:6px 0; flex-wrap:nowrap; }
+  .stg { flex:1; color:#fff; border:2px solid #111; border-radius:8px; padding:8px 2px; font-size:11px; font-weight:bold; text-align:center; line-height:1.25; }
+  .stg.src { background:#0f2a4a; } .stg.mid { background:#1c4e80; } .stg.hot { background:#e07b1a; } .stg.blk { background:#c0392b; }
+  .pipe .fwd { color:#1c4e80; font-weight:bold; font-size:14px; }
+  .bpline { text-align:center; color:#c0392b; font-weight:bold; font-size:13px; margin-top:2px; }
+
+  /* 对比表 */
+  .cmp { width:100%; border-collapse:collapse; margin-top:6px; font-size:12.5px; }
+  .cmp th, .cmp td { border:2px solid #111; padding:6px 7px; text-align:left; vertical-align:top; }
+  .cmp th { background:#123a5e; color:#fff; text-align:center; }
+  .cmp td:first-child { background:#f2f6fa; font-weight:bold; white-space:nowrap; }
+
+  /* 结尾 */
+  .panel.end { background: linear-gradient(135deg,#0d2138,#123a5e); color: #fff; align-items: center; justify-content: center; text-align: center; min-height: 220px; gap: 10px; }
+  .panel.end .big { font-size: 21px; font-weight: bold; line-height: 1.4; }
+  .panel.end .sub { font-size: 15px; opacity: .9; line-height: 1.6; }
+  .panel.end .credit { margin-top: 8px; font-size: 20px; font-weight: bold; color: #ffd24a; }
+
+  strong { color: #c0552a; }
+  .em-b { color: #1c4e80; }
+  .vd { color:#1c6fd0; font-weight:bold; }
+  .rd { color:#2f7d5b; font-weight:bold; }
+  footer { text-align: center; color: #6a7686; font-size: 12px; margin-top: 20px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="comic">
+
+  <!-- 1. 封面 -->
+  <div class="panel title col3">
+    <div class="tag">AXI · 握手 / 反压</div>
+    <h1>一个 VALID/READY 信号<br>为什么能挡住整条流水线</h1>
+    <p>把握手规则和反压传导一次讲透</p>
+    <div class="credit">公众号：芯片验证碎碎念</div>
+  </div>
+
+  <!-- 2. 导读提问 -->
+  <div class="panel talk-lr">
+    <div class="bubble">总线卡死了！查到最后：<br>某级的 <span class="rd">ready</span> 被写成<br>依赖对方 <span class="vd">valid</span> 的组合逻辑，<br>两级互相等，谁都不肯先动… 😵</div>
+    <img class="char" src="https://gramener.com/comicgen/v1/comic?name=trump&emotion=shocked&pose=handsonhip" alt="">
+  </div>
+
+  <!-- 3. 讲解回应 -->
+  <div class="panel talk-lr">
+    <img class="char" src="https://gramener.com/comicgen/v1/comic?name=ringonuovo&angle=straight&emotion=smile&pose=holdingbook" alt="">
+    <div class="bubble">经典死锁！这背后压着<br>一条<strong>不能违反的因果律</strong>。<br>我把 AXI 握手规则和<br>反压传导讲清楚 👇</div>
+  </div>
+
+  <!-- 4. 握手基本规则 + 波形 -->
+  <div class="panel sec valid-bg col3">
+    <div class="htitle"><span class="num">1</span>握手基本规则：两个独立方向</div>
+    <div class="narr">每个通道一对信号：<span class="vd">valid</span> 发送方驱动=「我有合法数据」；<span class="rd">ready</span> 接收方驱动=「我能收」。<strong>两者同一拍都为高，才完成一次传输。</strong></div>
+    <div class="wave">
+      <svg viewBox="0 0 300 96" preserveAspectRatio="xMidYMid meet">
+        <rect x="128" y="4" width="40" height="88" fill="#fff3c4"/>
+        <text x="8" y="26" font-size="11" fill="#1c6fd0" font-weight="bold">valid</text>
+        <polyline points="40,34 70,34 70,12 210,12 210,34 300,34" fill="none" stroke="#1c6fd0" stroke-width="3"/>
+        <text x="8" y="74" font-size="11" fill="#2f7d5b" font-weight="bold">ready</text>
+        <polyline points="40,82 128,82 128,60 168,60 168,82 205,82 205,60 235,60 235,82 300,82" fill="none" stroke="#2f7d5b" stroke-width="3"/>
+      </svg>
+      <div class="cap">↑ 黄框：两者同高 = 完成一次传输</div>
+    </div>
+  </div>
+
+  <!-- 5. 独立性对话 -->
+  <div class="panel talk-lr">
+    <div class="bubble"><span class="vd">valid</span> 和 <span class="rd">ready</span> <strong>完全独立</strong>！<br>发送方可先拉 valid 等接收方，<br>接收方也可先拉 ready 等发送方，<br>谁先谁后都不影响正确性 ✅</div>
+    <img class="char" src="https://gramener.com/comicgen/v1/comic?name=ringonuovo&angle=straight&emotion=happy&pose=pointingup" alt="">
+  </div>
+
+  <!-- 6. 不能违反的规则 -->
+  <div class="panel sec col3">
+    <div class="htitle"><span class="num">2</span>铁律：VALID 不能等 READY</div>
+    <div class="narr"><span class="rd">ready</span> 允许依赖对方当前的 <span class="vd">valid</span>；但 <span class="vd">valid</span> 一旦拉高<strong>绝不能因对方没 ready 而撤回或延迟</strong>。方向反了就是死锁。</div>
+    <div class="twin">
+      <div class="col legal">
+        <div class="ct">✅ 合法</div>
+        <div class="mods"><span class="mod">模块A<br>上游</span><span class="fwd" style="color:#1c6fd0">→</span><span class="mod">模块B<br>下游</span></div>
+        <div class="rel"><span class="g">valid → ready</span><br>单向因果，不成环</div>
+      </div>
+      <div class="col illegal">
+        <div class="ct">❌ 非法</div>
+        <div class="mods"><span class="mod">模块A</span><span class="fwd" style="color:#c0392b">⇄</span><span class="mod">模块B</span></div>
+        <div class="rel"><span class="r">A.valid 等 B.ready<br>B.ready 等 A.valid</span><br>互相等 → 卡死</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 伪代码对比 -->
+  <div class="panel sec col3">
+    <div class="narr">一句伪代码看清对错 👇 valid 只看「我有没有数据」，绝不看对方 ready。</div>
+    <div class="code"><span class="cm">// ❌ 错：valid 依赖对方 ready，构成组合环路</span>
+<span class="bad">assign up_valid = has_data && dn_ready;</span>
+
+<span class="cm">// ✅ 对：valid 只看自己是否真有数据</span>
+<span class="ok">assign up_valid = has_data;</span>
+<span class="cm">// ready 看对方当前 valid（这个方向允许）</span>
+<span class="ok">assign dn_ready = can_accept && up_valid;</span></div>
+  </div>
+
+  <!-- 8. 反压传导 -->
+  <div class="panel sec warn-bg col3">
+    <div class="htitle"><span class="num">3</span>反压是怎么逐级传导的</div>
+    <div class="narr">末端某级收不下 → 拉低自己的 <span class="rd">ready</span>；上游发不出、数据滞留，缓冲打满后它的 ready 也被拉低，<strong>压力继续往上传</strong>。</div>
+    <div class="pipe">
+      <span class="stg src">发起端</span><span class="fwd">→</span>
+      <span class="stg mid">级1</span><span class="fwd">→</span>
+      <span class="stg mid">级2</span><span class="fwd">→</span>
+      <span class="stg hot">级3</span><span class="fwd">→</span>
+      <span class="stg blk">目标端<br>ready=0</span>
+    </div>
+    <div class="bpline">← 反压 (ready 拉低) 逐级向上</div>
+    <div class="diagram" style="margin-top:8px;">🎯 <strong>反压方向永远和数据流相反</strong>。所以「上游突然发不出」时，别盯上游，顺着数据流<strong>往下游追</strong>第一个拉低 ready 的源头。</div>
+  </div>
+
+  <!-- 9. 排查建议对话 -->
+  <div class="panel talk-lr">
+    <img class="char" src="https://gramener.com/comicgen/v1/comic?name=trump&emotion=smile&pose=makingapointwithconfidence" alt="">
+    <div class="bubble">原来如此！<br>卡死先往<strong>下游</strong>找，<br>而不是死磕上游逻辑～ 💡</div>
+  </div>
+
+  <!-- 10. ready 两种生成方式 -->
+  <div class="panel sec col3">
+    <div class="htitle"><span class="num">4</span>READY 的两种生成方式</div>
+    <table class="cmp">
+      <tr><th>方式</th><th>组合逻辑</th><th>时序逻辑</th></tr>
+      <tr><td>怎么算</td><td>当拍直接算出</td><td>提前一拍算好<br>寄存器打一拍</td></tr>
+      <tr><td>好处</td><td>吞吐更高<br>不损失周期</td><td>路径短<br>时序易收敛</td></tr>
+      <tr><td>代价</td><td>反向组合链长<br>深流水难收敛</td><td>需额外缓冲<br>吸收一拍时间差</td></tr>
+    </table>
+    <div class="narr" style="margin-top:8px;">本质是<strong>吞吐/延迟</strong> ↔ <strong>时序收敛/缓冲开销</strong>的取舍，没有绝对更优，看流水线深度和目标频率。</div>
+  </div>
+
+  <!-- 11. 验证维度 -->
+  <div class="panel sec ready-bg col3">
+    <div class="htitle"><span class="num">5</span>验证值得关注的维度</div>
+    <div style="font-size:13.5px;line-height:1.7;">
+      ① <strong>握手方向静态检查</strong>：valid 不得组合依赖同方向 ready，跨模块间接依赖易漏，需人工复核。<br>
+      ② <strong>反压传导链完整</strong>：下游持续拉低 ready，确认逐级上传、不被某级「吞掉」。<br>
+      ③ <strong>极限边界</strong>：反压拉满 / 数据源枯竭两种极端下，不死锁、不丢数据。<br>
+      ④ <strong>缓冲深度匹配</strong>：时序生成 ready 时，缓冲要够吸收「提前放行」的时间差。<br>
+      ⑤ <strong>握手稳定性</strong>：valid 拉高到被接收前，数据与 valid 不得变化。
+    </div>
+  </div>
+
+  <!-- 12. 结尾 -->
+  <div class="panel end col3">
+    <div class="big">一条因果律，管住整条流水线</div>
+    <div class="sub"><span class="vd">valid</span> 只由「我有数据」决定，<br><span class="rd">ready</span> 才可由「对方有数据」决定，<br>方向反过来 = 死锁。</div>
+    <div class="credit">公众号：芯片验证碎碎念</div>
+  </div>
+
+</div>
+<footer>素材来源：AMBA AXI 协议规范 · 流水线设计与验证实践<br>人物由 gramener/comicgen 生成 · 仅供学习交流</footer>
+</body>
+</html>
