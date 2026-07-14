@@ -15,13 +15,13 @@
       <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#23313F" flood-opacity=".20"/>
     </filter>
     <style>
-      .title { font: 700 31px Arial, "Noto Sans CJK SC", sans-serif; fill: #23313F; }
-      .subtitle { font: 400 18px Arial, "Noto Sans CJK SC", sans-serif; fill: #566573; }
-      .lane-title { font: 700 23px Arial, "Noto Sans CJK SC", sans-serif; fill: #FFFFFF; }
-      .hint { font: italic 16px Arial, "Noto Sans CJK SC", sans-serif; }
-      .box-title { font: 700 19px Arial, "Noto Sans CJK SC", sans-serif; }
-      .box-note { font: 400 14px Arial, "Noto Sans CJK SC", sans-serif; }
-      .axis { font: 700 16px Arial, "Noto Sans CJK SC", sans-serif; fill: #23313F; }
+      .title { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 38px; font-weight: 700; fill: #23313F; }
+      .subtitle { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 22px; font-weight: 400; fill: #566573; }
+      .lane-title { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 29px; font-weight: 700; fill: #FFFFFF; }
+      .hint { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 20px; font-style: italic; }
+      .box-title { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 24px; font-weight: 700; }
+      .box-note { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 18px; font-weight: 400; }
+      .axis { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 20px; font-weight: 700; fill: #23313F; }
     </style>
   </defs>
   <rect width="1600" height="760" fill="#FFFFFF"/>

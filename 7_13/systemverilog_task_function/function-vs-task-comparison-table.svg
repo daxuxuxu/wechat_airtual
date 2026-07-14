@@ -6,13 +6,13 @@
       <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#23313F" flood-opacity=".16"/>
     </filter>
     <style>
-      .title { font: 700 40px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #FFFFFF; }
-      .subtitle { font: 400 21px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #D6EAF8; }
-      .header { font: 700 35px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #FFFFFF; }
-      .dimension { font: 700 31px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #23313F; }
-      .cell { font: 400 31px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #34495E; }
-      .code { font: 600 29px "DejaVu Sans Mono", Consolas, monospace; fill: #34495E; }
-      .footer { font: italic 21px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #566573; }
+      .title { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; font-size: 46px; font-weight: 700; fill: #FFFFFF; }
+      .subtitle { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; font-size: 25px; font-weight: 400; fill: #D6EAF8; }
+      .header { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; font-size: 41px; font-weight: 700; fill: #FFFFFF; }
+      .dimension { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; font-size: 36px; font-weight: 700; fill: #23313F; }
+      .cell { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; font-size: 36px; font-weight: 400; fill: #34495E; }
+      .code { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 34px; font-weight: 600; fill: #34495E; }
+      .footer { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; font-size: 25px; font-style: italic; fill: #566573; }
     </style>
   </defs>
   <rect width="1600" height="860" fill="#FFFFFF"/>

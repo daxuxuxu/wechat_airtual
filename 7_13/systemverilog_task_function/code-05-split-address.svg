@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="934" viewBox="0 0 1600 934" role="img" aria-label="task 多输出示例">
   <style>
-    .title { font: 700 31px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #FFFFFF; }
-    .status { font: 700 22px "DejaVu Sans Mono", Consolas, monospace; fill: #FFFFFF; }
-    .line-no { font: 400 23px "DejaVu Sans Mono", Consolas, monospace; fill: #7F8C8D; }
-    .code { font: 400 30px "DejaVu Sans Mono", Consolas, monospace; fill: #23313F; }
+    .title { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; font-size: 38px; font-weight: 700; fill: #FFFFFF; }
+    .status { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 27px; font-weight: 700; fill: #FFFFFF; }
+    .line-no { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 28px; font-weight: 400; fill: #7F8C8D; }
+    .code { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 35px; font-weight: 400; fill: #23313F; }
   </style>
   <rect width="1600" height="934" fill="#FFFFFF"/>
   <rect width="1600" height="80" fill="#1F6FB5"/>
