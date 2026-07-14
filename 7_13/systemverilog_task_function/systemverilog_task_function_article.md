@@ -20,13 +20,7 @@
 
 ### 一、先看时间：同一时刻算完，还是跨多个 cycle
 
-| 维度 | `function` | `task` |
-| --- | --- | --- |
-| Time control | 不包含 `#`、`@`、`wait` | 可包含 `#`、`@`、`wait` |
-| 调用上下文 | expression / assertion | procedural statement |
-| 返回方式 | return value 或 `void` | `output` / `inout` / `ref` 参数 |
-| 典型用途 | decode、CRC、parity、scoreboard 计算 | driver、BFM、reset、handshake |
-| 可重入性 | 并发调用时优先 `automatic` | 并发调用时优先 `automatic` |
+![function 与 task 核心差异表](function-vs-task-comparison-table.png)
 
 如果一个过程需要“等到下一个 `posedge clk`”，它已经不可能是 `function`。
 
@@ -307,14 +301,7 @@ endtask
 
 ### 七、RTL / DV 中怎么选
 
-| 场景 | 更适合的构造 | 原因 |
-| --- | --- | --- |
-| combinational address decode | `function automatic` | 无 time control，结果直接进入 expression |
-| parity / CRC / expected data | `function automatic` | 纯计算，适合 monitor 或 scoreboard 复用 |
-| UVM driver transaction | `task automatic` | 需要等待 clock、credit、ready 或 response |
-| reset sequence | `task automatic` | pulse width 和 release point 受时间控制 |
-| `uvm_component::run_phase` | `task` | run phase 本身是 time-consuming phase |
-| `uvm_object::do_compare` / `convert2string` | `function` | 返回 comparison result 或 string，不应推进时间 |
+![RTL / DV 场景选型表](rtl-dv-function-task-selection-table.png)
 
 一个很实用的判断顺序：
 
