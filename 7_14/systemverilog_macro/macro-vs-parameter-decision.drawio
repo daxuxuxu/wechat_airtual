@@ -1,0 +1,8 @@
+<mxfile host="Electron" modified="2026-07-14T00:00:00.000Z" agent="Codex" version="26.0.14" type="device"><diagram id="macro decision" name="macro decision"><mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+<mxCell id="t" value="macro decision" style="text;html=1;fontSize=30;fontStyle=1;fontColor=#23313F;" vertex="1" parent="1"><mxGeometry x="260" y="30" width="1080" height="50" as="geometry"/></mxCell>
+<mxCell id="a" value="Compile-time choice" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F6FB5;fontColor=#FFFFFF;strokeWidth=2.5;shadow=1;" vertex="1" parent="1"><mxGeometry x="80" y="210" width="300" height="120" as="geometry"/></mxCell>
+<mxCell id="b" value="Macro or parameter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;fontColor=#FFFFFF;strokeWidth=2.5;shadow=1;" vertex="1" parent="1"><mxGeometry x="650" y="210" width="300" height="120" as="geometry"/></mxCell>
+<mxCell id="c" value="Runtime configuration" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2E8B57;fontColor=#FFFFFF;strokeWidth=2.5;shadow=1;" vertex="1" parent="1"><mxGeometry x="1220" y="210" width="300" height="120" as="geometry"/></mxCell>
+<mxCell id="e1" style="endArrow=block;endFill=1;strokeWidth=3;strokeColor=#34495E;" edge="1" parent="1" source="a" target="b"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e2" style="endArrow=block;endFill=1;strokeWidth=3;strokeColor=#34495E;" edge="1" parent="1" source="b" target="c"><mxGeometry relative="1" as="geometry"/></mxCell>
+</root></mxGraphModel></diagram></mxfile>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="880" viewBox="0 0 1600 880" role="img" aria-label="宏定义在编译链路中的位置">
+<rect width="1600" height="880" fill="#FFFFFF"/>
+
+<text x="800" y="58" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="46" font-weight="700" fill="#23313F">宏定义在编译链路中的位置</text>
+<text x="800" y="92" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="25" fill="#566573">macro 在 simulator 执行前完成文本展开，不是 runtime control</text>
+<rect x="70" y="190" width="300" height="220" rx="18" fill="#EAF2F8" stroke="#1F6FB5" stroke-width="3"/>
+<text x="220" y="250" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" font-weight="700" fill="#1F6FB5">源文件</text>
+<text x="220" y="300" text-anchor="middle" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="27" fill="#23313F">`define</text>
+<text x="220" y="340" text-anchor="middle" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="27" fill="#23313F">`ifdef</text>
+<text x="220" y="380" text-anchor="middle" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="27" fill="#23313F">`include</text>
+<rect x="510" y="190" width="300" height="220" rx="18" fill="#FEF5E7" stroke="#E67E22" stroke-width="3"/>
+<text x="660" y="250" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" font-weight="700" fill="#A84B00">Preprocessor</text>
+<text x="660" y="310" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="28" fill="#7E3C00">文本替换</text>
+<text x="660" y="355" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="28" fill="#7E3C00">条件裁剪</text>
+<rect x="950" y="190" width="260" height="220" rx="18" fill="#EBF5FB" stroke="#2E86C1" stroke-width="3"/>
+<text x="1080" y="270" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" font-weight="700" fill="#1B4F72">Compiler</text>
+<text x="1080" y="330" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="28" fill="#1B4F72">编译后的设计</text>
+<rect x="1320" y="190" width="210" height="220" rx="18" fill="#E8F8F5" stroke="#2E8B57" stroke-width="3"/>
+<text x="1425" y="270" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" font-weight="700" fill="#1D5D3A">Simulator</text>
+<text x="1425" y="330" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="28" fill="#1D5D3A">runtime</text>
+<path d="M370 300 H500 M810 300 H940 M1210 300 H1310" stroke="#34495E" stroke-width="5" fill="none"/>
+<path d="M500 287 L530 300 L500 313 Z M940 287 L970 300 L940 313 Z M1310 287 L1340 300 L1310 313 Z" fill="#34495E"/>
+<rect x="180" y="560" width="1240" height="150" rx="18" fill="#F4F6F7" stroke="#AAB7B8" stroke-width="2"/>
+<text x="800" y="620" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" font-weight="700" fill="#23313F">关键边界：macro 只能改变“编译进了什么”</text>
+<text x="800" y="670" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="30" fill="#34495E">不能在仿真运行到一半时再改变开关；runtime 行为应使用变量、plusarg 或 UVM configuration。</text>
+</svg>

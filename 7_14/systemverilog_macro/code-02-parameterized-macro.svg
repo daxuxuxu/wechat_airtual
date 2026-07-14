@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="464" viewBox="0 0 1600 464" role="img" aria-label="参数化检查宏">
+<rect width="1600" height="464" fill="#FFFFFF"/>
+
+<rect width="1600" height="80" fill="#1F6FB5"/>
+<text x="54" y="51" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="38" font-weight="700" fill="#FFFFFF">参数化检查宏</text>
+<rect x="1240" y="19" width="310" height="42" rx="21" fill="#23313F"/>
+<text x="1395" y="48" text-anchor="middle" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="27" font-weight="700" fill="#FFFFFF">SystemVerilog</text>
+<rect x="40" y="98" width="110" height="326" rx="10" fill="#F4F6F7"/>
+<rect x="40" y="98" width="1520" height="326" rx="10" fill="none" stroke="#D5D8DC" stroke-width="2"/>
+<text x="112" y="186" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="28" fill="#7F8C8D">01</text><text x="188" y="186" xml:space="preserve" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="35" fill="#23313F">`define CHECK_MATCH(actual, expected, tag) \</text><text x="112" y="236" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="28" fill="#7F8C8D">02</text><text x="188" y="236" xml:space="preserve" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="35" fill="#23313F">  if ((actual) != (expected)) \</text><text x="112" y="286" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="28" fill="#7F8C8D">03</text><text x="188" y="286" xml:space="preserve" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="35" fill="#23313F">    report_mismatch(tag, actual, expected)</text><text x="112" y="336" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="28" fill="#7F8C8D">04</text><text x="188" y="336" xml:space="preserve" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="35" fill="#23313F"></text><text x="112" y="386" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="28" fill="#7F8C8D">05</text><text x="188" y="386" xml:space="preserve" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="35" fill="#23313F">`CHECK_MATCH(observed_value, expected_value, &quot;response&quot;)</text>
+</svg>
