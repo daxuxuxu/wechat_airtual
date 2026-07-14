@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="414" viewBox="0 0 1600 414" role="img" aria-label="把 runtime 行为写成 macro">
+<rect width="1600" height="414" fill="#FFFFFF"/>
+
+<rect width="1600" height="80" fill="#C0392B"/>
+<text x="54" y="51" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="38" font-weight="700" fill="#FFFFFF">把 runtime 行为写成 macro</text>
+<rect x="1240" y="19" width="310" height="42" rx="21" fill="#23313F"/>
+<text x="1395" y="48" text-anchor="middle" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="27" font-weight="700" fill="#FFFFFF">ILLEGAL / 不应使用</text>
+<rect x="40" y="98" width="110" height="276" rx="10" fill="#F4F6F7"/>
+<rect x="40" y="98" width="1520" height="276" rx="10" fill="none" stroke="#D5D8DC" stroke-width="2"/>
+<text x="112" y="186" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="28" fill="#7F8C8D">01</text><text x="188" y="186" xml:space="preserve" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="35" fill="#23313F">`ifdef RANDOM_POLICY</text><text x="112" y="236" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="28" fill="#7F8C8D">02</text><text x="188" y="236" xml:space="preserve" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="35" fill="#23313F">  generator.policy = RANDOM;</text><text x="112" y="286" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="28" fill="#7F8C8D">03</text><text x="188" y="286" xml:space="preserve" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="35" fill="#23313F">`endif</text><text x="112" y="336" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="28" fill="#7F8C8D">04</text><text x="188" y="336" xml:space="preserve" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="35" fill="#23313F">// 编译后无法在单个 test 中切换 policy</text>
+</svg>

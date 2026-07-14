@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="383" viewBox="0 0 900 383">
+<rect width="900" height="383" fill="#0A2342"/>
+<circle cx="805" cy="75" r="150" fill="#1565C0" opacity=".42"/>
+<circle cx="760" cy="300" r="110" fill="#1F6FB5" opacity=".32"/>
+<rect x="42" y="38" width="178" height="38" rx="19" fill="#1F6FB5"/>
+<text x="131" y="64" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">芯片验证 · SV</text>
+<text x="42" y="143" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="38" font-weight="700" fill="#FFFFFF">宏定义：DV 中何时该用，</text>
+<text x="42" y="193" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="38" font-weight="700" fill="#FFFFFF">何时不该用？</text>
+<text x="42" y="238" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="21" fill="#B9D7F5">从 `define 到 `ifdef，讲清编译前开关与 runtime config 的边界</text>
+<rect x="42" y="270" width="116" height="34" rx="8" fill="#2E8B57"/><text x="100" y="294" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="18" fill="#FFFFFF">Preprocess</text>
+<rect x="168" y="270" width="90" height="34" rx="8" fill="#7B68EE"/><text x="213" y="294" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="18" fill="#FFFFFF">UVM</text>
+<rect x="268" y="270" width="108" height="34" rx="8" fill="#E67E22"/><text x="322" y="294" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="18" fill="#FFFFFF">Regression</text>
+<rect x="590" y="115" width="230" height="72" rx="14" fill="#FFFFFF" opacity=".95"/><text x="705" y="159" text-anchor="middle" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="30" font-weight="700" fill="#1F6FB5">`define</text>
+<path d="M705 195 V235" stroke="#FFFFFF" stroke-width="4"/><path d="M695 225 L705 240 L715 225 Z" fill="#FFFFFF"/>
+<rect x="590" y="248" width="230" height="72" rx="14" fill="#FFFFFF" opacity=".95"/><text x="705" y="292" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="27" font-weight="700" fill="#23313F">编译前选择</text>
+</svg>

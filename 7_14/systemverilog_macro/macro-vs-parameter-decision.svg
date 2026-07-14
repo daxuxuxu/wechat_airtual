@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980" role="img" aria-label="DV 中何时使用 macro">
+<rect width="1600" height="980" fill="#FFFFFF"/>
+
+<text x="800" y="58" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="46" font-weight="700" fill="#23313F">DV 中何时使用 macro</text>
+<path d="M800 130 L1050 220 L800 310 L550 220 Z" fill="#1F4E79" stroke="#163A5A" stroke-width="3"/>
+<text x="800" y="212" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="31" font-weight="700" fill="#FFFFFF">这个差异是否必须在编译前决定？</text>
+<rect x="1130" y="175" width="340" height="90" rx="16" fill="#E67E22"/>
+<text x="1300" y="215" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" font-weight="700" fill="#FFFFFF">使用 macro</text>
+<text x="1300" y="248" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="23" fill="#FFFFFF">feature、assertion、coverage build</text>
+<path d="M1050 220 H1120" stroke="#E67E22" stroke-width="5"/>
+<text x="1085" y="200" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="25" font-weight="700" fill="#A84B00">是</text>
+<path d="M800 312 V410" stroke="#34495E" stroke-width="5"/>
+<text x="826" y="365" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="25" font-weight="700" fill="#34495E">否</text>
+<path d="M800 410 L1050 500 L800 590 L550 500 Z" fill="#1F4E79" stroke="#163A5A" stroke-width="3"/>
+<text x="800" y="492" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="31" font-weight="700" fill="#FFFFFF">是否要在每个 test 中动态改变？</text>
+<rect x="1130" y="455" width="340" height="90" rx="16" fill="#2E8B57"/>
+<text x="1300" y="495" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" font-weight="700" fill="#FFFFFF">使用 runtime config</text>
+<text x="1300" y="528" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="23" fill="#FFFFFF">plusarg、config_db、sequence</text>
+<path d="M1050 500 H1120" stroke="#2E8B57" stroke-width="5"/>
+<text x="1085" y="480" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="25" font-weight="700" fill="#1D5D3A">是</text>
+<path d="M800 592 V690" stroke="#34495E" stroke-width="5"/>
+<text x="826" y="645" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="25" font-weight="700" fill="#34495E">否</text>
+<rect x="530" y="700" width="540" height="125" rx="18" fill="#7B68EE"/>
+<text x="800" y="753" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" font-weight="700" fill="#FFFFFF">考虑 parameter 或 class field</text>
+<text x="800" y="792" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="25" fill="#FFFFFF">parameter 表示 elaboration 结构；class field 表示对象行为。</text>
+</svg>

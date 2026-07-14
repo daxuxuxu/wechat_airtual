@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="820" viewBox="0 0 1600 820" role="img" aria-label="macro、parameter 与 runtime config 的差异">
+<rect width="1600" height="820" fill="#FFFFFF"/>
+
+<rect width="1600" height="94" fill="#23313F"/>
+<text x="70" y="57" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="46" font-weight="700" fill="#FFFFFF">macro、parameter 与 runtime config 的差异</text>
+<rect x="30" y="130" width="1540" height="550" rx="16" fill="#FFFFFF" stroke="#D5D8DC" stroke-width="2"/>
+<rect x="30" y="130" width="420" height="80" rx="16" fill="#1F6FB5"/>
+<rect x="450" y="130" width="460" height="80" fill="#34495E"/>
+<rect x="910" y="130" width="660" height="80" rx="16" fill="#E67E22"/>
+<text x="240" y="183" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="41" font-weight="700" fill="#FFFFFF">机制</text>
+<text x="680" y="183" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="41" font-weight="700" fill="#FFFFFF">生效时间</text>
+<text x="1240" y="183" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="41" font-weight="700" fill="#FFFFFF">DV 适用场景</text>
+<path d="M450 130 V680 M910 130 V680 M30 210 H1570 M30 360 H1570 M30 510 H1570" stroke="#D5D8DC" stroke-width="2"/>
+<rect x="30" y="210" width="1540" height="150" fill="#FFFFFF"/><text x="80" y="280" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="36" font-weight="700" fill="#23313F">macro</text><text x="500" y="280" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" fill="#34495E">编译前文本替换</text><text x="960" y="280" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" fill="#34495E">feature build、断言、coverage、日志包装</text><rect x="30" y="360" width="1540" height="150" fill="#F4F6F7"/><text x="80" y="430" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="36" font-weight="700" fill="#23313F">parameter</text><text x="500" y="430" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" fill="#34495E">elaboration 时常量</text><text x="960" y="430" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" fill="#34495E">结构尺寸、接口宽度、实例差异</text><rect x="30" y="510" width="1540" height="150" fill="#FFFFFF"/><text x="80" y="580" font-family="DejaVu Sans Mono,Consolas,monospace" font-size="36" font-weight="700" fill="#23313F">runtime config</text><text x="500" y="580" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" fill="#34495E">仿真运行时读取</text><text x="960" y="580" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="34" fill="#34495E">test variation、sequence、scoreboard policy</text>
+<text x="800" y="755" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,Arial,sans-serif" font-size="26" font-style="italic" fill="#566573">不要用 macro 替代 test runtime configuration；它们解决的是不同阶段的问题。</text>
+</svg>
