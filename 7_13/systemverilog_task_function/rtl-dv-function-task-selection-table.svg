@@ -6,13 +6,13 @@
       <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#23313F" flood-opacity=".16"/>
     </filter>
     <style>
-      .title { font: 700 40px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #FFFFFF; }
-      .subtitle { font: 400 21px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #D6EAF8; }
-      .header { font: 700 35px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #FFFFFF; }
-      .scenario { font: 600 29px "DejaVu Sans Mono", Consolas, monospace; fill: #34495E; }
-      .reason { font: 400 29px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #34495E; }
-      .pill { font: 700 27px "DejaVu Sans Mono", Consolas, monospace; fill: #FFFFFF; }
-      .footer { font: italic 21px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #566573; }
+      .title { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; font-size: 46px; font-weight: 700; fill: #FFFFFF; }
+      .subtitle { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; font-size: 25px; font-weight: 400; fill: #D6EAF8; }
+      .header { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; font-size: 41px; font-weight: 700; fill: #FFFFFF; }
+      .scenario { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 34px; font-weight: 600; fill: #34495E; }
+      .reason { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; font-size: 34px; font-weight: 400; fill: #34495E; }
+      .pill { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 32px; font-weight: 700; fill: #FFFFFF; }
+      .footer { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; font-size: 25px; font-style: italic; fill: #566573; }
     </style>
   </defs>
   <rect width="1600" height="1120" fill="#FFFFFF"/>
@@ -41,7 +41,7 @@
   <text x="715" y="178" text-anchor="middle" class="header">更适合的构造</text>
   <text x="1250" y="178" text-anchor="middle" class="header">原因</text>
 
-  <text x="76" y="270" class="scenario"><tspan x="76" dy="0">combinational address</tspan><tspan x="76" dy="40">decode</tspan></text>
+  <text x="76" y="270" class="scenario"><tspan x="76" dy="0">combinational</tspan><tspan x="76" dy="40">address decode</tspan></text>
   <rect x="550" y="258" width="330" height="58" rx="29" fill="#1F6FB5"/>
   <text x="715" y="296" text-anchor="middle" class="pill">function automatic</text>
   <text x="970" y="270" class="reason"><tspan x="970" dy="0">无 time control，结果直接</tspan><tspan x="970" dy="40">进入 expression</tspan></text>
@@ -66,7 +66,7 @@
   <text x="715" y="876" text-anchor="middle" class="pill">task</text>
   <text x="970" y="850" class="reason"><tspan x="970" dy="0">run phase 本身是</tspan><tspan x="970" dy="40">time-consuming phase</tspan></text>
 
-  <text x="76" y="995" class="scenario"><tspan x="76" dy="0">uvm_object::do_compare /</tspan><tspan x="76" dy="40">convert2string</tspan></text>
+  <text x="76" y="975" class="scenario"><tspan x="76" dy="0">uvm_object::</tspan><tspan x="76" dy="40">do_compare /</tspan><tspan x="76" dy="40">convert2string</tspan></text>
   <rect x="632" y="983" width="166" height="58" rx="29" fill="#1F6FB5"/>
   <text x="715" y="1021" text-anchor="middle" class="pill">function</text>
   <text x="970" y="995" class="reason"><tspan x="970" dy="0">返回 comparison result 或 string，</tspan><tspan x="970" dy="40">不应推进时间</tspan></text>

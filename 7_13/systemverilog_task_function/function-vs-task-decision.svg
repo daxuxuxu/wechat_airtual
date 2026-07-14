@@ -18,13 +18,13 @@
       <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#23313F" flood-opacity=".20"/>
     </filter>
     <style>
-      .title { font: 700 31px Arial, "Noto Sans CJK SC", sans-serif; fill: #23313F; }
-      .subtitle { font: 400 18px Arial, "Noto Sans CJK SC", sans-serif; fill: #566573; }
-      .question { font: 700 20px Arial, "Noto Sans CJK SC", sans-serif; fill: #FFFFFF; }
-      .box-title { font: 700 21px Arial, "Noto Sans CJK SC", sans-serif; fill: #FFFFFF; }
-      .box-note { font: 400 14px Arial, "Noto Sans CJK SC", sans-serif; fill: #FFFFFF; }
-      .edge-label { font: 700 16px Arial, "Noto Sans CJK SC", sans-serif; }
-      .footer { font: italic 18px Arial, "Noto Sans CJK SC", sans-serif; fill: #23313F; }
+      .title { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 38px; font-weight: 700; fill: #23313F; }
+      .subtitle { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 22px; font-weight: 400; fill: #566573; }
+      .question { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 25px; font-weight: 700; fill: #FFFFFF; }
+      .box-title { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 25px; font-weight: 700; fill: #FFFFFF; }
+      .box-note { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 18px; font-weight: 400; fill: #FFFFFF; }
+      .edge-label { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 20px; font-weight: 700; }
+      .footer { font-family: Arial, "Noto Sans CJK SC", sans-serif; font-size: 22px; font-style: italic; fill: #23313F; }
     </style>
   </defs>
   <rect width="1200" height="860" fill="#FFFFFF"/>
