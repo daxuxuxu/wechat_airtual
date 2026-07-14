@@ -32,56 +32,13 @@
 
 先看一个最常见的 parity 计算。没有时钟，没有 delay，没有等待任何外部事件。
 
-```systemverilog
-function automatic logic calc_even_parity(
-    input logic [31:0] data
-);
-    // XOR 结果作为 even-parity bit：
-    // 把它附加到 data 后，总“1”个数为偶数。
-    return ^data;
-endfunction
-
-logic        clk;
-logic        parity;
-logic [31:0] data;
-logic        valid;
-logic        expected_parity;
-
-assign parity = calc_even_parity(data);
-
-assert property (@(posedge clk)
-    valid |-> calc_even_parity(data) == expected_parity
-);
-```
+![偶校验 function 示例](code-01-even-parity.png)
 
 `calc_even_parity()` 在调用点立即完成，仿真时间不会前进。它因此可以出现在 `assign`、`if (...)`、ternary expression 和 SVA property 中。
 
 再看一个 byte-enable mask 例子。它仍然只是一个 data transform。
 
-```systemverilog
-function automatic logic [3:0] make_byte_enable(
-    input logic [1:0]  addr_lsb,
-    input logic [1:0]  access_size_in
-);
-    logic [3:0] mask;
-
-    case (access_size_in)
-        2'd0: mask = 4'b0001 << addr_lsb;  // 1 byte
-        2'd1: mask = 4'b0011 << {addr_lsb[1], 1'b0}; // 2 bytes
-        default: mask = 4'b1111;            // 4 bytes
-    endcase
-
-    return mask;
-endfunction
-
-logic [31:0] addr;
-logic [1:0]  access_size;
-logic [3:0]  be;
-
-always_comb begin
-    be = make_byte_enable(addr[1:0], access_size);
-end
-```
+![byte-enable function 示例](code-02-byte-enable.png)
 
 这里的 `function` 把 bit manipulation 收进一个有名字的单元。调用方只关心“给地址低位和访问大小，拿到 byte enable”。
 
@@ -91,33 +48,7 @@ end
 
 写一个 valid-ready transaction，至少要等待 clock edge 和 `ready`。这不是“立即计算”，而是一段跨 cycle 的 protocol procedure。
 
-```systemverilog
-task automatic send_write(
-    input  logic [31:0] addr,
-    input  logic [31:0] data,
-    output logic [1:0]  resp
-);
-    // Drive request on a clock edge.
-    @(posedge clk);
-    req_valid <= 1'b1;
-    req_addr  <= addr;
-    req_data  <= data;
-
-    // Wait until the target accepts the request.
-    do @(posedge clk); while (!req_ready);
-    req_valid <= 1'b0;
-
-    // Wait for the response phase.
-    do @(posedge clk); while (!rsp_valid);
-    resp = rsp_code;
-endtask
-
-logic [1:0] write_resp;
-
-initial begin
-    send_write(32'h0000_1000, 32'hCAFE_BABE, write_resp);
-end
-```
+![valid-ready task 示例](code-03-send-write.png)
 
 `@(posedge clk)` 和两个 handshake loop 都会消耗 simulation time。因此 `send_write()` 必须是 `task`。
 
@@ -129,70 +60,19 @@ end
 
 #### 1. function 返回一个值；这个值可以是 struct
 
-```systemverilog
-typedef struct packed {
-    logic       hit;
-    logic [7:0] index;
-} lookup_result_t;
-
-function automatic lookup_result_t decode_addr(
-    input logic [31:0] addr
-);
-    lookup_result_t result;
-
-    result.hit   = (addr[31:28] == 4'h8);
-    result.index = addr[11:4];
-    return result;
-endfunction
-
-lookup_result_t lookup;
-
-always_comb begin
-    lookup = decode_addr(addr);
-end
-```
+![struct return 示例](code-04-decode-struct.png)
 
 `function` 只返回一个 return value，但把相关字段封装成 `struct` 后，表达能力并不弱。
 
 #### 2. task 用 output 返回多个结果
 
-```systemverilog
-task automatic split_addr(
-    input  logic [31:0] addr,
-    output logic [15:0] page,
-    output logic [11:0] offset
-);
-    page   = addr[27:12];
-    offset = addr[11:0];
-endtask
-
-logic [15:0] page;
-logic [11:0] offset;
-
-initial begin
-    split_addr(32'h8123_4ABC, page, offset);
-end
-```
+![task 多输出示例](code-05-split-address.png)
 
 这个例子本身不需要时间，所以也能写成返回 `struct` 的 `function`。这里故意展示 `task` 的 `output` 能力：它可以天然带回多个独立结果。
 
 #### 3. ref 是原位修改，不是普通输入
 
-```systemverilog
-function automatic void saturating_inc(
-    ref logic [7:0] counter
-);
-    if (!(&counter))
-        counter++;
-endfunction
-
-logic [7:0] retry_count;
-
-always_ff @(posedge clk) begin
-    if (retry)
-        saturating_inc(retry_count);
-end
-```
+![ref 参数示例](code-06-ref-counter.png)
 
 `input` 是 caller value 的副本；`ref` 是 caller variable 的 alias。`ref` 很方便，但也意味着函数会直接改写调用方状态，接口语义要写清楚。
 
@@ -202,27 +82,11 @@ end
 
 `task` 和 `function` 默认 lifetime 可能是 static。多条 process 并发调用时，局部变量若被共享，就会发生难查的 data corruption。
 
-```systemverilog
-task send_one(input logic [31:0] data);
-    logic [31:0] tmp;
-
-    tmp = data;
-    @(posedge clk);
-    req_data <= tmp;
-endtask
-```
+![static lifetime 陷阱](code-07-static-task-pitfall.png)
 
 上面这个 `task` 若被两个 parallel thread 同时调用，第二次调用可能在第一个调用等待 clock 时覆盖 `tmp`。
 
-```systemverilog
-task automatic send_one(input logic [31:0] data);
-    logic [31:0] tmp;
-
-    tmp = data;
-    @(posedge clk);
-    req_data <= tmp;
-endtask
-```
+![automatic task 修正](code-08-automatic-task.png)
 
 加上 `automatic` 后，每一次 invocation 都拥有独立的 storage。对可重入的 helper function、driver transaction 和 sequence helper，默认优先写 `automatic`。
 
@@ -232,12 +96,7 @@ endtask
 
 #### 坑 1：在 function 里等待 clock 或 delay
 
-```systemverilog
-function logic [7:0] sample_after_clock();
-    @(posedge clk);  // illegal: time control in a function
-    return data;
-endfunction
-```
+![function time control 错误示例](code-09-function-time-control-illegal.png)
 
 **为什么错：** `@`、`#` 和 `wait` 都会让仿真时间前进；`function` 必须在当前仿真时刻返回。
 
@@ -245,31 +104,17 @@ endfunction
 
 #### 坑 2：把 task 当作 expression 的一部分
 
-```systemverilog
-if (send_write(addr, data, resp)) begin
-    // illegal: a task does not produce an expression result
-end
-```
+![task expression 错误示例](code-10-task-expression-illegal.png)
 
 **为什么错：** `task` 在 procedural statement 中独立调用，不能嵌入 `if` condition、assignment 或 continuous assignment。
 
 **正确选择：**
 
-```systemverilog
-send_write(addr, data, resp);
-if (resp != RESP_OKAY)
-    $error("write failed: resp=%0b", resp);
-```
+![task response 检查](code-11-task-response-check.png)
 
 #### 坑 3：把有时序语义的 BFM 写成 function
 
-```systemverilog
-function void drive_reset();
-    rst_n = 1'b0;
-    #100ns;  // illegal: reset procedure consumes time
-    rst_n = 1'b1;
-endfunction
-```
+![BFM time control 错误示例](code-12-bfm-time-control-illegal.png)
 
 **为什么错：** reset pulse、AXI transfer、PCIe LTSSM wait 都是 time-consuming procedure。
 
@@ -277,25 +122,13 @@ endfunction
 
 #### 坑 4：认为 task 不能返回结果
 
-```systemverilog
-task automatic read_status(input logic [31:0] addr);
-    // The caller has no status output in this interface.
-endtask
-```
+![task output 返回结果](code-13-task-output-result.png)
 
 **为什么错：** `task` 不返回 expression value，但它可以通过 `output`、`inout` 或 `ref` 返回一个或多个结果。
 
 **正确选择：**
 
-```systemverilog
-task automatic read_status(
-    input  logic [31:0] addr,
-    output logic [1:0]  resp,
-    output logic [31:0] data
-);
-    // bus transaction ...
-endtask
-```
+![task 多输出接口](code-14-task-output-interface.png)
 
 ---
 
