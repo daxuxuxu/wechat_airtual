@@ -1,0 +1,55 @@
+<mxGraphModel adaptiveColors="auto">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    <mxCell id="2" value="读、写、ID：分配与响应匹配" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontStyle=1;fontColor=#17324D;" vertex="1" parent="1">
+      <mxGeometry x="280" y="20" width="500" height="35" as="geometry"/>
+    </mxCell>
+    <mxCell id="3" value="Write address path" style="swimlane;html=1;horizontal=1;startSize=28;fillColor=#1F6FB5;fontColor=#ffffff;strokeColor=#154C7C;strokeWidth=2.5;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="55" y="90" width="330" height="210" as="geometry"/>
+    </mxCell>
+    <mxCell id="4" value="AWVALID &amp;&amp; AWREADY&#xa;capture AWID" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFFFFF;strokeColor=#1F6FB5;strokeWidth=2;" vertex="1" parent="3">
+      <mxGeometry x="35" y="55" width="260" height="65" as="geometry"/>
+    </mxCell>
+    <mxCell id="5" value="write_ot[AWID]++" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#EAF3FF;strokeColor=#1F6FB5;strokeWidth=2;" vertex="1" parent="3">
+      <mxGeometry x="35" y="135" width="260" height="42" as="geometry"/>
+    </mxCell>
+    <mxCell id="6" value="Read address path" style="swimlane;html=1;horizontal=1;startSize=28;fillColor=#7B68EE;fontColor=#ffffff;strokeColor=#5242B0;strokeWidth=2.5;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="55" y="350" width="330" height="210" as="geometry"/>
+    </mxCell>
+    <mxCell id="7" value="ARVALID &amp;&amp; ARREADY&#xa;capture ARID" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFFFFF;strokeColor=#7B68EE;strokeWidth=2;" vertex="1" parent="6">
+      <mxGeometry x="35" y="55" width="260" height="65" as="geometry"/>
+    </mxCell>
+    <mxCell id="8" value="read_ot[ARID]++" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#F0EDFF;strokeColor=#7B68EE;strokeWidth=2;" vertex="1" parent="6">
+      <mxGeometry x="35" y="135" width="260" height="42" as="geometry"/>
+    </mxCell>
+    <mxCell id="9" value="OT Tracker" style="swimlane;html=1;horizontal=1;startSize=28;fillColor=#5D9E5D;fontColor=#ffffff;strokeColor=#347534;strokeWidth=2.5;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="475" y="170" width="265" height="300" as="geometry"/>
+    </mxCell>
+    <mxCell id="10" value="write queue&#xa;AWID → unmatched write" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFFFFF;strokeColor=#347534;strokeWidth=2;" vertex="1" parent="9">
+      <mxGeometry x="25" y="55" width="215" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="11" value="read queue&#xa;ARID → unmatched read burst" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFFFFF;strokeColor=#347534;strokeWidth=2;" vertex="1" parent="9">
+      <mxGeometry x="25" y="160" width="215" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="12" value="Write response" style="swimlane;html=1;horizontal=1;startSize=28;fillColor=#E67E22;fontColor=#ffffff;strokeColor=#A84300;strokeWidth=2.5;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="820" y="90" width="240" height="210" as="geometry"/>
+    </mxCell>
+    <mxCell id="13" value="BVALID &amp;&amp; BREADY&#xa;match BID&#xa;write_ot[BID]--" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFFFFF;strokeColor=#5D9E5D;strokeWidth=2;" vertex="1" parent="12">
+      <mxGeometry x="20" y="55" width="200" height="88" as="geometry"/>
+    </mxCell>
+    <mxCell id="14" value="Read response" style="swimlane;html=1;horizontal=1;startSize=28;fillColor=#E67E22;fontColor=#ffffff;strokeColor=#A84300;strokeWidth=2.5;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="820" y="350" width="240" height="210" as="geometry"/>
+    </mxCell>
+    <mxCell id="15" value="RVALID &amp;&amp; RREADY&#xa;only RLAST retires&#xa;match RID, read_ot[RID]--" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFFFFF;strokeColor=#5D9E5D;strokeWidth=2;" vertex="1" parent="14">
+      <mxGeometry x="20" y="50" width="200" height="100" as="geometry"/>
+    </mxCell>
+    <mxCell id="16" value="allocate write" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#1F6FB5;strokeWidth=2.5;endArrow=block;endFill=1;" edge="1" parent="1" source="5" target="10"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="17" value="allocate read" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#7B68EE;strokeWidth=2.5;endArrow=block;endFill=1;" edge="1" parent="1" source="8" target="11"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="18" value="match BID" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#5D9E5D;strokeWidth=2.5;endArrow=block;endFill=1;" edge="1" parent="1" source="13" target="10"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="19" value="match RID at RLAST" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#5D9E5D;strokeWidth=2.5;endArrow=block;endFill=1;" edge="1" parent="1" source="15" target="11"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="20" value="Different IDs may complete out of order. The checker must match response type + ID; it must not assume global FIFO order." style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFF4F1;strokeColor=#C0392B;strokeWidth=2;fontColor=#8F1D14;" vertex="1" parent="1">
+      <mxGeometry x="205" y="610" width="705" height="55" as="geometry"/>
+    </mxCell>
+  </root>
+</mxGraphModel>

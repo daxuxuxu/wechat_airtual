@@ -1,0 +1,35 @@
+<mxGraphModel adaptiveColors="auto">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    <mxCell id="2" value="同周期 alloc / retire：计数不应跳变" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontStyle=1;fontColor=#17324D;" vertex="1" parent="1">
+      <mxGeometry x="235" y="20" width="590" height="35" as="geometry"/>
+    </mxCell>
+    <mxCell id="3" value="Before edge" style="swimlane;html=1;horizontal=1;startSize=28;fillColor=#1F6FB5;fontColor=#ffffff;strokeColor=#154C7C;strokeWidth=2.5;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="70" y="105" width="230" height="200" as="geometry"/>
+    </mxCell>
+    <mxCell id="4" value="ot_count = N&#xa;one free entry or&#xa;one response pending" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFFFFF;strokeColor=#1F6FB5;strokeWidth=2;" vertex="1" parent="3">
+      <mxGeometry x="25" y="60" width="180" height="90" as="geometry"/>
+    </mxCell>
+    <mxCell id="5" value="Sampled at one ACLK edge" style="swimlane;html=1;horizontal=1;startSize=28;fillColor=#E67E22;fontColor=#ffffff;strokeColor=#A84300;strokeWidth=2.5;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="390" y="105" width="310" height="200" as="geometry"/>
+    </mxCell>
+    <mxCell id="6" value="alloc = 1&#xa;AWVALID &amp;&amp; AWREADY&#xa;or ARVALID &amp;&amp; ARREADY" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#EAF3FF;strokeColor=#1F6FB5;strokeWidth=2;" vertex="1" parent="5">
+      <mxGeometry x="20" y="58" width="125" height="92" as="geometry"/>
+    </mxCell>
+    <mxCell id="7" value="retire = 1&#xa;B handshake&#xa;or RLAST handshake" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#E9F7EC;strokeColor=#5D9E5D;strokeWidth=2;" vertex="1" parent="5">
+      <mxGeometry x="165" y="58" width="125" height="92" as="geometry"/>
+    </mxCell>
+    <mxCell id="8" value="After edge" style="swimlane;html=1;horizontal=1;startSize=28;fillColor=#5D9E5D;fontColor=#ffffff;strokeColor=#347534;strokeWidth=2.5;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="790" y="105" width="190" height="200" as="geometry"/>
+    </mxCell>
+    <mxCell id="9" value="ot_count_next =&#xa;N + 1 - 1 = N" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFFFFF;strokeColor=#347534;strokeWidth=2.5;" vertex="1" parent="8">
+      <mxGeometry x="20" y="60" width="150" height="90" as="geometry"/>
+    </mxCell>
+    <mxCell id="10" value="same sampled edge" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#E67E22;strokeWidth=2.5;endArrow=block;endFill=1;fontColor=#A84300;" edge="1" parent="1" source="3" target="5"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="11" value="next state" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#5D9E5D;strokeWidth=2.5;endArrow=block;endFill=1;fontColor=#347534;" edge="1" parent="1" source="5" target="8"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="12" value="DV checks: no transient underflow/overflow; ordering inside the checker must be defined and consistent with the sampled model." style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFF4F1;strokeColor=#C0392B;strokeWidth=2;fontColor=#8F1D14;" vertex="1" parent="1">
+      <mxGeometry x="145" y="390" width="760" height="52" as="geometry"/>
+    </mxCell>
+  </root>
+</mxGraphModel>
