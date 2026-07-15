@@ -1,0 +1,63 @@
+<mxGraphModel adaptiveColors="auto">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    <mxCell id="2" value="AXI Outstanding 生命周期" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontStyle=1;fontColor=#17324D;" vertex="1" parent="1">
+      <mxGeometry x="300" y="20" width="420" height="35" as="geometry"/>
+    </mxCell>
+    <mxCell id="3" value="AXI Manager" style="swimlane;html=1;horizontal=1;startSize=30;fillColor=#1F6FB5;fontColor=#ffffff;strokeColor=#154C7C;strokeWidth=2;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="40" y="80" width="250" height="430" as="geometry"/>
+    </mxCell>
+    <mxCell id="4" value="Interconnect / Slave" style="swimlane;html=1;horizontal=1;startSize=30;fillColor=#E67E22;fontColor=#ffffff;strokeColor=#A84300;strokeWidth=2;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="690" y="80" width="250" height="430" as="geometry"/>
+    </mxCell>
+    <mxCell id="5" value="OT Tracker" style="swimlane;html=1;horizontal=1;startSize=30;fillColor=#5D9E5D;fontColor=#ffffff;strokeColor=#347534;strokeWidth=2.5;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="345" y="80" width="290" height="430" as="geometry"/>
+    </mxCell>
+    <mxCell id="6" value="Write address&#xa;AWVALID &amp;&amp; AWREADY" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#1F6FB5;strokeWidth=2;fontColor=#17324D;" vertex="1" parent="3">
+      <mxGeometry x="25" y="70" width="200" height="55" as="geometry"/>
+    </mxCell>
+    <mxCell id="7" value="Read address&#xa;ARVALID &amp;&amp; ARREADY" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#1F6FB5;strokeWidth=2;fontColor=#17324D;" vertex="1" parent="3">
+      <mxGeometry x="25" y="175" width="200" height="55" as="geometry"/>
+    </mxCell>
+    <mxCell id="8" value="Allocate entry&#xa;record type + ID" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#347534;strokeWidth=2.5;shadow=1;fontColor=#17324D;" vertex="1" parent="5">
+      <mxGeometry x="40" y="100" width="210" height="62" as="geometry"/>
+    </mxCell>
+    <mxCell id="9" value="Outstanding&#xa;entry remains active" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#FFF8E7;strokeColor=#E6A020;strokeWidth=2;fontColor=#714300;" vertex="1" parent="5">
+      <mxGeometry x="40" y="207" width="210" height="56" as="geometry"/>
+    </mxCell>
+    <mxCell id="10" value="Retire entry&#xa;decrement ot_count" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#347534;strokeWidth=2.5;shadow=1;fontColor=#17324D;" vertex="1" parent="5">
+      <mxGeometry x="40" y="318" width="210" height="62" as="geometry"/>
+    </mxCell>
+    <mxCell id="11" value="Write response&#xa;BVALID &amp;&amp; BREADY&#xa;match BID" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#5D9E5D;strokeWidth=2;fontColor=#17324D;" vertex="1" parent="4">
+      <mxGeometry x="25" y="250" width="200" height="62" as="geometry"/>
+    </mxCell>
+    <mxCell id="12" value="Read response&#xa;RVALID &amp;&amp; RREADY &amp;&amp; RLAST&#xa;match RID" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#5D9E5D;strokeWidth=2;fontColor=#17324D;" vertex="1" parent="4">
+      <mxGeometry x="25" y="355" width="200" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="13" value="W channel beats do not retire&#xa;a write transaction; wait for B handshake." style="rounded=1;html=1;whiteSpace=wrap;fillColor=#FFF4F1;strokeColor=#C0392B;strokeWidth=2;fontColor=#8F1D14;" vertex="1" parent="1">
+      <mxGeometry x="95" y="545" width="790" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="14" value="AW / AR request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F6FB5;strokeWidth=2.5;endArrow=block;endFill=1;fontColor=#1F6FB5;" edge="1" parent="1" source="6" target="8">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="15" value="AR request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F6FB5;strokeWidth=2.5;endArrow=block;endFill=1;fontColor=#1F6FB5;" edge="1" parent="1" source="7" target="8">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="16" value="forwarded work" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F6FB5;strokeWidth=2.5;endArrow=block;endFill=1;fontColor=#1F6FB5;" edge="1" parent="1" source="8" target="4">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="17" value="response" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5D9E5D;strokeWidth=2.5;endArrow=block;endFill=1;fontColor=#347534;" edge="1" parent="1" source="11" target="10">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="18" value="last read beat" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5D9E5D;strokeWidth=2.5;endArrow=block;endFill=1;fontColor=#347534;" edge="1" parent="1" source="12" target="10">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#E6A020;strokeWidth=2;dashed=1;endArrow=block;endFill=1;" edge="1" parent="1" source="8" target="9">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#E6A020;strokeWidth=2;dashed=1;endArrow=block;endFill=1;" edge="1" parent="1" source="9" target="10">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+  </root>
+</mxGraphModel>

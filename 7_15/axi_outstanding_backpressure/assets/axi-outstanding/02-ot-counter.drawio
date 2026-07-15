@@ -1,0 +1,42 @@
+<mxGraphModel adaptiveColors="auto">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    <mxCell id="2" value="ot_count：只由地址接收与事务完成驱动" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontStyle=1;fontColor=#17324D;" vertex="1" parent="1">
+      <mxGeometry x="210" y="20" width="600" height="35" as="geometry"/>
+    </mxCell>
+    <mxCell id="3" value="状态方程" style="swimlane;html=1;horizontal=1;startSize=30;fillColor=#1F6FB5;fontColor=#ffffff;strokeColor=#154C7C;strokeWidth=2.5;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="55" y="90" width="420" height="195" as="geometry"/>
+    </mxCell>
+    <mxCell id="4" value="alloc = aw_fire + ar_fire&#xa;retire = b_fire + r_last_fire&#xa;ot_count_next = ot_count + alloc - retire" style="rounded=1;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;fillColor=#FFFFFF;strokeColor=#1F6FB5;strokeWidth=2;fontSize=16;fontColor=#17324D;" vertex="1" parent="3">
+      <mxGeometry x="30" y="65" width="360" height="95" as="geometry"/>
+    </mxCell>
+    <mxCell id="5" value="Allocate only&#xa;alloc=1, retire=0&#xa;N → N+1" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#EAF3FF;strokeColor=#1F6FB5;strokeWidth=2;shadow=1;fontColor=#17324D;" vertex="1" parent="1">
+      <mxGeometry x="535" y="90" width="180" height="105" as="geometry"/>
+    </mxCell>
+    <mxCell id="6" value="Retire only&#xa;alloc=0, retire=1&#xa;N → N-1" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#E9F7EC;strokeColor=#5D9E5D;strokeWidth=2;shadow=1;fontColor=#17324D;" vertex="1" parent="1">
+      <mxGeometry x="760" y="90" width="180" height="105" as="geometry"/>
+    </mxCell>
+    <mxCell id="7" value="No event&#xa;alloc=0, retire=0&#xa;N → N" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#F2F4F5;strokeColor=#5D6D7E;strokeWidth=2;shadow=1;fontColor=#34495E;" vertex="1" parent="1">
+      <mxGeometry x="535" y="250" width="180" height="105" as="geometry"/>
+    </mxCell>
+    <mxCell id="8" value="Same cycle&#xa;alloc=1, retire=1&#xa;N → N" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFF4E5;strokeColor=#E67E22;strokeWidth=2.5;shadow=1;fontColor=#8A4300;" vertex="1" parent="1">
+      <mxGeometry x="760" y="250" width="180" height="105" as="geometry"/>
+    </mxCell>
+    <mxCell id="9" value="AWVALID &amp;&amp; AWREADY&#xa;or ARVALID &amp;&amp; ARREADY" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFFFFF;strokeColor=#1F6FB5;strokeWidth=2;fontColor=#17324D;" vertex="1" parent="1">
+      <mxGeometry x="90" y="355" width="220" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="10" value="BVALID &amp;&amp; BREADY&#xa;or RVALID &amp;&amp; RREADY &amp;&amp; RLAST" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFFFFF;strokeColor=#5D9E5D;strokeWidth=2;fontColor=#17324D;" vertex="1" parent="1">
+      <mxGeometry x="565" y="390" width="300" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="11" value="allocation" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#1F6FB5;strokeWidth=2.5;endArrow=block;endFill=1;fontColor=#1F6FB5;" edge="1" parent="1" source="9" target="4">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="12" value="retirement" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#5D9E5D;strokeWidth=2.5;endArrow=block;endFill=1;fontColor=#347534;" edge="1" parent="1" source="10" target="4">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="13" value="DV check: sample all four combinations at the same clock edge." style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFF4F1;strokeColor=#C0392B;strokeWidth=2;fontColor=#8F1D14;" vertex="1" parent="1">
+      <mxGeometry x="245" y="500" width="530" height="45" as="geometry"/>
+    </mxCell>
+  </root>
+</mxGraphModel>

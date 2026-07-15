@@ -1,0 +1,44 @@
+<mxGraphModel adaptiveColors="auto">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    <mxCell id="2" value="OT 阈值与 address-channel backpressure" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontStyle=1;fontColor=#17324D;" vertex="1" parent="1">
+      <mxGeometry x="235" y="20" width="570" height="35" as="geometry"/>
+    </mxCell>
+    <mxCell id="3" value="Normal" style="swimlane;html=1;horizontal=1;startSize=28;fillColor=#5D9E5D;fontColor=#ffffff;strokeColor=#347534;strokeWidth=2.5;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="50" y="95" width="260" height="210" as="geometry"/>
+    </mxCell>
+    <mxCell id="4" value="ot_count &lt; OT_LIMIT&#xa;AWREADY / ARREADY may be 1&#xa;new AW / AR handshake allowed" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFFFFF;strokeColor=#347534;strokeWidth=2;fontColor=#17324D;" vertex="1" parent="3">
+      <mxGeometry x="20" y="60" width="220" height="105" as="geometry"/>
+    </mxCell>
+    <mxCell id="5" value="Near full" style="swimlane;html=1;horizontal=1;startSize=28;fillColor=#E6A020;fontColor=#ffffff;strokeColor=#A76A00;strokeWidth=2.5;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="380" y="95" width="260" height="210" as="geometry"/>
+    </mxCell>
+    <mxCell id="6" value="ot_count = OT_LIMIT - 1&#xa;next request consumes final entry&#xa;watch first throttle cycle" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFFFFF;strokeColor=#A76A00;strokeWidth=2;fontColor=#714300;" vertex="1" parent="5">
+      <mxGeometry x="20" y="60" width="220" height="105" as="geometry"/>
+    </mxCell>
+    <mxCell id="7" value="Full" style="swimlane;html=1;horizontal=1;startSize=28;fillColor=#C0392B;fontColor=#ffffff;strokeColor=#8F1D14;strokeWidth=2.5;shadow=1;" vertex="1" parent="1">
+      <mxGeometry x="710" y="95" width="260" height="210" as="geometry"/>
+    </mxCell>
+    <mxCell id="8" value="ot_count = OT_LIMIT&#xa;block new AW / AR acceptance&#xa;AWREADY and/or ARREADY = 0" style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFFFFF;strokeColor=#C0392B;strokeWidth=2.5;fontColor=#8F1D14;" vertex="1" parent="7">
+      <mxGeometry x="20" y="60" width="220" height="105" as="geometry"/>
+    </mxCell>
+    <mxCell id="9" value="allocate" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#1F6FB5;strokeWidth=2.5;endArrow=block;endFill=1;fontColor=#1F6FB5;" edge="1" parent="1" source="3" target="5">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="10" value="allocate final entry" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#1F6FB5;strokeWidth=2.5;endArrow=block;endFill=1;fontColor=#1F6FB5;" edge="1" parent="1" source="5" target="7">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="11" value="retire B / RLAST → space returns" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#5D9E5D;strokeWidth=2.5;endArrow=block;endFill=1;fontColor=#347534;" edge="1" parent="1" source="7" target="5">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="840" y="360"/>
+          <mxPoint x="510" y="360"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="12" value="backpressure affects new address handshakes only.&#xa;It must not discard an AW/AR handshake that already completed." style="rounded=1;html=1;whiteSpace=wrap;align=center;fillColor=#FFF4F1;strokeColor=#C0392B;strokeWidth=2;fontColor=#8F1D14;" vertex="1" parent="1">
+      <mxGeometry x="150" y="430" width="720" height="60" as="geometry"/>
+    </mxCell>
+  </root>
+</mxGraphModel>
