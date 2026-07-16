@@ -1,4 +1,4 @@
-## [日常问题] draw.io 本地版：从想法到可编辑图的工程化方法
+## [日常问题] draw.io：从想法到可编辑图的工程化方法
 
 ![封面](cover_drawio_local.png)
 
@@ -8,17 +8,17 @@
 
 很多工程图的问题不在于不会画，而在于图散落在聊天记录、截图和临时白板里。过几周再看，没人知道它的源文件在哪里，也没人敢改。
 
-本地 draw.io 的价值，是把“图”当作和代码一样可保存、可修改、可评审的工程资产。
+draw.io 的价值，是把“图”当作和代码一样可保存、可修改、可评审的工程资产。
 
 ---
 
-### 一、本地版和在线版有什么区别
+### 一、draw.io 是什么
 
-draw.io Desktop 是 standalone app。图可以直接保存在本地 `.drawio` 文件中，离线也能继续编辑，不必依赖浏览器 tab 或网络连接。
+draw.io 是 diagram 工具，用于创建架构图、流程图、时序图、状态机和数据流图。它可以把图保存为可编辑的 `.drawio` 源文件。
 
-对工程团队来说，本地模式的关键不是“离线”，而是文件可控。`.drawio` 源文件可以和 Markdown、testplan、verification checklist 放在同一个 Git repository 中。PNG、SVG 或 PDF 是发布产物，`.drawio` 则是后续修改的源代码。
+对工程团队来说，重点是文件可控。`.drawio` 源文件可以和 Markdown、testplan、verification checklist 放在同一个 Git repository 中。PNG、SVG 或 PDF 是发布产物，`.drawio` 则是后续修改的源文件。
 
-![本地 draw.io 的工程化工作流](drawio-local-workflow.png)
+![draw.io 的工程化工作流](drawio-local-workflow.png)
 
 ---
 
@@ -37,7 +37,7 @@ draw.io 最适合表达“元素之间的关系”，例如组件连接、状态
 
 ---
 
-### 三、本地版有什么优点
+### 三、draw.io 有什么优点
 
 第一，**源图可编辑**。不要只保存截图。需求变了、信号变了、模块边界变了，都可以打开 `.drawio` 修改，而不是重新画一张。
 
@@ -45,11 +45,11 @@ draw.io 最适合表达“元素之间的关系”，例如组件连接、状态
 
 第三，**适合 Git 管理**。推荐把 `.drawio` 与导出的 PNG 一起提交。review 时读者直接看 PNG，维护者需要修改时打开 `.drawio`。
 
-第四，**对本地工程环境友好**。即使没有外网，也可以创建、修改和导出图。对受限环境、内网环境或离线 debug 很实用。
+第四，**适合工程环境**。图可以作为 repository asset 管理，也可以在需要时导出成适合文档、评审或公众号的图片。
 
 ---
 
-### 四、怎么安装
+### 四、怎么开始使用
 
 如果本机已经能打开 draw.io Desktop，就不需要重复安装。
 
@@ -71,7 +71,7 @@ Windows 通常使用安装程序版本。macOS 使用 Desktop app。Linux 可按
 
 **场景三：把自然语言变成图。**
 
-先写清楚四件事：有哪些 node、谁连接谁、箭头代表什么、异常路径怎么走。然后生成初稿，再在本地 draw.io 调整颜色、间距、文字和 routing。
+先写清楚四件事：有哪些 node、谁连接谁、箭头代表什么、异常路径怎么走。然后生成初稿，再在 draw.io 中调整颜色、间距、文字和 routing。
 
 **场景四：导出给公众号。**
 
@@ -91,10 +91,14 @@ Windows 通常使用安装程序版本。macOS 使用 Desktop app。Linux 可按
 
 ### 七、总结
 
-draw.io 本地版不是单纯的画图工具，而是一种把工程知识变成可维护资产的方法。
+draw.io 不是单纯的画图工具，而是一种把工程知识变成可维护资产的方法。
 
 > **`.drawio` 是源文件，PNG／SVG／PDF 是发布文件；先保证可编辑，再保证好看。**
 
 ---
 
-*本文以本地 draw.io Desktop 的通用工作流与 DV 工程实践整理。*
+*本文以 draw.io 的通用工作流与 DV 工程实践整理。*
+
+复杂图的可编辑源文件可从以下 GitHub 目录获取：
+
+https://github.com/daxuxuxu/wechat_airtual/tree/main/7_16/drawio_local
