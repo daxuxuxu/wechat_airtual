@@ -12,6 +12,16 @@ bus data width 很宽，不代表每一笔 AXI write 都必须写满整个 data 
 
 ---
 
+### 前置概念速查
+
+`WDATA` 是 write data bus。一个 **byte lane** 是 WDATA 上连续的 8 bit 数据通道。`WSTRB[n]` 对应第 `n` 个 byte lane，表示该 lane 是否应更新 target memory。
+
+`AxSIZE` 描述每拍 transfer 的有效 byte 数。Narrow Transfer 指 transfer size 小于 bus data width 的访问，不等同于 unaligned transfer。
+
+因此，`AxSIZE` 决定访问粒度，address 决定数据落在哪组 lane，`WSTRB` 决定当前 write beat 哪些 lane 真正写入。
+
+---
+
 ### 一、Narrow Transfer 不只是 WSTRB
 
 严格来说，Narrow Transfer 的 transfer size 由 `AxSIZE` 定义。它说明每个 beat 有多少有效 byte。
