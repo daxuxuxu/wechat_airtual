@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="383" viewBox="0 0 900 383">
+<rect width="900" height="383" fill="#0A2342"/>
+<circle cx="780" cy="95" r="150" fill="#1565C0" opacity=".45"/>
+<rect x="42" y="38" width="170" height="38" rx="19" fill="#E67E22"/>
+<text x="127" y="64" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="20" font-weight="700" fill="#FFFFFF">芯片验证 · PCIe</text>
+<text x="42" y="145" font-family="Noto Sans CJK SC,Arial" font-size="38" font-weight="700" fill="#FFFFFF">AtomicOp 是谁执行的？</text>
+<text x="42" y="195" font-family="Noto Sans CJK SC,Arial" font-size="38" font-weight="700" fill="#FFFFFF">Completer 才负责原子性</text>
+<text x="42" y="242" font-family="Noto Sans CJK SC,Arial" font-size="21" fill="#B9D7F5">PCIe 负责传输与路由，target 负责不可分割 read-modify-write</text>
+<rect x="600" y="130" width="220" height="64" rx="14" fill="#FFFFFF"/>
+<text x="710" y="171" text-anchor="middle" font-family="DejaVu Sans Mono" font-size="28" font-weight="700" fill="#1F6FB5">AtomicOp TLP</text>
+<path d="M710 204 V245" stroke="#FFFFFF" stroke-width="4"/>
+<path d="M700 235 L710 250 L720 235 Z" fill="#FFFFFF"/>
+<rect x="600" y="258" width="220" height="64" rx="14" fill="#FFFFFF"/>
+<text x="710" y="299" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="26" font-weight="700" fill="#23313F">Atomic Completer</text>
+</svg>
