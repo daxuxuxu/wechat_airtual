@@ -1,21 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="920" viewBox="0 0 1600 920">
-<rect width="1600" height="920" fill="#FFFFFF"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120">
+<rect width="1600" height="1120" fill="#FFFFFF"/>
 <rect width="1600" height="94" fill="#23313F"/>
 <text x="70" y="57" font-family="Noto Sans CJK SC,Arial" font-size="46" font-weight="700" fill="#FFFFFF">AXI Burst Type：FIXED、INCR、WRAP</text>
-<text x="70" y="83" font-family="Noto Sans CJK SC,Arial" font-size="23" fill="#B9D7F5">AxBURST 决定相邻 beat 的 address 如何变化</text>
-<rect x="70" y="170" width="1460" height="190" rx="20" fill="#EAF2F8" stroke="#1F6FB5" stroke-width="3"/>
-<text x="120" y="235" font-family="DejaVu Sans Mono" font-size="40" font-weight="700" fill="#1F6FB5">FIXED</text>
-<text x="120" y="300" font-family="Noto Sans CJK SC,Arial" font-size="32" fill="#23313F">每个 beat 使用同一 address。典型场景是固定位置的连续数据访问。</text>
-<rect x="760" y="245" width="130" height="70" rx="12" fill="#FFFFFF" stroke="#1F6FB5" stroke-width="3"/>
-<rect x="940" y="245" width="130" height="70" rx="12" fill="#FFFFFF" stroke="#1F6FB5" stroke-width="3"/>
-<rect x="1120" y="245" width="130" height="70" rx="12" fill="#FFFFFF" stroke="#1F6FB5" stroke-width="3"/>
-<text x="825" y="290" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="28" fill="#23313F">A</text><text x="1005" y="290" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="28" fill="#23313F">A</text><text x="1185" y="290" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="28" fill="#23313F">A</text>
-<rect x="70" y="410" width="1460" height="190" rx="20" fill="#FEF5E7" stroke="#E67E22" stroke-width="3"/>
-<text x="120" y="475" font-family="DejaVu Sans Mono" font-size="40" font-weight="700" fill="#A84B00">INCR</text>
-<text x="120" y="540" font-family="Noto Sans CJK SC,Arial" font-size="32" fill="#23313F">每个 beat 的 address 增加 bytes per beat，是最常见的 memory burst。</text>
-<text x="790" y="540" font-family="Noto Sans CJK SC,Arial" font-size="32" font-weight="700" fill="#A84B00">A → A + step → A + 2×step</text>
-<rect x="70" y="650" width="1460" height="190" rx="20" fill="#F4F0FF" stroke="#7B68EE" stroke-width="3"/>
-<text x="120" y="715" font-family="DejaVu Sans Mono" font-size="40" font-weight="700" fill="#5B4BB7">WRAP</text>
-<text x="120" y="780" font-family="Noto Sans CJK SC,Arial" font-size="32" fill="#23313F">address 递增到 wrap boundary 后回绕。DV 必须检查 boundary、burst length 与 step 是否匹配。</text>
-<text x="870" y="780" font-family="Noto Sans CJK SC,Arial" font-size="32" font-weight="700" fill="#5B4BB7">A → A + step → boundary → wrap start</text>
+<text x="70" y="83" font-family="Noto Sans CJK SC,Arial" font-size="23" fill="#B9D7F5">AxBURST 定义相邻 beat 的 address 变化方式</text>
+<rect x="70" y="150" width="1460" height="260" rx="20" fill="#EAF2F8" stroke="#1F6FB5" stroke-width="3"/>
+<text x="120" y="220" font-family="DejaVu Sans Mono" font-size="42" font-weight="700" fill="#1F6FB5">FIXED</text>
+<text x="120" y="275" font-family="Noto Sans CJK SC,Arial" font-size="32" fill="#23313F">每个 beat 使用同一 address。常见于固定位置的数据访问。</text>
+<rect x="300" y="315" width="170" height="65" rx="12" fill="#FFFFFF" stroke="#1F6FB5" stroke-width="3"/><rect x="600" y="315" width="170" height="65" rx="12" fill="#FFFFFF" stroke="#1F6FB5" stroke-width="3"/><rect x="900" y="315" width="170" height="65" rx="12" fill="#FFFFFF" stroke="#1F6FB5" stroke-width="3"/><text x="385" y="358" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="30" fill="#23313F">beat 0：A</text><text x="685" y="358" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="30" fill="#23313F">beat 1：A</text><text x="985" y="358" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="30" fill="#23313F">beat 2：A</text>
+<rect x="70" y="445" width="1460" height="260" rx="20" fill="#FEF5E7" stroke="#E67E22" stroke-width="3"/>
+<text x="120" y="515" font-family="DejaVu Sans Mono" font-size="42" font-weight="700" fill="#A84B00">INCR</text>
+<text x="120" y="570" font-family="Noto Sans CJK SC,Arial" font-size="32" fill="#23313F">每个 beat 的 address 增加 bytes per beat，是最常见的 memory burst。</text>
+<text x="300" y="650" font-family="Noto Sans CJK SC,Arial" font-size="34" font-weight="700" fill="#A84B00">beat 0：A</text><text x="700" y="650" font-family="Noto Sans CJK SC,Arial" font-size="34" font-weight="700" fill="#A84B00">beat 1：A + step</text><text x="1120" y="650" font-family="Noto Sans CJK SC,Arial" font-size="34" font-weight="700" fill="#A84B00">beat 2：A + 2×step</text>
+<rect x="70" y="740" width="1460" height="290" rx="20" fill="#F4F0FF" stroke="#7B68EE" stroke-width="3"/>
+<text x="120" y="810" font-family="DejaVu Sans Mono" font-size="42" font-weight="700" fill="#5B4BB7">WRAP</text>
+<text x="120" y="865" font-family="Noto Sans CJK SC,Arial" font-size="32" fill="#23313F">address 在合法 wrap boundary 内递增，到达 boundary 后回绕。</text>
+<text x="240" y="950" font-family="Noto Sans CJK SC,Arial" font-size="34" font-weight="700" fill="#5B4BB7">A → A + step → boundary → wrap start</text>
+<text x="800" y="1085" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="28" fill="#566573">DV：FIXED 检查地址不变，INCR 检查 step，WRAP 检查 boundary、length 与回绕点。</text>
 </svg>
