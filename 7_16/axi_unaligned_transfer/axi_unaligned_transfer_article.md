@@ -12,6 +12,16 @@
 
 ---
 
+### 前置概念速查
+
+**Aligned** 表示 start address 满足本次 transfer size 的自然对齐。**Unaligned** 表示 start address 不满足该对齐要求。
+
+`AxADDR` 携带真实 start address，`AxSIZE` 描述每拍有效 byte 数。write path 使用 `WSTRB` 指定当前 `WDATA` 中哪些 byte lane 更新，read path 没有 `WSTRB`。
+
+Unaligned 不意味着 address 无法解释。有效 byte 的位置仍由 start address、transfer size 与 burst address progression 共同决定。
+
+---
+
 ### 一、什么是 Unaligned Transfer
 
 Unaligned Transfer 指 start address 不是本次 transfer size 的自然对齐地址。
