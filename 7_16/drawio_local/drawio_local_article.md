@@ -65,17 +65,25 @@ Windows 通常使用安装程序版本。macOS 使用 Desktop app。Linux 可按
 
 先画 DUT，再放 interface、agent、monitor、scoreboard 和 reference model。箭头只表示一种语义，例如 transaction、analysis data 或 configuration，不要让一条线同时承担多种含义。
 
+![画 verification architecture](drawio-example-verification-architecture.png)
+
 **场景二：画协议时序。**
 
 横向表示时间，纵向表示 component。先画 handshake 条件，再补充 stall、timeout、error path。不要先堆很多信号名，否则读者看不出因果关系。
+
+![画协议时序图](drawio-example-protocol-timing.png)
 
 **场景三：把自然语言变成图。**
 
 先写清楚四件事：有哪些 node、谁连接谁、箭头代表什么、异常路径怎么走。然后生成初稿，再在 draw.io 中调整颜色、间距、文字和 routing。
 
+![把自然语言变成图](drawio-example-language-to-diagram.png)
+
 **场景四：导出给公众号。**
 
 发布版使用 PNG。保持大字号，避免浅色字体和过密文字。源图保留 `.drawio`，PNG 只负责展示。
+
+![导出与发布](drawio-example-publish-assets.png)
 
 ---
 
