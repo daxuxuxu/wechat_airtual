@@ -34,6 +34,18 @@ read request 可能因为 payload boundary、target response 或 implementation 
 
 覆盖 completion split、out-of-order completion、unknown Tag、duplicate completion、Completion Timeout、reset 后 stale completion 与 tag reuse。
 
+### 四、为什么 Completion matching 容易出错
+
+Completion 不是只靠一个 Tag 就能验证完整。Requester ID、Tag、请求长度、已接收 byte 数和最后一个 completion 的边界需要共同构成 request tracker 的状态。
+
+当一个 request 被拆成多个 Completion 时，checker 应持续累积 data 与 byte count。只有所有预期 byte 都返回后，read entry 才能 retire。过早 retire 会让后续 Completion 变成 unknown response；过晚 retire 则会阻塞 tag reuse。
+
+![Completion matching 伪代码](pcie_completion-pseudocode.png)
+
+### 五、Debug 时先看什么
+
+先看 request issue 时是否正确记录 Requester ID 与 Tag。再看 Completion 返回的 Tag 是否匹配、Byte Count 是否递减、Lower Address 是否与当前 payload 位置一致。最后检查 timeout 或 reset 后是否仍有旧 Completion 返回。
+
 ---
 
 ### 总结
