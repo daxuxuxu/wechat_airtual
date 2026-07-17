@@ -34,6 +34,18 @@ AER capability 与 error register 属于 Function Configuration Space。多 Func
 
 覆盖 error injection、mask/unmask、severity、first error、repeated error、status clear、reset/FLR 后清理与 error message 路径。
 
+### 四、status、mask 与 severity 不能混为一谈
+
+status 回答“发生过什么错误”。mask 回答“这个错误是否需要对 software 可见”。severity 回答“若上报，它属于可恢复问题还是需要更强恢复动作的问题”。
+
+一个常见错误是只检查 error message 有没有发出，却没有检查 status 是否被记录、mask 后是否仍然保留内部状态、clear 后是否能再次捕获同类错误。
+
+![AER error handling 伪代码](pcie_aer-pseudocode.png)
+
+### 五、DV 的实战顺序
+
+先注入单一 error，确认 status 与 severity。再打开 mask，确认上报行为改变但设计没有丢失必要状态。最后连续注入多种 error，验证 first error、repeated error、reset/FLR cleanup 与 Function isolation。
+
 ---
 
 ### 总结
