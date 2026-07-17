@@ -20,23 +20,31 @@ ATS 让 device 请求 address translation。PASID 用于标识 process address s
 
 ---
 
-### 一、为什么 device 需要虚拟地址语义
+### 一、为什么 device 不能只认识 physical address
+
+传统 DMA 可以直接使用 physical address，但现代系统里多个 process、VM 和 device 会共享同一套 memory。对 software 来说，相同 virtual address 在不同 process 中可能代表完全不同的 page。
+
+如果 device 不知道 request 属于哪个 process，它就无法安全地使用 virtual address，也无法让 IOMMU、page fault 和 memory protection 参与设备访问。ATS、PASID、PRI 正是为了解决“设备如何进入虚拟内存体系”这个问题。
+
+PASID 提供 address space identity，ATS 提供 translation 获取能力，PRI 提供 translation 暂时不可用时的 page request 通道。三者共同让 device request 不只是“访问一个地址”，而是“以某个 process 的身份访问一个地址”。
+
+### 二、为什么 device 需要虚拟地址语义
 
 高性能 accelerator 或 DMA engine 需要与 software process 的地址空间协作。仅使用固定 physical address 会限制隔离、共享与虚拟化能力。
 
 ---
 
-### 二、三个能力如何配合
+### 三、三个能力如何配合
 
 PASID 先说明请求属于哪个 address space。ATS 用于获取 translation。PRI 在 page 不存在或 translation 无法完成时通知 software 处理。
 
 ---
 
-### 三、DV 应覆盖什么
+### 四、DV 应覆盖什么
 
 覆盖 capability enable、PASID matching、translation hit/miss、invalidations、page request、retry、reset/FLR 与 error reporting。
 
-### 四、三个能力分别解决什么
+### 五、三个能力分别解决什么
 
 PASID 先回答“这个 request 属于哪个 process address space”。ATS 再回答“这个 virtual address 对应什么 translation”。PRI 则处理 translation 不可用、page 尚未准备好的情况。
 
@@ -44,17 +52,17 @@ PASID 先回答“这个 request 属于哪个 process address space”。ATS 再
 
 ![ATS / PASID / PRI 伪代码](pcie_ats_pasid_pri-pseudocode.png)
 
-### 五、DV 的高价值组合
+### 六、DV 的高价值组合
 
 覆盖相同 virtual address、不同 PASID；translation hit 后 invalidation；page request 后 retry；以及 reset/FLR 发生在 translation outstanding 期间的 cleanup。重点不是只看 request 发出，而是确认 translation state 不会跨 process 或跨 reset 泄漏。
 
-### 六、为什么 PASID 是隔离边界
+### 七、为什么 PASID 是隔离边界
 
 相同 virtual address 在不同 process 中可能指向完全不同的 physical page。因此，只保存 address 而不保存 PASID 的 translation cache 或 request tracker，会把不同 process 的 request 错误合并。
 
 验证时要故意构造“相同 address、不同 PASID”的并发 request。若设计错误地只按 address matching，问题通常表现为 data 从错误 address space 返回，或者 invalidation 误伤另一 process 的 translation。
 
-### 七、PRI 不只是一次额外 request
+### 八、PRI 不只是一次额外 request
 
 当 page 缺失时，PRI 使 device 可以把“当前无法继续”的原因交给 software。之后 translation 建立、software 允许 retry，原 request 才能继续。
 
