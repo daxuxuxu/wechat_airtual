@@ -48,6 +48,18 @@ PASID 先回答“这个 request 属于哪个 process address space”。ATS 再
 
 覆盖相同 virtual address、不同 PASID；translation hit 后 invalidation；page request 后 retry；以及 reset/FLR 发生在 translation outstanding 期间的 cleanup。重点不是只看 request 发出，而是确认 translation state 不会跨 process 或跨 reset 泄漏。
 
+### 六、为什么 PASID 是隔离边界
+
+相同 virtual address 在不同 process 中可能指向完全不同的 physical page。因此，只保存 address 而不保存 PASID 的 translation cache 或 request tracker，会把不同 process 的 request 错误合并。
+
+验证时要故意构造“相同 address、不同 PASID”的并发 request。若设计错误地只按 address matching，问题通常表现为 data 从错误 address space 返回，或者 invalidation 误伤另一 process 的 translation。
+
+### 七、PRI 不只是一次额外 request
+
+当 page 缺失时，PRI 使 device 可以把“当前无法继续”的原因交给 software。之后 translation 建立、software 允许 retry，原 request 才能继续。
+
+DV 必须验证 retry 的 identity 仍然正确：PASID、address、request context 与 reset epoch 不可丢失。否则 page request 虽然完成，device 却可能 retry 到错误的 address space。
+
 ---
 
 ### 总结
