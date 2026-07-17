@@ -6,7 +6,9 @@
 
 ### 导读
 
-本文介绍 translation、address space identity 与 page request。
+当 device 同时服务多个 process 或 VM 时，“一个 address”已经不再足以说明访问目标。它还必须知道属于哪个 address space、translation 是否有效、page 缺失时该如何等待 software。
+
+本文介绍 translation、address space identity 与 page request，说明 ATS、PASID、PRI 如何把 device request 接入虚拟内存体系。
 
 ---
 
@@ -50,4 +52,4 @@ PASID 先回答“这个 request 属于哪个 process address space”。ATS 再
 
 ### 总结
 
-PCIe Function 相关能力的难点，不只是 capability bit，而是 capability、control、transaction state 与 reset/error path 是否一致。
+ATS、PASID、PRI 的核心不是多几个 capability bit，而是让每笔 request 的 address space identity、translation state、invalidation 与 retry 生命周期始终一致，且不会跨 process 或跨 reset 泄漏。
