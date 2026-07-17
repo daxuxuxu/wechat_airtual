@@ -96,4 +96,3 @@ https://github.com/daxuxuxu/wechat_airtual/tree/main/7_16/pcie_flr
 > **FLR 清的是 Function 的当前 request state，不会自动抹掉 PCIe fabric 中已经在路上的旧 Completion。**
 
 > **验证的关键是：旧 Completion 必须被识别为 stale，新 request 必须仍能正常完成。**
-
