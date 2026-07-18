@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="670" viewBox="0 0 1600 670">
+<rect width="1600" height="670" fill="#FFFFFF"/>
+<rect width="1600" height="80" fill="#1F6FB5"/>
+<text x="54" y="51" font-family="Noto Sans CJK SC,Arial" font-size="38" font-weight="700" fill="#FFFFFF">MSI-X interrupt delivery checker 伪代码</text>
+<rect x="40" y="98" width="110" height="510" rx="10" fill="#F4F6F7"/>
+<rect x="40" y="98" width="1520" height="510" rx="10" fill="none" stroke="#D5D8DC" stroke-width="2"/>
+<text x="112" y="180" font-family="DejaVu Sans Mono" font-size="28" fill="#7F8C8D">01</text><text x="188" y="180" font-family="DejaVu Sans Mono" font-size="35" fill="#23313F">on_interrupt_event(vector):</text>
+<text x="112" y="230" font-family="DejaVu Sans Mono" font-size="28" fill="#7F8C8D">02</text><text x="188" y="230" font-family="DejaVu Sans Mono" font-size="35" fill="#23313F">  if function_disabled(): return</text>
+<text x="112" y="280" font-family="DejaVu Sans Mono" font-size="28" fill="#7F8C8D">03</text><text x="188" y="280" font-family="DejaVu Sans Mono" font-size="35" fill="#23313F">  if vector_masked(vector): set_pending(vector)</text>
+<text x="112" y="330" font-family="DejaVu Sans Mono" font-size="28" fill="#7F8C8D">04</text><text x="188" y="330" font-family="DejaVu Sans Mono" font-size="35" fill="#23313F">  else: issue_message_write(table[vector])</text>
+<text x="112" y="380" font-family="DejaVu Sans Mono" font-size="28" fill="#7F8C8D">05</text><text x="188" y="380" font-family="DejaVu Sans Mono" font-size="35" fill="#23313F">on_vector_unmask(vector):</text>
+<text x="112" y="430" font-family="DejaVu Sans Mono" font-size="28" fill="#7F8C8D">06</text><text x="188" y="430" font-family="DejaVu Sans Mono" font-size="35" fill="#23313F">  if pending(vector): replay_or_report(vector)</text>
+</svg>
