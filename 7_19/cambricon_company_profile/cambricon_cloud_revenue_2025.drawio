@@ -1,0 +1,27 @@
+<mxfile host="app.diagrams.net" modified="2026-07-19T00:00:00.000Z" agent="GitHub Copilot" version="30.3.14" type="device">
+  <diagram id="cambricon-cloud-revenue" name="Page-1">
+    <mxGraphModel dx="1440" dy="960" grid="1" gridSize="10" page="0" pageScale="1" pageWidth="1440" pageHeight="960" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="bg" value="" style="rounded=1;html=1;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1"><mxGeometry x="60" y="54" width="1320" height="852" as="geometry"/></mxCell>
+        <mxCell id="accent" value="" style="rounded=1;html=1;fillColor=#1463FF;strokeColor=none;" vertex="1" parent="1"><mxGeometry x="60" y="54" width="16" height="852" as="geometry"/></mxCell>
+        <mxCell id="title" value="寒武纪 2025 年：收入高度聚焦云端产品线" style="text;html=1;align=left;verticalAlign=middle;fontSize=48;fontStyle=1;fontColor=#15233D;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="126" y="104" width="1180" height="64" as="geometry"/></mxCell>
+        <mxCell id="subtitle" value="单位：人民币｜数据来源：公司 2025 年年度报告" style="text;html=1;align=left;verticalAlign=middle;fontSize=27;fontColor=#64748B;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="128" y="176" width="1140" height="42" as="geometry"/></mxCell>
+        <mxCell id="cloudBox" value="" style="rounded=1;html=1;fillColor=#EAF2FF;strokeColor=none;" vertex="1" parent="1"><mxGeometry x="126" y="285" width="720" height="372" as="geometry"/></mxCell>
+        <mxCell id="cloudTitle" value="云端产品线" style="text;html=1;align=center;verticalAlign=middle;fontSize=35;fontStyle=1;fontColor=#15233D;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="166" y="333" width="640" height="48" as="geometry"/></mxCell>
+        <mxCell id="cloudValue" value="约 64.76 亿元" style="text;html=1;align=center;verticalAlign=middle;fontSize=62;fontStyle=1;fontColor=#1463FF;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="166" y="403" width="640" height="82" as="geometry"/></mxCell>
+        <mxCell id="cloudNote" value="占总营收超过 99%" style="text;html=1;align=center;verticalAlign=middle;fontSize=34;fontStyle=1;fontColor=#1463FF;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="166" y="505" width="640" height="48" as="geometry"/></mxCell>
+        <mxCell id="cloudDescription" value="2025 年增长主要由数据中心和云端 AI 算力需求拉动" style="text;html=1;align=center;verticalAlign=middle;fontSize=24;fontColor=#52667F;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="166" y="572" width="640" height="34" as="geometry"/></mxCell>
+        <mxCell id="edgeBox" value="" style="rounded=1;html=1;fillColor=#F6F8FC;strokeColor=none;" vertex="1" parent="1"><mxGeometry x="888" y="285" width="420" height="164" as="geometry"/></mxCell>
+        <mxCell id="edgeTitle" value="边缘产品线" style="text;html=1;align=center;verticalAlign=middle;fontSize=28;fontStyle=1;fontColor=#52667F;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="918" y="316" width="360" height="38" as="geometry"/></mxCell>
+        <mxCell id="edgeValue" value="约 339.39 万元" style="text;html=1;align=center;verticalAlign=middle;fontSize=40;fontStyle=1;fontColor=#334155;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="918" y="367" width="360" height="55" as="geometry"/></mxCell>
+        <mxCell id="softwareBox" value="" style="rounded=1;html=1;fillColor=#F6F8FC;strokeColor=none;" vertex="1" parent="1"><mxGeometry x="888" y="493" width="420" height="164" as="geometry"/></mxCell>
+        <mxCell id="softwareTitle" value="IP 授权及软件" style="text;html=1;align=center;verticalAlign=middle;fontSize=28;fontStyle=1;fontColor=#52667F;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="918" y="524" width="360" height="38" as="geometry"/></mxCell>
+        <mxCell id="softwareValue" value="约 228.87 万元" style="text;html=1;align=center;verticalAlign=middle;fontSize=40;fontStyle=1;fontColor=#334155;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="918" y="575" width="360" height="55" as="geometry"/></mxCell>
+        <mxCell id="callout" value="&lt;font style=&quot;font-size:29px&quot; color=&quot;#15233D&quot;&gt;&lt;b&gt;观察重点：云端业务的规模化交付支撑了 2025 年业绩跃升。&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF5E8;strokeColor=none;fontColor=#334155;fontSize=22;fontFamily=Microsoft YaHei;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="126" y="735" width="1182" height="66" as="geometry"/></mxCell>
+        <mxCell id="footer" value="注：各业务线收入为公司年度报告披露口径；不同业务线规模差异显著。" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;fontColor=#64748B;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="128" y="850" width="1160" height="30" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
