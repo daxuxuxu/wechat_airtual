@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="960" viewBox="0 0 1440 960" role="img" aria-labelledby="title desc">
+  <title id="title">寒武纪 2024 至 2025 年营收与归母净利润</title>
+  <desc id="desc">2024 年营业收入 11.74 亿元，归母净利润负 4.52 亿元；2025 年营业收入 64.97 亿元，归母净利润 20.59 亿元。</desc>
+  <rect width="1440" height="960" fill="#F5F8FC"/>
+  <rect x="60" y="54" width="1320" height="852" rx="38" fill="#FFFFFF"/>
+  <rect x="60" y="54" width="16" height="852" rx="8" fill="#1463FF"/>
+  <text x="126" y="148" fill="#15233D" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="54" font-weight="700">寒武纪：从亏损到首次全年盈利</text>
+  <text x="128" y="204" fill="#64748B" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="27">单位：亿元｜数据来源：公司 2025 年年度报告</text>
+  <line x1="176" y1="720" x2="1300" y2="720" stroke="#C7D4E6" stroke-width="3"/>
+  <line x1="176" y1="530" x2="1300" y2="530" stroke="#E3EAF3" stroke-width="2" stroke-dasharray="9 10"/>
+  <line x1="176" y1="340" x2="1300" y2="340" stroke="#E3EAF3" stroke-width="2" stroke-dasharray="9 10"/>
+  <text x="128" y="729" fill="#94A3B8" font-family="Arial, sans-serif" font-size="22">0</text>
+  <text x="112" y="539" fill="#94A3B8" font-family="Arial, sans-serif" font-size="22">30</text>
+  <text x="112" y="349" fill="#94A3B8" font-family="Arial, sans-serif" font-size="22">60</text>
+  <text x="141" y="806" fill="#475569" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28">营收</text>
+  <rect x="312" y="646" width="150" height="74" rx="12" fill="#9BC5FF"/>
+  <rect x="690" y="309" width="150" height="411" rx="12" fill="#1463FF"/>
+  <text x="387" y="623" text-anchor="middle" fill="#1E3A5F" font-family="Arial, Microsoft YaHei, sans-serif" font-size="35" font-weight="700">11.74</text>
+  <text x="765" y="286" text-anchor="middle" fill="#1463FF" font-family="Arial, Microsoft YaHei, sans-serif" font-size="42" font-weight="700">64.97</text>
+  <text x="387" y="764" text-anchor="middle" fill="#64748B" font-family="Arial, Microsoft YaHei, sans-serif" font-size="26">2024</text>
+  <text x="765" y="764" text-anchor="middle" fill="#64748B" font-family="Arial, Microsoft YaHei, sans-serif" font-size="26">2025</text>
+  <line x1="960" y1="720" x2="1242" y2="720" stroke="#C7D4E6" stroke-width="3"/>
+  <text x="1050" y="806" fill="#475569" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28">归母净利润</text>
+  <rect x="974" y="720" width="105" height="58" rx="12" fill="#F87171"/>
+  <rect x="1132" y="586" width="105" height="134" rx="12" fill="#16A36A"/>
+  <text x="1026" y="822" text-anchor="middle" fill="#DC2626" font-family="Arial, Microsoft YaHei, sans-serif" font-size="32" font-weight="700">-4.52</text>
+  <text x="1184" y="563" text-anchor="middle" fill="#15803D" font-family="Arial, Microsoft YaHei, sans-serif" font-size="34" font-weight="700">20.59</text>
+  <text x="1026" y="764" text-anchor="middle" fill="#64748B" font-family="Arial, Microsoft YaHei, sans-serif" font-size="26">2024</text>
+  <text x="1184" y="764" text-anchor="middle" fill="#64748B" font-family="Arial, Microsoft YaHei, sans-serif" font-size="26">2025</text>
+  <rect x="128" y="855" width="1145" height="1" fill="#E2E8F0"/>
+  <text x="128" y="887" fill="#64748B" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="23">2025 年营收同比增长 453.21%，公司实现上市以来首次全年盈利。</text>
+</svg>

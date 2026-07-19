@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="960" viewBox="0 0 1440 960" role="img" aria-labelledby="title desc">
+  <title id="title">2025 年中国 AI 加速卡市场中的寒武纪位置</title>
+  <desc id="desc">IDC 出货量口径：总市场约 400 万张，本土厂商合计约 165 万张，寒武纪约 11.6 万张，约占整体 2.9%，约占本土厂商 7.0%。</desc>
+  <rect width="1440" height="960" fill="#F7FAFF"/>
+  <rect x="60" y="54" width="1320" height="852" rx="38" fill="#FFF"/>
+  <rect x="60" y="54" width="16" height="852" rx="8" fill="#1463FF"/>
+  <text x="126" y="148" fill="#15233D" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="52" font-weight="700">寒武纪在中国 AI 加速卡市场的位置</text>
+  <text x="128" y="202" fill="#64748B" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="27">IDC 2025 年出货量口径｜不同机构与口径不可直接横向比较</text>
+  <circle cx="460" cy="520" r="230" fill="#E9F1FF"/>
+  <circle cx="460" cy="520" r="150" fill="#5C96FF"/>
+  <circle cx="460" cy="520" r="55" fill="#1463FF"/>
+  <text x="460" y="505" text-anchor="middle" fill="#FFF" font-family="Arial, Microsoft YaHei, sans-serif" font-size="33" font-weight="700">11.6 万</text>
+  <text x="460" y="548" text-anchor="middle" fill="#DDEBFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="21">寒武纪出货量</text>
+  <text x="460" y="806" text-anchor="middle" fill="#334155" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="25">总市场约 400 万张</text>
+  <text x="460" y="840" text-anchor="middle" fill="#64748B" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22">本土厂商约 165 万张</text>
+  <rect x="805" y="314" width="420" height="144" rx="24" fill="#EEF5FF"/>
+  <text x="850" y="370" fill="#1463FF" font-family="Arial, Microsoft YaHei, sans-serif" font-size="47" font-weight="700">2.9%</text>
+  <text x="850" y="414" fill="#334155" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="26">约占中国整体市场出货量</text>
+  <rect x="805" y="505" width="420" height="144" rx="24" fill="#EAFBF2"/>
+  <text x="850" y="561" fill="#15803D" font-family="Arial, Microsoft YaHei, sans-serif" font-size="47" font-weight="700">7.0%</text>
+  <text x="850" y="605" fill="#334155" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="26">约占本土厂商合计出货量</text>
+  <rect x="805" y="696" width="420" height="81" rx="20" fill="#FFF6E8"/>
+  <text x="850" y="746" fill="#9A5A00" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="24" font-weight="700">与昆仑芯并列国产厂商第三</text>
+  <text x="128" y="887" fill="#64748B" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22">说明：图中为出货量估算口径，不代表营收份额、芯片性能或长期竞争格局。</text>
+</svg>
