@@ -1,0 +1,22 @@
+<mxfile host="app.diagrams.net" modified="2026-07-19T00:00:00.000Z" agent="GitHub Copilot" version="26.0.14" type="device">
+  <diagram id="cambricon-market-share" name="Page-1">
+    <mxGraphModel dx="1440" dy="960" grid="1" gridSize="10" page="0" pageScale="1" pageWidth="1440" pageHeight="960" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1"><mxGeometry x="60" y="54" width="1320" height="852" as="geometry"/></mxCell>
+        <mxCell id="accent" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1463FF;strokeColor=none;" vertex="1" parent="1"><mxGeometry x="60" y="54" width="16" height="852" as="geometry"/></mxCell>
+        <mxCell id="title" value="寒武纪在中国 AI 加速卡市场的位置" style="text;html=1;align=left;verticalAlign=middle;fontSize=52;fontStyle=1;fontColor=#15233D;fontFamily=Microsoft YaHei;" vertex="1" parent="1"><mxGeometry x="126" y="105" width="1140" height="64" as="geometry"/></mxCell>
+        <mxCell id="subtitle" value="IDC 2025 年出货量口径｜不同机构与口径不可直接横向比较" style="text;html=1;align=left;verticalAlign=middle;fontSize=27;fontColor=#64748B;fontFamily=Microsoft YaHei;" vertex="1" parent="1"><mxGeometry x="128" y="175" width="1100" height="44" as="geometry"/></mxCell>
+        <mxCell id="market" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E9F1FF;strokeColor=none;" vertex="1" parent="1"><mxGeometry x="230" y="290" width="460" height="460" as="geometry"/></mxCell>
+        <mxCell id="local" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#5C96FF;strokeColor=none;" vertex="1" parent="1"><mxGeometry x="310" y="370" width="300" height="300" as="geometry"/></mxCell>
+        <mxCell id="cambricon" value="&lt;b&gt;11.6 万&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#DDEBFF&quot;&gt;寒武纪出货量&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#1463FF;strokeColor=none;fontColor=#FFFFFF;fontSize=21;fontFamily=Microsoft YaHei;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="405" y="465" width="110" height="110" as="geometry"/></mxCell>
+        <mxCell id="total" value="总市场约 400 万张" style="text;html=1;align=center;verticalAlign=middle;fontSize=25;fontColor=#334155;fontFamily=Microsoft YaHei;" vertex="1" parent="1"><mxGeometry x="240" y="780" width="440" height="36" as="geometry"/></mxCell>
+        <mxCell id="localtext" value="本土厂商约 165 万张" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontColor=#64748B;fontFamily=Microsoft YaHei;" vertex="1" parent="1"><mxGeometry x="240" y="818" width="440" height="34" as="geometry"/></mxCell>
+        <mxCell id="overallbox" value="&lt;font style=&quot;font-size:47px&quot; color=&quot;#1463FF&quot;&gt;&lt;b&gt;2.9%&lt;/b&gt;&lt;/font&gt;&lt;br&gt;约占中国整体市场出货量" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF5FF;strokeColor=none;fontColor=#334155;fontSize=26;fontFamily=Microsoft YaHei;align=left;verticalAlign=middle;spacingLeft=45;" vertex="1" parent="1"><mxGeometry x="805" y="314" width="420" height="144" as="geometry"/></mxCell>
+        <mxCell id="localbox" value="&lt;font style=&quot;font-size:47px&quot; color=&quot;#15803D&quot;&gt;&lt;b&gt;7.0%&lt;/b&gt;&lt;/font&gt;&lt;br&gt;约占本土厂商合计出货量" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAFBF2;strokeColor=none;fontColor=#334155;fontSize=26;fontFamily=Microsoft YaHei;align=left;verticalAlign=middle;spacingLeft=45;" vertex="1" parent="1"><mxGeometry x="805" y="505" width="420" height="144" as="geometry"/></mxCell>
+        <mxCell id="rankbox" value="与昆仑芯并列国产厂商第三" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF6E8;strokeColor=none;fontColor=#9A5A00;fontSize=24;fontStyle=1;fontFamily=Microsoft YaHei;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="805" y="696" width="420" height="81" as="geometry"/></mxCell>
+        <mxCell id="footer" value="说明：图中为出货量估算口径，不代表营收份额、芯片性能或长期竞争格局。" style="text;html=1;align=left;verticalAlign=middle;fontSize=22;fontColor=#64748B;fontFamily=Microsoft YaHei;" vertex="1" parent="1"><mxGeometry x="128" y="865" width="1160" height="38" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
