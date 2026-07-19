@@ -1,0 +1,19 @@
+<mxfile host="app.diagrams.net" modified="2026-07-19T00:00:00.000Z" agent="GitHub Copilot" version="26.0.14" type="device">
+  <diagram id="cambricon-software-ecosystem" name="Page-1">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="寒武纪产品技术栈与软件生态" style="text;html=1;align=left;verticalAlign=middle;fontSize=28;fontStyle=1;fontColor=#15233D;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="70" y="48" width="750" height="52" as="geometry"/></mxCell>
+        <mxCell id="subtitle" value="从芯片 IP 到集群软件：软件层决定硬件能否更易部署、开发与管理" style="text;html=1;align=left;verticalAlign=middle;fontSize=15;fontColor=#64748B;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="72" y="105" width="1050" height="30" as="geometry"/></mxCell>
+        <mxCell id="purpose" value="目标：让硬件更“好用”、更容易适配模型与规模化交付" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF6E8;strokeColor=#F0B95D;fontColor=#9A5A00;fontSize=16;fontStyle=1;fontFamily=Microsoft YaHei;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1030" y="70" width="410" height="60" as="geometry"/></mxCell>
+        <mxCell id="app" value="&lt;b&gt;最终应用&lt;/b&gt;&lt;br&gt;大模型训练与推理｜图像识别｜自然语言处理｜智能终端" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF7D6;strokeColor=#E8C65A;fontColor=#5F4B00;fontSize=18;fontFamily=Microsoft YaHei;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="320" y="200" width="800" height="105" as="geometry"/></mxCell>
+        <mxCell id="arrow1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B8EC7;strokeWidth=3;" edge="1" parent="1" source="software" target="app"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="software" value="&lt;b&gt;软件生态层&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#0A6B40&quot;&gt;Cambricon NeuWare&lt;/span&gt; ｜ &lt;span style=&quot;color:#0A6B40&quot;&gt;MagicMind&lt;/span&gt; ｜ 编译器 ｜ 开发者工具 ｜ 集群管理软件&lt;br&gt;&lt;font color=&quot;#64748B&quot;&gt;负责模型迁移、开发调试、运行优化与资源管理&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAFBF2;strokeColor=#65B78B;strokeWidth=2;fontColor=#15233D;fontSize=18;fontFamily=Microsoft YaHei;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="220" y="385" width="1000" height="135" as="geometry"/></mxCell>
+        <mxCell id="arrow2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B8EC7;strokeWidth=3;" edge="1" parent="1" source="hardware" target="software"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="hardware" value="&lt;b&gt;硬件基座&lt;/b&gt;&lt;br&gt;智能处理器 IP（Cambricon-1M / 1H） ｜ 思元芯片（370 / 270 / 220） ｜ AI 加速卡与整机（MLU 系列）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF2FF;strokeColor=#5C96FF;strokeWidth=2;fontColor=#15233D;fontSize=18;fontFamily=Microsoft YaHei;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="220" y="605" width="1000" height="112" as="geometry"/></mxCell>
+        <mxCell id="note" value="注：图示为业务与技术能力关系的概念化表达，不代表产品发布时间或具体性能对比。" style="text;html=1;align=left;verticalAlign=middle;fontSize=13;fontColor=#64748B;fontFamily=Microsoft YaHei;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="72" y="810" width="980" height="28" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

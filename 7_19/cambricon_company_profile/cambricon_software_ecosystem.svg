@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">寒武纪产品技术栈与软件生态</title>
+  <desc id="desc">展示从硬件基座，经软件生态层，到最终人工智能应用的技术栈关系。</desc>
+  <rect width="1440" height="900" fill="#F6F9FD"/>
+  <rect x="60" y="48" width="1320" height="804" rx="36" fill="#FFFFFF"/>
+  <rect x="60" y="48" width="16" height="804" rx="8" fill="#1463FF"/>
+  <text x="124" y="140" fill="#15233D" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="50" font-weight="700">寒武纪产品技术栈与软件生态</text>
+  <text x="126" y="194" fill="#64748B" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="26">从芯片 IP 到集群软件：软件层决定硬件能否更易部署、开发与管理</text>
+  <rect x="980" y="92" width="332" height="62" rx="18" fill="#FFF6E8" stroke="#F0B95D" stroke-width="2"/>
+  <text x="1146" y="130" text-anchor="middle" fill="#9A5A00" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="20" font-weight="700">目标：让硬件更“好用”</text>
+  <rect x="280" y="238" width="880" height="120" rx="26" fill="#FFF7D6" stroke="#E8C65A" stroke-width="2"/>
+  <text x="720" y="288" text-anchor="middle" fill="#5F4B00" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28" font-weight="700">最终应用</text>
+  <text x="720" y="326" text-anchor="middle" fill="#5F4B00" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="23">大模型训练与推理 · 图像识别 · 自然语言处理 · 智能终端</text>
+  <path d="M720 408 L720 372" stroke="#6B8EC7" stroke-width="5" fill="none"/>
+  <path d="M720 372 L708 390 L732 390 Z" fill="#6B8EC7"/>
+  <rect x="180" y="420" width="1080" height="160" rx="30" fill="#EAFBF2" stroke="#65B78B" stroke-width="3"/>
+  <text x="720" y="470" text-anchor="middle" fill="#15233D" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="30" font-weight="700">软件生态层</text>
+  <text x="720" y="514" text-anchor="middle" fill="#0A6B40" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="26" font-weight="700">Cambricon NeuWare · MagicMind · 编译器 · 开发者工具 · 集群管理软件</text>
+  <text x="720" y="550" text-anchor="middle" fill="#64748B" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="21">负责模型迁移、开发调试、运行优化与资源管理</text>
+  <path d="M720 640 L720 594" stroke="#6B8EC7" stroke-width="5" fill="none"/>
+  <path d="M720 594 L708 612 L732 612 Z" fill="#6B8EC7"/>
+  <rect x="180" y="652" width="1080" height="120" rx="30" fill="#EAF2FF" stroke="#5C96FF" stroke-width="3"/>
+  <text x="720" y="701" text-anchor="middle" fill="#15233D" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="30" font-weight="700">硬件基座</text>
+  <text x="720" y="742" text-anchor="middle" fill="#15233D" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="23">智能处理器 IP（Cambricon-1M / 1H） · 思元芯片（370 / 270 / 220） · AI 加速卡与整机（MLU 系列）</text>
+  <text x="124" y="822" fill="#64748B" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18">注：图示为业务与技术能力关系的概念化表达，不代表产品发布时间或具体性能对比。</text>
+</svg>
