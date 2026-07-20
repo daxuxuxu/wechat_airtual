@@ -89,4 +89,3 @@ https://github.com/daxuxuxu/wechat_airtual/tree/main/7_15/axi_outstanding_backpr
 ### 今日结论
 
 > **WLAST 表示 write data complete，B handshake 才表示 write transaction complete。**
-
