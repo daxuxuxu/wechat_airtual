@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="820" viewBox="0 0 1600 820">
+<rect width="1600" height="820" fill="#FFFFFF"/>
+<rect width="1600" height="86" fill="#159477"/>
+<text x="60" y="55" font-family="Noto Sans CJK SC,Arial" font-size="42" font-weight="700" fill="#FFFFFF">VCS 进阶 option：按问题选择，而不是全部打开</text>
+<rect x="100" y="160" width="650" height="210" rx="18" fill="#EAF8F1" stroke="#159477" stroke-width="3"/>
+<text x="150" y="225" font-family="Noto Sans CJK SC,Arial" font-size="36" font-weight="700" fill="#0B6B57">Build / Compile</text>
+<text x="150" y="285" font-family="DejaVu Sans Mono" font-size="29" fill="#23313F">-full64   -top   -timescale</text>
+<text x="150" y="335" font-family="DejaVu Sans Mono" font-size="29" fill="#23313F">-Mupdate  -j      -kdb</text>
+<rect x="850" y="160" width="650" height="210" rx="18" fill="#FEF5E7" stroke="#E67E22" stroke-width="3"/>
+<text x="900" y="225" font-family="Noto Sans CJK SC,Arial" font-size="36" font-weight="700" fill="#A84B00">Debug</text>
+<text x="900" y="285" font-family="DejaVu Sans Mono" font-size="29" fill="#23313F">-debug_access+all</text>
+<text x="900" y="335" font-family="DejaVu Sans Mono" font-size="29" fill="#23313F">-ucli   -l</text>
+<rect x="100" y="460" width="650" height="210" rx="18" fill="#EBF5FB" stroke="#2E86C1" stroke-width="3"/>
+<text x="150" y="525" font-family="Noto Sans CJK SC,Arial" font-size="36" font-weight="700" fill="#1B4F72">Coverage</text>
+<text x="150" y="585" font-family="DejaVu Sans Mono" font-size="29" fill="#23313F">-cm line+cond+tgl+fsm+branch</text>
+<text x="150" y="635" font-family="DejaVu Sans Mono" font-size="29" fill="#23313F">-cm_hier   -cm_dir</text>
+<rect x="850" y="460" width="650" height="210" rx="18" fill="#F4F0FF" stroke="#7B68EE" stroke-width="3"/>
+<text x="900" y="525" font-family="Noto Sans CJK SC,Arial" font-size="36" font-weight="700" fill="#5B4BB7">Runtime</text>
+<text x="900" y="585" font-family="DejaVu Sans Mono" font-size="29" fill="#23313F">+UVM_TESTNAME   +UVM_TIMEOUT</text>
+<text x="900" y="635" font-family="DejaVu Sans Mono" font-size="29" fill="#23313F">+ntb_random_seed</text>
+</svg>

@@ -60,7 +60,29 @@ coverage option 最重要的是保证不同 seed、不同 test 和不同 regress
 
 ---
 
-### 五、常用 option 的使用原则
+### 五、更多 compile option
+
+`-full64` 常用于 64-bit simulation build。`-top` 可明确 top module，避免 filelist 中存在多个候选 top 时产生歧义。`-timescale` 用于统一或指定 simulation time unit／precision。
+
+`-Mupdate` 用于 incremental compile 场景，减少未变化 source 的重复编译。`-j` 用于并行 build，适合 source file 较多的环境。`-kdb` 用于生成供 debug tool 使用的知识数据库。
+
+这些 option 的共同特点是影响 build image。它们应该与 filelist、define、source revision 一起记录，否则同一个 test／seed 在不同 image 上可能无法复现。
+
+### 六、更多 debug 与 coverage option
+
+`-debug_access+all` 会保留较完整的 debug access，但通常会增加 build 和 runtime cost。实际使用时应按 debug 需求选择合适 access，而不是所有 regression 都默认开最大等级。
+
+coverage 常见的组合包括 line、condition、toggle、FSM、branch 和 assertion。`-cm_hier` 用于指定 coverage hierarchy，避免无关 block 进入统计；`-cm_dir` 用于隔离每次 run 的 coverage database。
+
+![VCS 进阶 option 分类](vcs-advanced-options.png)
+
+### 七、runtime option 的边界
+
+`+UVM_TIMEOUT` 可用于给 test 设置 runtime timeout。`+UVM_MAX_QUIT_COUNT` 可限制 UVM error 达到阈值后的行为。`+ntb_random_seed` 保证随机场景可复现。
+
+这些 plusarg 不会把缺失的 module、macro 或 coverage instrumentation 加进 image。遇到问题时，先判断它是 compile-time 问题还是 runtime 问题，再选择正确类型的 option。
+
+### 八、常用 option 的使用原则
 
 第一，compile option 与 runtime option 分开维护。
 
