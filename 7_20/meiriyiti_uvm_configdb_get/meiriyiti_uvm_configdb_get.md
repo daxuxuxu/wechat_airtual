@@ -81,4 +81,3 @@ https://github.com/daxuxuxu/wechat_airtual/tree/main/7_9/uvm_new_config_timing
 ### 今日结论
 
 > **`get()` 返回 0，先查 scope、field、type、timing；不要先怀疑 UVM 本身。**
-
