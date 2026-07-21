@@ -46,7 +46,29 @@ CHI 不只把流量分成 request 和 response。它使用 REQ、RSP、SNP、DAT
 
 ![CHI 四类通道](chi-four-channels.png)
 
-REQ 负责发起 transaction。RSP 返回 completion、retry 等控制信息。SNP 用于发起 coherency snoop。DAT 用于传输 read data、write data、snoop data 与相关 data response。
+先用一句人话理解：REQ 是“我要做什么”，SNP 是“其他 cache 手里有没有这份数据”，DAT 是“数据本身怎么走”，RSP 是“这件事最后怎样收尾”。
+
+#### REQ：发起一笔 coherent request
+
+REQ 是 Request Node 告诉 system “我要读、写、获取或修改这个 cache line”的通道。它携带 transaction 的意图、address、属性与 identity。
+
+它像去图书馆柜台提出请求：你要哪本书、以什么方式拿、这次请求属于谁，都先在 REQ 中说明。
+
+#### SNP：向其他 cache 询问状态
+
+SNP 是 HN 发给其他 coherent cache 的 snoop request。它不是普通读写，而是在问：“你手里有没有这个 cache line？是不是最新的？需要 clean、invalidate 还是把 data 交出来？”
+
+它像管理员向其他读者确认：这本书是否被借走、手里的版本是否更新、是否要先归还或作废旧副本。
+
+#### DAT：真正传输数据
+
+DAT 承担 write data、read data、snoop data 和相关 data response。REQ 只说明需求，DAT 才负责把 cache line 或 write payload 真正搬到目标位置。
+
+DAT 可以来自 memory，也可以来自另一个 cache。这个“数据从哪来”的差异正是 coherent interconnect 比普通 AXI 路径更复杂的地方。
+
+#### RSP：告诉系统 transaction 进行到哪一步
+
+RSP 负责携带 completion、retry、snoop response、acknowledgement 等控制结果。它不一定带 data，但它决定 requester 是否需要重试、HN 是否能释放 state、transaction 是否真正完成。
 
 这种拆分使 snoop、response 和 data 可以独立流动，适合高并发 coherent system。
 
