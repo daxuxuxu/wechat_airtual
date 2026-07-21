@@ -93,4 +93,3 @@ response 到来后，应取消 timeout thread。timeout 到来后，应取消 re
 SystemVerilog task／function 与时序控制文章：
 
 https://github.com/daxuxuxu/wechat_airtual/tree/main/7_13/systemverilog_task_function
-
