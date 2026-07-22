@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1060" viewBox="0 0 1600 1060">
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="940" viewBox="0 0 1600 940">
 <defs>
   <marker id="arrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#34495E"/></marker>
   <marker id="greenArrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#159477"/></marker>
   <marker id="redArrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#C0392B"/></marker>
 </defs>
-<rect width="1600" height="1060" fill="#FFFFFF"/>
+<rect width="1600" height="940" fill="#FFFFFF"/>
 <rect width="1600" height="86" fill="#159477"/>
 <text x="60" y="55" font-family="Noto Sans CJK SC,Arial" font-size="42" font-weight="700" fill="#FFFFFF">LTSSM 常见状态转移：训练、工作、低功耗与恢复</text>
 <text x="60" y="120" font-family="Noto Sans CJK SC,Arial" font-size="26" fill="#566573">概念图：展示常见路径，不替代完整规范 state diagram。</text>
@@ -47,5 +47,4 @@
 <text x="245" y="876" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="32" font-weight="700" fill="#A93226">Hot Reset / Disable</text>
 <path d="M190 820 C90 660 80 480 150 380" stroke="#C0392B" stroke-width="5" fill="none" marker-end="url(#redArrow)"/>
 <text x="105" y="630" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#A93226">reinitialize</text>
-<text x="800" y="990" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="26" fill="#566573">箭头表示状态转移关系；标签始终放在箭头旁的留白区，避免遮挡节点和文字。</text>
 </svg>
