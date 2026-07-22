@@ -1,37 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
-<rect width="1600" height="1000" fill="#FFFFFF"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1060" viewBox="0 0 1600 1060">
+<defs>
+  <marker id="arrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#34495E"/></marker>
+  <marker id="greenArrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#159477"/></marker>
+  <marker id="redArrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#C0392B"/></marker>
+</defs>
+<rect width="1600" height="1060" fill="#FFFFFF"/>
 <rect width="1600" height="86" fill="#159477"/>
-<text x="60" y="55" font-family="Noto Sans CJK SC,Arial" font-size="42" font-weight="700" fill="#FFFFFF">LTSSM 常见状态转移：从 Detect 到 L0，再到 Recovery 与低功耗</text>
-<text x="60" y="120" font-family="Noto Sans CJK SC,Arial" font-size="26" fill="#566573">概念图：展示常见理解路径，不替代完整规范 state diagram。</text>
-<rect x="100" y="300" width="220" height="100" rx="18" fill="#EAF8F1" stroke="#159477" stroke-width="3"/>
-<text x="210" y="362" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="34" font-weight="700" fill="#0B6B57">Detect</text>
-<rect x="420" y="300" width="220" height="100" rx="18" fill="#FEF5E7" stroke="#E67E22" stroke-width="3"/>
-<text x="530" y="362" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="34" font-weight="700" fill="#A84B00">Polling</text>
-<rect x="740" y="300" width="260" height="100" rx="18" fill="#F4F0FF" stroke="#7B68EE" stroke-width="3"/>
-<text x="870" y="362" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="34" font-weight="700" fill="#5B4BB7">Configuration</text>
-<rect x="1100" y="300" width="220" height="100" rx="18" fill="#E8F8F5" stroke="#2E8B57" stroke-width="3"/>
-<text x="1210" y="362" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="34" font-weight="700" fill="#1D5D3A">L0</text>
-<path d="M320 350 H410 M640 350 H730 M1000 350 H1090" stroke="#34495E" stroke-width="5"/>
-<text x="365" y="325" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#34495E">detect peer</text>
-<text x="685" y="325" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#34495E">TS1 / TS2</text>
-<text x="1045" y="325" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#34495E">link ready</text>
-<rect x="1060" y="580" width="180" height="90" rx="18" fill="#FDEDEC" stroke="#C0392B" stroke-width="3"/>
-<text x="1150" y="635" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="32" font-weight="700" fill="#A93226">Recovery</text>
-<path d="M1210 400 V570" stroke="#C0392B" stroke-width="5"/>
-<path d="M1150 580 V410" stroke="#2E8B57" stroke-width="5"/>
-<text x="1270" y="500" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#A93226">retrain / error</text>
-<text x="970" y="500" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#1D5D3A">recover</text>
-<rect x="580" y="580" width="180" height="90" rx="18" fill="#EAF2F8" stroke="#2E86C1" stroke-width="3"/>
-<text x="670" y="635" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="32" font-weight="700" fill="#1B4F72">L0s</text>
-<rect x="300" y="580" width="180" height="90" rx="18" fill="#EAF2F8" stroke="#2E86C1" stroke-width="3"/>
-<text x="390" y="635" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="32" font-weight="700" fill="#1B4F72">L1</text>
-<path d="M1120 400 Q800 520 760 580" stroke="#2E86C1" stroke-width="5" fill="none"/>
-<path d="M1120 400 Q600 520 480 580" stroke="#2E86C1" stroke-width="5" fill="none"/>
-<path d="M670 580 Q850 500 1120 410" stroke="#2E8B57" stroke-width="5" fill="none"/>
-<path d="M390 580 Q750 500 1120 410" stroke="#2E8B57" stroke-width="5" fill="none"/>
-<text x="670" y="770" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="30" fill="#34495E">L0s / L1 是 link 低功耗状态；有 traffic 或 wake 条件时返回 L0。</text>
-<rect x="160" y="800" width="280" height="90" rx="18" fill="#FDEDEC" stroke="#C0392B" stroke-width="3"/>
-<text x="300" y="855" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="32" font-weight="700" fill="#A93226">Hot Reset / Disable</text>
-<path d="M210 800 Q100 600 170 410" stroke="#C0392B" stroke-width="5" fill="none"/>
-<text x="80" y="620" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#A93226">reinitialize</text>
+<text x="60" y="55" font-family="Noto Sans CJK SC,Arial" font-size="42" font-weight="700" fill="#FFFFFF">LTSSM 常见状态转移：训练、工作、低功耗与恢复</text>
+<text x="60" y="120" font-family="Noto Sans CJK SC,Arial" font-size="26" fill="#566573">概念图：展示常见路径，不替代完整规范 state diagram。</text>
+
+<rect x="80" y="270" width="220" height="100" rx="18" fill="#EAF8F1" stroke="#159477" stroke-width="3"/>
+<text x="190" y="332" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="34" font-weight="700" fill="#0B6B57">Detect</text>
+<rect x="400" y="270" width="220" height="100" rx="18" fill="#FEF5E7" stroke="#E67E22" stroke-width="3"/>
+<text x="510" y="332" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="34" font-weight="700" fill="#A84B00">Polling</text>
+<rect x="720" y="270" width="260" height="100" rx="18" fill="#F4F0FF" stroke="#7B68EE" stroke-width="3"/>
+<text x="850" y="332" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="34" font-weight="700" fill="#5B4BB7">Configuration</text>
+<rect x="1080" y="270" width="220" height="100" rx="18" fill="#E8F8F5" stroke="#2E8B57" stroke-width="3"/>
+<text x="1190" y="332" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="34" font-weight="700" fill="#1D5D3A">L0</text>
+
+<path d="M300 320 H390" stroke="#159477" stroke-width="5" fill="none" marker-end="url(#greenArrow)"/>
+<path d="M620 320 H710" stroke="#159477" stroke-width="5" fill="none" marker-end="url(#greenArrow)"/>
+<path d="M980 320 H1070" stroke="#159477" stroke-width="5" fill="none" marker-end="url(#greenArrow)"/>
+<text x="345" y="245" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#0B6B57">detect peer</text>
+<text x="665" y="245" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#0B6B57">TS1 / TS2</text>
+<text x="1025" y="245" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#0B6B57">link ready</text>
+
+<rect x="1070" y="570" width="240" height="100" rx="18" fill="#FDEDEC" stroke="#C0392B" stroke-width="3"/>
+<text x="1190" y="632" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="34" font-weight="700" fill="#A93226">Recovery</text>
+<path d="M1190 370 V560" stroke="#C0392B" stroke-width="5" fill="none" marker-end="url(#redArrow)"/>
+<path d="M1150 570 C1040 520 1040 430 1140 380" stroke="#159477" stroke-width="5" fill="none" marker-end="url(#greenArrow)"/>
+<text x="1270" y="475" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#A93226">retrain / error</text>
+<text x="990" y="505" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#0B6B57">recovered</text>
+
+<rect x="610" y="570" width="200" height="90" rx="18" fill="#EBF5FB" stroke="#2E86C1" stroke-width="3"/>
+<text x="710" y="626" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="32" font-weight="700" fill="#1B4F72">L0s</text>
+<rect x="290" y="570" width="200" height="90" rx="18" fill="#EBF5FB" stroke="#2E86C1" stroke-width="3"/>
+<text x="390" y="626" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="32" font-weight="700" fill="#1B4F72">L1</text>
+<path d="M1110 370 C950 430 830 480 760 560" stroke="#2E86C1" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
+<path d="M1080 370 C820 450 560 480 440 560" stroke="#2E86C1" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
+<path d="M710 570 C820 500 1000 450 1140 380" stroke="#159477" stroke-width="5" fill="none" marker-end="url(#greenArrow)"/>
+<path d="M390 570 C640 490 920 450 1140 380" stroke="#159477" stroke-width="5" fill="none" marker-end="url(#greenArrow)"/>
+<text x="850" y="470" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#1B4F72">enter low power</text>
+<text x="820" y="740" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="28" fill="#34495E">L0s / L1：低功耗状态；有 traffic 或 wake 条件时，箭头返回 L0。</text>
+
+<rect x="80" y="820" width="330" height="90" rx="18" fill="#FDEDEC" stroke="#C0392B" stroke-width="3"/>
+<text x="245" y="876" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="32" font-weight="700" fill="#A93226">Hot Reset / Disable</text>
+<path d="M190 820 C90 660 80 480 150 380" stroke="#C0392B" stroke-width="5" fill="none" marker-end="url(#redArrow)"/>
+<text x="105" y="630" font-family="Noto Sans CJK SC,Arial" font-size="24" fill="#A93226">reinitialize</text>
+<text x="800" y="990" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="26" fill="#566573">箭头表示状态转移关系；标签始终放在箭头旁的留白区，避免遮挡节点和文字。</text>
 </svg>
