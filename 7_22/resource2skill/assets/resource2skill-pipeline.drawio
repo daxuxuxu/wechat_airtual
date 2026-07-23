@@ -1,0 +1,19 @@
+<mxfile host="app.diagrams.net" modified="2026-07-22T00:00:00.000Z" agent="Resource2Skill article" version="26.0.16">
+  <diagram id="resource2skill-pipeline" name="Resource2Skill pipeline">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1020" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Resource2Skill：从人类资源到可执行 Skill" style="text;html=1;align=left;verticalAlign=middle;fontSize=42;fontStyle=1;fontColor=#102A25;" vertex="1" parent="1"><mxGeometry x="80" y="45" width="1120" height="70" as="geometry"/></mxCell>
+        <mxCell id="resources" value="输入资源&lt;br&gt;&lt;br&gt;教程视频&lt;br&gt;文章与参考资料&lt;br&gt;代码与静态资产" style="swimlane;html=1;rounded=1;startSize=55;fillColor=#E7F8F0;swimlaneFillColor=#0A5A48;fontColor=#FFFFFF;strokeColor=#8CC9AA;strokeWidth=2;fontSize=28;align=center;verticalAlign=middle;shadow=1;" vertex="1" parent="1"><mxGeometry x="90" y="220" width="285" height="440" as="geometry"/></mxCell>
+        <mxCell id="candidate" value="Candidate Skill&lt;br&gt;&lt;br&gt;来源 / 许可&lt;br&gt;代码、文本、视觉素材&lt;br&gt;适用范围" style="swimlane;html=1;rounded=1;startSize=55;fillColor=#FFF3E6;swimlaneFillColor=#D97706;fontColor=#FFFFFF;strokeColor=#F0B76E;strokeWidth=2;fontSize=28;align=center;verticalAlign=middle;shadow=1;" vertex="1" parent="1"><mxGeometry x="470" y="220" width="300" height="440" as="geometry"/></mxCell>
+        <mxCell id="wiki" value="Skill Wiki&lt;br&gt;&lt;br&gt;meta / text / visual / code&lt;br&gt;标签、来源、许可证&lt;br&gt;QA 与 quarantine" style="swimlane;html=1;rounded=1;startSize=55;fillColor=#EAF1FF;swimlaneFillColor=#2563EB;fontColor=#FFFFFF;strokeColor=#8FB3F4;strokeWidth=2;fontSize=28;align=center;verticalAlign=middle;shadow=1;" vertex="1" parent="1"><mxGeometry x="865" y="220" width="330" height="440" as="geometry"/></mxCell>
+        <mxCell id="runtime" value="Agent Runtime&lt;br&gt;&lt;br&gt;任务拆解&lt;br&gt;检索与重排序&lt;br&gt;MCP 调用真实工具" style="swimlane;html=1;rounded=1;startSize=55;fillColor=#EEE8FF;swimlaneFillColor=#6D28D9;fontColor=#FFFFFF;strokeColor=#B6A4E6;strokeWidth=2;fontSize=28;align=center;verticalAlign=middle;shadow=1;" vertex="1" parent="1"><mxGeometry x="1290" y="220" width="320" height="440" as="geometry"/></mxCell>
+        <mxCell id="edge1" value="采集" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=28;fontColor=#58706A;strokeColor=#5B716A;strokeWidth=3;endArrow=block;endFill=1;" edge="1" parent="1" source="resources" target="candidate"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="edge2" value="清洗 / QA" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=28;fontColor=#58706A;strokeColor=#5B716A;strokeWidth=3;endArrow=block;endFill=1;" edge="1" parent="1" source="candidate" target="wiki"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="edge3" value="检索 / 组合" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=28;fontColor=#58706A;strokeColor=#5B716A;strokeWidth=3;endArrow=block;endFill=1;" edge="1" parent="1" source="wiki" target="runtime"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="footer" value="资源先被治理为可发现、可执行、可审计的 Skill，Agent 才能稳定复用。" style="rounded=1;html=1;fillColor=#113D34;fontColor=#E5FBEF;strokeColor=#113D34;fontSize=30;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="220" y="790" width="1300" height="82" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
