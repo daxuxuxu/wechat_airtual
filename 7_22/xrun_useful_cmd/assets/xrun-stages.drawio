@@ -1,0 +1,17 @@
+<mxfile host="app.diagrams.net" modified="2026-07-22T00:00:00.000Z" agent="xrun article" version="26.0.16">
+  <diagram id="xrun-stages" name="xrun lifecycle">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="970" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="xrun：一个入口，三个不同阶段" style="text;html=1;align=left;verticalAlign=middle;fontSize=42;fontStyle=1;fontColor=#102A25;" vertex="1" parent="1"><mxGeometry x="80" y="45" width="1000" height="70" as="geometry"/></mxCell>
+        <mxCell id="compile" value="Compile&lt;br&gt;&lt;br&gt;读源文件与 package&lt;br&gt;解析 SystemVerilog&lt;br&gt;处理 include / define&lt;br&gt;&lt;br&gt;-sv、-f、+incdir+、+define+" style="swimlane;html=1;rounded=1;startSize=58;fillColor=#EAF1FF;swimlaneFillColor=#2563EB;fontColor=#FFFFFF;strokeColor=#8FB3F4;strokeWidth=2;fontSize=28;align=center;verticalAlign=middle;shadow=1;" vertex="1" parent="1"><mxGeometry x="110" y="210" width="430" height="440" as="geometry"/></mxCell>
+        <mxCell id="elab" value="Elaborate&lt;br&gt;&lt;br&gt;确定 top 与层级&lt;br&gt;连接 module / interface&lt;br&gt;准备 debug 可见性&lt;br&gt;&lt;br&gt;-top、-access、coverage" style="swimlane;html=1;rounded=1;startSize=58;fillColor=#EEE8FF;swimlaneFillColor=#6D28D9;fontColor=#FFFFFF;strokeColor=#B6A4E6;strokeWidth=2;fontSize=28;align=center;verticalAlign=middle;shadow=1;" vertex="1" parent="1"><mxGeometry x="685" y="210" width="430" height="440" as="geometry"/></mxCell>
+        <mxCell id="run" value="Run&lt;br&gt;&lt;br&gt;选择 UVM test&lt;br&gt;设置随机 seed&lt;br&gt;控制 timeout / verbosity&lt;br&gt;&lt;br&gt;+UVM_TESTNAME、+ntb_random_seed" style="swimlane;html=1;rounded=1;startSize=58;fillColor=#E7F8F0;swimlaneFillColor=#0A5A48;fontColor=#FFFFFF;strokeColor=#8CC9AA;strokeWidth=2;fontSize=28;align=center;verticalAlign=middle;shadow=1;" vertex="1" parent="1"><mxGeometry x="1260" y="210" width="430" height="440" as="geometry"/></mxCell>
+        <mxCell id="edge1" value="构建" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=28;fontColor=#58706A;strokeColor=#5B716A;strokeWidth=3;endArrow=block;endFill=1;" edge="1" parent="1" source="compile" target="elab"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="edge2" value="启动" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=28;fontColor=#58706A;strokeColor=#5B716A;strokeWidth=3;endArrow=block;endFill=1;" edge="1" parent="1" source="elab" target="run"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="footer" value="需要重新建构模型的 option 放在 Compile / Elaborate；只改变这次 test 行为的参数放在 Run。" style="rounded=1;html=1;fillColor=#113D34;fontColor=#E5FBEF;strokeColor=#113D34;fontSize=30;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="210" y="770" width="1380" height="82" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
