@@ -92,6 +92,28 @@ coverage 常见的组合包括 line、condition、toggle、FSM、branch 和 asse
 
 第四，出现 failure 时，优先重现同一 image、同一 test、同一 seed、同一 plusarg，再开始改代码。
 
+### 九、xrun：把 compile、elaboration 与 run 放在同一套命令框架
+
+Xcelium 的 `xrun` 可以把 compile、elaboration 和 simulation run 放在一次 invocation 中完成，也可以通过 option file 将它们分层管理。
+
+在大型 environment 中，推荐将 source file list、compile option、elaboration option、runtime option 分开放入独立 `.f` 文件。常见命名方式包括 `compfiles.ncsim.f`、`compopts.ncsim.f`、`elabopts.ncsim.f` 和 `runopts.ncsim.f`。
+
+这样做的好处是：改 test 或 seed 不需要碰 compile file list；改 debug access 不需要修改 runtime option；定位 failure 时可以准确知道是 source/build/elaboration 还是 run setting 变化。
+
+![VCS 与 xrun 的 option 分层](vcs-xrun-option-files.png)
+
+### 十、xrun 常见操作方向
+
+`-f` 用于读取 option/file list。`-sv` 或相应语言 option 用于启用 SystemVerilog。`-uvm` 用于启用 UVM 相关环境。`-access +rwc` 常用于增加 debug visibility。`-gui` 用于图形调试。coverage 相关 option 用于 instrumentation 和 coverage database。
+
+runtime 中依然需要明确 test、seed、log、timeout 和 UVM verbosity。不同 Xcelium 版本或团队封装脚本对具体 option 名称可能不同，因此应优先查看项目提供的 `compopts`、`elabopts` 和 `runopts` 文件，而不是复制别人的长命令。
+
+### 十一、VCS 与 xrun 的共同 debug 原则
+
+不管使用 VCS 还是 xrun，复现 failure 都要固定四类输入：source/build revision、compile/elaboration option、test/seed、runtime plusarg 或 run option。
+
+只固定 seed 而不固定 build option，或只保留 log 而不保留 option file，都会让复杂 DV failure 难以稳定复现。
+
 ---
 
 ### 六、总结

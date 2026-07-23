@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="800" viewBox="0 0 1600 800">
+<rect width="1600" height="800" fill="#FFFFFF"/>
+<rect width="1600" height="86" fill="#159477"/>
+<text x="60" y="55" font-family="Noto Sans CJK SC,Arial" font-size="42" font-weight="700" fill="#FFFFFF">VCS 与 xrun：把 simulator option 分层管理</text>
+<rect x="110" y="180" width="650" height="430" rx="20" fill="#EAF8F1" stroke="#159477" stroke-width="3"/>
+<text x="160" y="245" font-family="Noto Sans CJK SC,Arial" font-size="36" font-weight="700" fill="#0B6B57">VCS</text>
+<text x="160" y="315" font-family="Noto Sans CJK SC,Arial" font-size="30" fill="#23313F">compile command</text>
+<text x="160" y="375" font-family="Noto Sans CJK SC,Arial" font-size="30" fill="#23313F">elaboration / simv image</text>
+<text x="160" y="435" font-family="Noto Sans CJK SC,Arial" font-size="30" fill="#23313F">runtime plusargs</text>
+<rect x="840" y="180" width="650" height="430" rx="20" fill="#F4F0FF" stroke="#7B68EE" stroke-width="3"/>
+<text x="890" y="245" font-family="Noto Sans CJK SC,Arial" font-size="36" font-weight="700" fill="#5B4BB7">xrun</text>
+<text x="890" y="315" font-family="DejaVu Sans Mono" font-size="29" fill="#23313F">compfiles.ncsim.f</text>
+<text x="890" y="375" font-family="DejaVu Sans Mono" font-size="29" fill="#23313F">compopts.ncsim.f / elabopts.ncsim.f</text>
+<text x="890" y="435" font-family="DejaVu Sans Mono" font-size="29" fill="#23313F">runopts.ncsim.f</text>
+<text x="800" y="710" text-anchor="middle" font-family="Noto Sans CJK SC,Arial" font-size="30" fill="#34495E">核心原则相同：把 source、build、elaboration、runtime 分开记录，失败才能稳定复现。</text>
+</svg>
